@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using BALLAYER;
 using COMMONENTITY;
+using LNG.Communication.SerialCommunication;
 namespace CabconPMP
 {
     public partial class frmLoginMain : Form
@@ -15,6 +16,8 @@ namespace CabconPMP
         GlobalMethods objsv = new GlobalMethods();
         EntityUserManagement objetyusermgt = new EntityUserManagement();
         BALDBConnectionTest objdbcon = new BALDBConnectionTest();
+        SerialComm objSerialComm = new SerialComm();
+
         int loginLimit = 3;
          public frmLoginMain()
          {
@@ -94,6 +97,11 @@ namespace CabconPMP
 
         private void frmLoginMain_Load(object sender, EventArgs e)
         {
+            //-------------------Get Avilable COM Port---------------
+            string[] PortNames = objSerialComm.GetAvailablePorts();
+            Array.Reverse(PortNames);
+            foreach (string Port in PortNames) clbPorts.Items.Add(Port);
+
             Point panelLoc = PanelLoginControl.Location;
             PanelLoginControl.Parent = pictureBox1;
             PanelLoginControl.Location = panelLoc;
@@ -144,6 +152,38 @@ namespace CabconPMP
                 Rectangle rectPass = new Rectangle(txtPassword.Left - 1, txtPassword.Top - 1, txtPassword.Width + 1, txtPassword.Height + 1);
                 e.Graphics.DrawRectangle(borderPen, rectPass);
             }
+        }
+
+        private bool _updatingSelectAll;
+        private void chkPortSelectAll_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_updatingSelectAll)
+                return;
+
+            _updatingSelectAll = true;
+
+            for (int i = 0; i < clbPorts.Items.Count; i++)
+            {
+                clbPorts.SetItemChecked(i, chkPortSelectAll.Checked);
+            }
+
+            _updatingSelectAll = false;
+        }
+
+        private void clbPorts_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            if (_updatingSelectAll)
+                return;
+
+            BeginInvoke(new Action(() =>
+            {
+                _updatingSelectAll = true;
+
+                chkPortSelectAll.Checked =
+                    clbPorts.CheckedItems.Count == clbPorts.Items.Count;
+
+                _updatingSelectAll = false;
+            }));
         }
     }
 }

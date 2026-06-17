@@ -41,6 +41,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.cmbSettingCategory = new System.Windows.Forms.ComboBox();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.clbPorts = new System.Windows.Forms.CheckedListBox();
+            this.chkPortSelectAll = new System.Windows.Forms.CheckBox();
             this.cmbSignonBaudRate = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txtInterFrameTimeout = new System.Windows.Forms.TextBox();
@@ -55,7 +57,6 @@
             this.label29 = new System.Windows.Forms.Label();
             this.cmbBaudRate = new System.Windows.Forms.ComboBox();
             this.label25 = new System.Windows.Forms.Label();
-            this.cmbPort = new System.Windows.Forms.ComboBox();
             this.label22 = new System.Windows.Forms.Label();
             this.tabHDLC = new System.Windows.Forms.TabPage();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
@@ -140,6 +141,8 @@
             // 
             // panelUserInfo
             // 
+            this.panelUserInfo.BackColor = System.Drawing.Color.White;
+            this.panelUserInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelUserInfo.Controls.Add(this.txtPDUSize);
             this.panelUserInfo.Controls.Add(this.txtConformanceBlock);
             this.panelUserInfo.Controls.Add(this.label8);
@@ -149,8 +152,6 @@
             this.panelUserInfo.Name = "panelUserInfo";
             this.panelUserInfo.Size = new System.Drawing.Size(501, 168);
             this.panelUserInfo.TabIndex = 1;
-            this.panelUserInfo.BackColor = System.Drawing.Color.White;
-            this.panelUserInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelUserInfo.Visible = false;
             // 
             // txtPDUSize
@@ -195,45 +196,48 @@
             // 
             // button1
             // 
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(215)))));
             this.button1.Enabled = false;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.button1.ForeColor = System.Drawing.Color.White;
             this.button1.Location = new System.Drawing.Point(768, 965);
             this.button1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(117, 54);
             this.button1.TabIndex = 6;
             this.button1.Text = "Set Conformance";
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.BackColor = System.Drawing.Color.FromArgb(0, 120, 215);
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.button1.UseVisualStyleBackColor = false;
             this.button1.Visible = false;
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(507, 629);
+            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(17)))), ((int)(((byte)(35)))));
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.button3.ForeColor = System.Drawing.Color.White;
+            this.button3.Location = new System.Drawing.Point(534, 746);
             this.button3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(112, 43);
             this.button3.TabIndex = 3;
             this.button3.Text = "&Cancel";
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.BackColor = System.Drawing.Color.FromArgb(232, 17, 35);
-            this.button3.ForeColor = System.Drawing.Color.White;
-            this.button3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(386, 629);
+            this.btnOK.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(215)))));
+            this.btnOK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOK.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnOK.ForeColor = System.Drawing.Color.White;
+            this.btnOK.Location = new System.Drawing.Point(413, 746);
             this.btnOK.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(112, 43);
             this.btnOK.TabIndex = 2;
             this.btnOK.Text = "&OK";
-            this.btnOK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnOK.BackColor = System.Drawing.Color.FromArgb(0, 120, 215);
-            this.btnOK.ForeColor = System.Drawing.Color.White;
-            this.btnOK.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnOK.UseVisualStyleBackColor = false;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // tabControl1
@@ -242,16 +246,13 @@
             this.tabControl1.Controls.Add(this.tabHDLC);
             this.tabControl1.Controls.Add(this.tabAssociation);
             this.tabControl1.Controls.Add(this.tabconformanceBlock);
-
             this.tabControl1.Location = new System.Drawing.Point(2, 2);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(648, 618);
-            this.tabControl1.TabIndex = 22;
             this.tabControl1.Padding = new System.Drawing.Point(18, 8);
-            this.tabControl1.Appearance = System.Windows.Forms.TabAppearance.Normal;
-            this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Normal;
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(678, 734);
+            this.tabControl1.TabIndex = 22;
             // 
             // tabSerialPort
             // 
@@ -259,11 +260,11 @@
             this.tabSerialPort.Controls.Add(this.label2);
             this.tabSerialPort.Controls.Add(this.cmbSettingCategory);
             this.tabSerialPort.Controls.Add(this.groupBox10);
-            this.tabSerialPort.Location = new System.Drawing.Point(4, 32);
+            this.tabSerialPort.Location = new System.Drawing.Point(4, 39);
             this.tabSerialPort.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabSerialPort.Name = "tabSerialPort";
             this.tabSerialPort.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabSerialPort.Size = new System.Drawing.Size(640, 582);
+            this.tabSerialPort.Size = new System.Drawing.Size(670, 691);
             this.tabSerialPort.TabIndex = 0;
             this.tabSerialPort.Text = "Port Settings";
             this.tabSerialPort.UseVisualStyleBackColor = true;
@@ -276,7 +277,7 @@
             this.label2.Location = new System.Drawing.Point(135, 63);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(149, 20);
+            this.label2.Size = new System.Drawing.Size(156, 25);
             this.label2.TabIndex = 11;
             this.label2.Text = "Setting Category";
             // 
@@ -291,13 +292,15 @@
             this.cmbSettingCategory.Location = new System.Drawing.Point(300, 58);
             this.cmbSettingCategory.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbSettingCategory.Name = "cmbSettingCategory";
-            this.cmbSettingCategory.Size = new System.Drawing.Size(223, 28);
+            this.cmbSettingCategory.Size = new System.Drawing.Size(223, 33);
             this.cmbSettingCategory.TabIndex = 10;
             this.cmbSettingCategory.SelectedIndexChanged += new System.EventHandler(this.cmbSettingCategory_SelectedIndexChanged);
             // 
             // groupBox10
             // 
             this.groupBox10.BackColor = System.Drawing.Color.White;
+            this.groupBox10.Controls.Add(this.clbPorts);
+            this.groupBox10.Controls.Add(this.chkPortSelectAll);
             this.groupBox10.Controls.Add(this.cmbSignonBaudRate);
             this.groupBox10.Controls.Add(this.label1);
             this.groupBox10.Controls.Add(this.txtInterFrameTimeout);
@@ -312,17 +315,40 @@
             this.groupBox10.Controls.Add(this.label29);
             this.groupBox10.Controls.Add(this.cmbBaudRate);
             this.groupBox10.Controls.Add(this.label25);
-            this.groupBox10.Controls.Add(this.cmbPort);
             this.groupBox10.Controls.Add(this.label22);
             this.groupBox10.ForeColor = System.Drawing.SystemColors.ControlText;
             this.groupBox10.Location = new System.Drawing.Point(56, 100);
             this.groupBox10.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox10.Name = "groupBox10";
             this.groupBox10.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.groupBox10.Size = new System.Drawing.Size(496, 377);
+            this.groupBox10.Size = new System.Drawing.Size(561, 567);
             this.groupBox10.TabIndex = 0;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Serial Port Setting";
+            // 
+            // clbPorts
+            // 
+            this.clbPorts.CheckOnClick = true;
+            this.clbPorts.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.clbPorts.FormattingEnabled = true;
+            this.clbPorts.Location = new System.Drawing.Point(360, 29);
+            this.clbPorts.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.clbPorts.Name = "clbPorts";
+            this.clbPorts.Size = new System.Drawing.Size(180, 144);
+            this.clbPorts.TabIndex = 23;
+            this.clbPorts.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clbPorts_ItemCheck);
+            // 
+            // chkPortSelectAll
+            // 
+            this.chkPortSelectAll.AutoSize = true;
+            this.chkPortSelectAll.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.chkPortSelectAll.Location = new System.Drawing.Point(360, 196);
+            this.chkPortSelectAll.Name = "chkPortSelectAll";
+            this.chkPortSelectAll.Size = new System.Drawing.Size(109, 29);
+            this.chkPortSelectAll.TabIndex = 24;
+            this.chkPortSelectAll.Text = "Select All";
+            this.chkPortSelectAll.UseVisualStyleBackColor = true;
+            this.chkPortSelectAll.CheckedChanged += new System.EventHandler(this.chkPortSelectAll_CheckedChanged);
             // 
             // cmbSignonBaudRate
             // 
@@ -332,31 +358,31 @@
             this.cmbSignonBaudRate.Items.AddRange(new object[] {
             "300",
             "9600"});
-            this.cmbSignonBaudRate.Location = new System.Drawing.Point(297, 112);
+            this.cmbSignonBaudRate.Location = new System.Drawing.Point(359, 292);
             this.cmbSignonBaudRate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbSignonBaudRate.Name = "cmbSignonBaudRate";
-            this.cmbSignonBaudRate.Size = new System.Drawing.Size(180, 28);
+            this.cmbSignonBaudRate.Size = new System.Drawing.Size(180, 33);
             this.cmbSignonBaudRate.TabIndex = 22;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label1.Location = new System.Drawing.Point(21, 112);
+            this.label1.Location = new System.Drawing.Point(25, 292);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(266, 20);
+            this.label1.Size = new System.Drawing.Size(293, 25);
             this.label1.TabIndex = 21;
             this.label1.Text = "Signon Baud Rate (For NON-DLMS)";
             // 
             // txtInterFrameTimeout
             // 
             this.txtInterFrameTimeout.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtInterFrameTimeout.Location = new System.Drawing.Point(297, 322);
+            this.txtInterFrameTimeout.Location = new System.Drawing.Point(359, 502);
             this.txtInterFrameTimeout.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtInterFrameTimeout.MaxLength = 5;
             this.txtInterFrameTimeout.Name = "txtInterFrameTimeout";
-            this.txtInterFrameTimeout.Size = new System.Drawing.Size(180, 26);
+            this.txtInterFrameTimeout.Size = new System.Drawing.Size(180, 31);
             this.txtInterFrameTimeout.TabIndex = 20;
             // 
             // cmbParity
@@ -368,41 +394,41 @@
             "None",
             "Even",
             "Odd"});
-            this.cmbParity.Location = new System.Drawing.Point(297, 195);
+            this.cmbParity.Location = new System.Drawing.Point(359, 375);
             this.cmbParity.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbParity.Name = "cmbParity";
-            this.cmbParity.Size = new System.Drawing.Size(180, 28);
+            this.cmbParity.Size = new System.Drawing.Size(180, 33);
             this.cmbParity.TabIndex = 3;
             // 
             // label23
             // 
             this.label23.AutoSize = true;
             this.label23.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label23.Location = new System.Drawing.Point(21, 195);
+            this.label23.Location = new System.Drawing.Point(25, 375);
             this.label23.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(48, 20);
+            this.label23.Size = new System.Drawing.Size(55, 25);
             this.label23.TabIndex = 2;
             this.label23.Text = "Parity";
             // 
             // txtResponsTimeout
             // 
             this.txtResponsTimeout.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtResponsTimeout.Location = new System.Drawing.Point(297, 282);
+            this.txtResponsTimeout.Location = new System.Drawing.Point(359, 462);
             this.txtResponsTimeout.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtResponsTimeout.MaxLength = 5;
             this.txtResponsTimeout.Name = "txtResponsTimeout";
-            this.txtResponsTimeout.Size = new System.Drawing.Size(180, 26);
+            this.txtResponsTimeout.Size = new System.Drawing.Size(180, 31);
             this.txtResponsTimeout.TabIndex = 19;
             // 
             // label30
             // 
             this.label30.AutoSize = true;
             this.label30.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label30.Location = new System.Drawing.Point(21, 322);
+            this.label30.Location = new System.Drawing.Point(25, 502);
             this.label30.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(188, 20);
+            this.label30.Size = new System.Drawing.Size(210, 25);
             this.label30.TabIndex = 16;
             this.label30.Text = "Inter Farme Timeout (ms)";
             // 
@@ -410,10 +436,10 @@
             // 
             this.label24.AutoSize = true;
             this.label24.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label24.Location = new System.Drawing.Point(21, 154);
+            this.label24.Location = new System.Drawing.Point(25, 334);
             this.label24.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(75, 20);
+            this.label24.Size = new System.Drawing.Size(82, 25);
             this.label24.TabIndex = 4;
             this.label24.Text = "Data Bits";
             // 
@@ -421,10 +447,10 @@
             // 
             this.label26.AutoSize = true;
             this.label26.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label26.Location = new System.Drawing.Point(21, 282);
+            this.label26.Location = new System.Drawing.Point(25, 462);
             this.label26.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(178, 20);
+            this.label26.Size = new System.Drawing.Size(197, 25);
             this.label26.TabIndex = 14;
             this.label26.Text = "Response Timeout (ms)";
             // 
@@ -436,10 +462,10 @@
             this.cmbDatabits.Items.AddRange(new object[] {
             "7",
             "8"});
-            this.cmbDatabits.Location = new System.Drawing.Point(297, 154);
+            this.cmbDatabits.Location = new System.Drawing.Point(359, 334);
             this.cmbDatabits.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbDatabits.Name = "cmbDatabits";
-            this.cmbDatabits.Size = new System.Drawing.Size(180, 28);
+            this.cmbDatabits.Size = new System.Drawing.Size(180, 33);
             this.cmbDatabits.TabIndex = 5;
             // 
             // cmbStopBits
@@ -450,20 +476,20 @@
             this.cmbStopBits.Items.AddRange(new object[] {
             "1",
             "2"});
-            this.cmbStopBits.Location = new System.Drawing.Point(297, 240);
+            this.cmbStopBits.Location = new System.Drawing.Point(359, 420);
             this.cmbStopBits.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbStopBits.Name = "cmbStopBits";
-            this.cmbStopBits.Size = new System.Drawing.Size(180, 28);
+            this.cmbStopBits.Size = new System.Drawing.Size(180, 33);
             this.cmbStopBits.TabIndex = 9;
             // 
             // label29
             // 
             this.label29.AutoSize = true;
             this.label29.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label29.Location = new System.Drawing.Point(21, 240);
+            this.label29.Location = new System.Drawing.Point(25, 420);
             this.label29.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(74, 20);
+            this.label29.Size = new System.Drawing.Size(82, 25);
             this.label29.TabIndex = 8;
             this.label29.Text = "Stop Bits";
             // 
@@ -486,34 +512,22 @@
             "230400",
             "460800",
             "921600"});
-            this.cmbBaudRate.Location = new System.Drawing.Point(297, 71);
+            this.cmbBaudRate.Location = new System.Drawing.Point(359, 251);
             this.cmbBaudRate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbBaudRate.Name = "cmbBaudRate";
-            this.cmbBaudRate.Size = new System.Drawing.Size(180, 28);
+            this.cmbBaudRate.Size = new System.Drawing.Size(180, 33);
             this.cmbBaudRate.TabIndex = 7;
             // 
             // label25
             // 
             this.label25.AutoSize = true;
             this.label25.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label25.Location = new System.Drawing.Point(21, 71);
+            this.label25.Location = new System.Drawing.Point(25, 251);
             this.label25.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(200, 20);
+            this.label25.Size = new System.Drawing.Size(223, 25);
             this.label25.TabIndex = 6;
             this.label25.Text = "Communication Baud Rate";
-            // 
-            // cmbPort
-            // 
-            this.cmbPort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbPort.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.cmbPort.FormattingEnabled = true;
-            this.cmbPort.Location = new System.Drawing.Point(297, 29);
-            this.cmbPort.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmbPort.Name = "cmbPort";
-            this.cmbPort.Size = new System.Drawing.Size(180, 28);
-            this.cmbPort.TabIndex = 1;
-            this.cmbPort.Click += new System.EventHandler(this.cmbPort_Click);
             // 
             // label22
             // 
@@ -522,7 +536,7 @@
             this.label22.Location = new System.Drawing.Point(21, 29);
             this.label22.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(152, 20);
+            this.label22.Size = new System.Drawing.Size(175, 25);
             this.label22.TabIndex = 0;
             this.label22.Text = "Communication Port";
             // 
@@ -530,11 +544,11 @@
             // 
             this.tabHDLC.BackColor = System.Drawing.Color.White;
             this.tabHDLC.Controls.Add(this.groupBox11);
-            this.tabHDLC.Location = new System.Drawing.Point(4, 32);
+            this.tabHDLC.Location = new System.Drawing.Point(4, 39);
             this.tabHDLC.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabHDLC.Name = "tabHDLC";
             this.tabHDLC.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabHDLC.Size = new System.Drawing.Size(640, 582);
+            this.tabHDLC.Size = new System.Drawing.Size(670, 691);
             this.tabHDLC.TabIndex = 1;
             this.tabHDLC.Text = "HDLC Settings";
             this.tabHDLC.UseVisualStyleBackColor = true;
@@ -617,7 +631,7 @@
             this.cmbWindowSize.Location = new System.Drawing.Point(258, 71);
             this.cmbWindowSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbWindowSize.Name = "cmbWindowSize";
-            this.cmbWindowSize.Size = new System.Drawing.Size(180, 28);
+            this.cmbWindowSize.Size = new System.Drawing.Size(180, 33);
             this.cmbWindowSize.TabIndex = 19;
             // 
             // txtInformationSize
@@ -627,7 +641,7 @@
             this.txtInformationSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtInformationSize.MaxLength = 3;
             this.txtInformationSize.Name = "txtInformationSize";
-            this.txtInformationSize.Size = new System.Drawing.Size(180, 26);
+            this.txtInformationSize.Size = new System.Drawing.Size(180, 31);
             this.txtInformationSize.TabIndex = 18;
             // 
             // txtPhysicalID
@@ -637,7 +651,7 @@
             this.txtPhysicalID.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtPhysicalID.MaxLength = 8;
             this.txtPhysicalID.Name = "txtPhysicalID";
-            this.txtPhysicalID.Size = new System.Drawing.Size(180, 26);
+            this.txtPhysicalID.Size = new System.Drawing.Size(180, 31);
             this.txtPhysicalID.TabIndex = 17;
             // 
             // label36
@@ -647,7 +661,7 @@
             this.label36.Location = new System.Drawing.Point(56, 158);
             this.label36.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(137, 20);
+            this.label36.Size = new System.Drawing.Size(151, 25);
             this.label36.TabIndex = 6;
             this.label36.Text = "Server Physical ID";
             // 
@@ -663,7 +677,7 @@
             this.cmbHDLCAddressing.Location = new System.Drawing.Point(258, 112);
             this.cmbHDLCAddressing.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbHDLCAddressing.Name = "cmbHDLCAddressing";
-            this.cmbHDLCAddressing.Size = new System.Drawing.Size(180, 28);
+            this.cmbHDLCAddressing.Size = new System.Drawing.Size(180, 33);
             this.cmbHDLCAddressing.TabIndex = 5;
             this.cmbHDLCAddressing.SelectedIndexChanged += new System.EventHandler(this.cmbHDLCAddressing_SelectedIndexChanged);
             // 
@@ -674,7 +688,7 @@
             this.label37.Location = new System.Drawing.Point(54, 117);
             this.label37.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(191, 20);
+            this.label37.Size = new System.Drawing.Size(209, 25);
             this.label37.TabIndex = 4;
             this.label37.Text = "HDLC Addressing Schem";
             // 
@@ -685,7 +699,7 @@
             this.label38.Location = new System.Drawing.Point(56, 75);
             this.label38.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(100, 20);
+            this.label38.Size = new System.Drawing.Size(114, 25);
             this.label38.TabIndex = 2;
             this.label38.Text = "Window Size";
             // 
@@ -696,19 +710,18 @@
             this.label39.Location = new System.Drawing.Point(54, 37);
             this.label39.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(125, 20);
+            this.label39.Size = new System.Drawing.Size(142, 25);
             this.label39.TabIndex = 0;
             this.label39.Text = "Information Size";
-
             // 
             // tabAssociation
             // 
             this.tabAssociation.BackColor = System.Drawing.Color.White;
             this.tabAssociation.Controls.Add(this.groupBox12);
-            this.tabAssociation.Location = new System.Drawing.Point(4, 32);
+            this.tabAssociation.Location = new System.Drawing.Point(4, 39);
             this.tabAssociation.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabAssociation.Name = "tabAssociation";
-            this.tabAssociation.Size = new System.Drawing.Size(640, 582);
+            this.tabAssociation.Size = new System.Drawing.Size(670, 691);
             this.tabAssociation.TabIndex = 2;
             this.tabAssociation.Text = "Association Settings";
             this.tabAssociation.UseVisualStyleBackColor = true;
@@ -758,7 +771,7 @@
             this.txtAuthentication.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtAuthentication.MaxLength = 32;
             this.txtAuthentication.Name = "txtAuthentication";
-            this.txtAuthentication.Size = new System.Drawing.Size(313, 26);
+            this.txtAuthentication.Size = new System.Drawing.Size(313, 31);
             this.txtAuthentication.TabIndex = 43;
             // 
             // label7
@@ -768,7 +781,7 @@
             this.label7.Location = new System.Drawing.Point(39, 457);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(142, 20);
+            this.label7.Size = new System.Drawing.Size(160, 25);
             this.label7.TabIndex = 42;
             this.label7.Text = "Authentication Key";
             // 
@@ -783,7 +796,7 @@
             this.cmbDedicatedKey.Location = new System.Drawing.Point(242, 488);
             this.cmbDedicatedKey.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbDedicatedKey.Name = "cmbDedicatedKey";
-            this.cmbDedicatedKey.Size = new System.Drawing.Size(313, 28);
+            this.cmbDedicatedKey.Size = new System.Drawing.Size(313, 33);
             this.cmbDedicatedKey.TabIndex = 41;
             // 
             // lbldedication
@@ -793,7 +806,7 @@
             this.lbldedication.Location = new System.Drawing.Point(40, 491);
             this.lbldedication.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbldedication.Name = "lbldedication";
-            this.lbldedication.Size = new System.Drawing.Size(112, 20);
+            this.lbldedication.Size = new System.Drawing.Size(125, 25);
             this.lbldedication.TabIndex = 40;
             this.lbldedication.Text = "Dedicated Key";
             // 
@@ -804,7 +817,7 @@
             this.txtEncryKey.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtEncryKey.MaxLength = 32;
             this.txtEncryKey.Name = "txtEncryKey";
-            this.txtEncryKey.Size = new System.Drawing.Size(313, 26);
+            this.txtEncryKey.Size = new System.Drawing.Size(313, 31);
             this.txtEncryKey.TabIndex = 37;
             // 
             // label6
@@ -814,7 +827,7 @@
             this.label6.Location = new System.Drawing.Point(39, 418);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(164, 20);
+            this.label6.Size = new System.Drawing.Size(185, 25);
             this.label6.TabIndex = 36;
             this.label6.Text = "Global Encryption Key";
             // 
@@ -830,7 +843,7 @@
             this.cmbSecuritysuit.Location = new System.Drawing.Point(242, 372);
             this.cmbSecuritysuit.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbSecuritysuit.Name = "cmbSecuritysuit";
-            this.cmbSecuritysuit.Size = new System.Drawing.Size(313, 28);
+            this.cmbSecuritysuit.Size = new System.Drawing.Size(313, 33);
             this.cmbSecuritysuit.TabIndex = 35;
             // 
             // label5
@@ -840,7 +853,7 @@
             this.label5.Location = new System.Drawing.Point(39, 378);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(98, 20);
+            this.label5.Size = new System.Drawing.Size(109, 25);
             this.label5.TabIndex = 34;
             this.label5.Text = "Security Suit";
             // 
@@ -851,7 +864,7 @@
             this.txtClientSystem.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtClientSystem.MaxLength = 8;
             this.txtClientSystem.Name = "txtClientSystem";
-            this.txtClientSystem.Size = new System.Drawing.Size(310, 26);
+            this.txtClientSystem.Size = new System.Drawing.Size(310, 31);
             this.txtClientSystem.TabIndex = 33;
             // 
             // label4
@@ -861,7 +874,7 @@
             this.label4.Location = new System.Drawing.Point(40, 338);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(139, 20);
+            this.label4.Size = new System.Drawing.Size(155, 25);
             this.label4.TabIndex = 32;
             this.label4.Text = "Client System Title";
             // 
@@ -879,19 +892,18 @@
             this.cmbClientType.Location = new System.Drawing.Point(242, 34);
             this.cmbClientType.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbClientType.Name = "cmbClientType";
-            this.cmbClientType.Size = new System.Drawing.Size(313, 28);
+            this.cmbClientType.Size = new System.Drawing.Size(313, 33);
             this.cmbClientType.TabIndex = 29;
             this.cmbClientType.SelectedIndexChanged += new System.EventHandler(this.cmbClientType_SelectedIndexChanged);
             // 
             // label45
             // 
-
             this.label45.AutoSize = true;
             this.label45.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.label45.Location = new System.Drawing.Point(36, 37);
             this.label45.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label45.Name = "label45";
-            this.label45.Size = new System.Drawing.Size(87, 20);
+            this.label45.Size = new System.Drawing.Size(98, 25);
             this.label45.TabIndex = 28;
             this.label45.Text = "Client Type";
             // 
@@ -902,7 +914,7 @@
             this.txtServerLAddress.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtServerLAddress.MaxLength = 5;
             this.txtServerLAddress.Name = "txtServerLAddress";
-            this.txtServerLAddress.Size = new System.Drawing.Size(313, 26);
+            this.txtServerLAddress.Size = new System.Drawing.Size(313, 31);
             this.txtServerLAddress.TabIndex = 27;
             // 
             // txtServerUAddress
@@ -912,7 +924,7 @@
             this.txtServerUAddress.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtServerUAddress.MaxLength = 1;
             this.txtServerUAddress.Name = "txtServerUAddress";
-            this.txtServerUAddress.Size = new System.Drawing.Size(313, 26);
+            this.txtServerUAddress.Size = new System.Drawing.Size(313, 31);
             this.txtServerUAddress.TabIndex = 26;
             // 
             // label42
@@ -922,7 +934,7 @@
             this.label42.Location = new System.Drawing.Point(34, 109);
             this.label42.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label42.Name = "label42";
-            this.label42.Size = new System.Drawing.Size(165, 20);
+            this.label42.Size = new System.Drawing.Size(183, 25);
             this.label42.TabIndex = 25;
             this.label42.Text = "Server Lower Address";
             // 
@@ -933,7 +945,7 @@
             this.label44.Location = new System.Drawing.Point(33, 74);
             this.label44.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label44.Name = "label44";
-            this.label44.Size = new System.Drawing.Size(166, 20);
+            this.label44.Size = new System.Drawing.Size(185, 25);
             this.label44.TabIndex = 24;
             this.label44.Text = "Server Upper Address";
             // 
@@ -944,7 +956,7 @@
             this.txtDLMSVersion.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtDLMSVersion.MaxLength = 1;
             this.txtDLMSVersion.Name = "txtDLMSVersion";
-            this.txtDLMSVersion.Size = new System.Drawing.Size(310, 26);
+            this.txtDLMSVersion.Size = new System.Drawing.Size(310, 31);
             this.txtDLMSVersion.TabIndex = 23;
             // 
             // txtMaxPDUSize
@@ -954,7 +966,7 @@
             this.txtMaxPDUSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtMaxPDUSize.MaxLength = 4;
             this.txtMaxPDUSize.Name = "txtMaxPDUSize";
-            this.txtMaxPDUSize.Size = new System.Drawing.Size(310, 26);
+            this.txtMaxPDUSize.Size = new System.Drawing.Size(310, 31);
             this.txtMaxPDUSize.TabIndex = 18;
             // 
             // txtPassword
@@ -964,7 +976,7 @@
             this.txtPassword.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtPassword.MaxLength = 8;
             this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(310, 26);
+            this.txtPassword.Size = new System.Drawing.Size(310, 31);
             this.txtPassword.TabIndex = 17;
             // 
             // label33
@@ -974,7 +986,7 @@
             this.label33.Location = new System.Drawing.Point(38, 302);
             this.label33.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(155, 20);
+            this.label33.Size = new System.Drawing.Size(170, 25);
             this.label33.TabIndex = 12;
             this.label33.Text = "Client Max PDU Size";
             // 
@@ -985,7 +997,7 @@
             this.label34.Location = new System.Drawing.Point(38, 263);
             this.label34.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(78, 20);
+            this.label34.Size = new System.Drawing.Size(87, 25);
             this.label34.TabIndex = 10;
             this.label34.Text = "Password";
             // 
@@ -1001,7 +1013,7 @@
             this.cmbAuthenticationLevel.Location = new System.Drawing.Point(242, 220);
             this.cmbAuthenticationLevel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbAuthenticationLevel.Name = "cmbAuthenticationLevel";
-            this.cmbAuthenticationLevel.Size = new System.Drawing.Size(310, 28);
+            this.cmbAuthenticationLevel.Size = new System.Drawing.Size(310, 33);
             this.cmbAuthenticationLevel.TabIndex = 9;
             this.cmbAuthenticationLevel.SelectedIndexChanged += new System.EventHandler(this.cmbAuthenticationLevel_SelectedIndexChanged);
             // 
@@ -1012,7 +1024,7 @@
             this.label35.Location = new System.Drawing.Point(36, 225);
             this.label35.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(153, 20);
+            this.label35.Size = new System.Drawing.Size(171, 25);
             this.label35.TabIndex = 8;
             this.label35.Text = "Authentication Level";
             // 
@@ -1028,7 +1040,7 @@
             this.cmbApplicationContext.Location = new System.Drawing.Point(242, 182);
             this.cmbApplicationContext.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbApplicationContext.Name = "cmbApplicationContext";
-            this.cmbApplicationContext.Size = new System.Drawing.Size(310, 28);
+            this.cmbApplicationContext.Size = new System.Drawing.Size(310, 33);
             this.cmbApplicationContext.TabIndex = 7;
             this.cmbApplicationContext.SelectedIndexChanged += new System.EventHandler(this.cmbApplicationContext_SelectedIndexChanged);
             // 
@@ -1039,7 +1051,7 @@
             this.label40.Location = new System.Drawing.Point(36, 186);
             this.label40.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(146, 20);
+            this.label40.Size = new System.Drawing.Size(168, 25);
             this.label40.TabIndex = 6;
             this.label40.Text = "Application Context";
             // 
@@ -1050,7 +1062,7 @@
             this.label41.Location = new System.Drawing.Point(36, 148);
             this.label41.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(112, 20);
+            this.label41.Size = new System.Drawing.Size(122, 25);
             this.label41.TabIndex = 4;
             this.label41.Text = "DLMS Version";
             // 
@@ -1058,11 +1070,11 @@
             // 
             this.tabconformanceBlock.Controls.Add(this.chlSelectAll);
             this.tabconformanceBlock.Controls.Add(this.grpConformanceBlock);
-            this.tabconformanceBlock.Location = new System.Drawing.Point(4, 32);
+            this.tabconformanceBlock.Location = new System.Drawing.Point(4, 39);
             this.tabconformanceBlock.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabconformanceBlock.Name = "tabconformanceBlock";
             this.tabconformanceBlock.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabconformanceBlock.Size = new System.Drawing.Size(640, 582);
+            this.tabconformanceBlock.Size = new System.Drawing.Size(670, 691);
             this.tabconformanceBlock.TabIndex = 3;
             this.tabconformanceBlock.Text = "Conformance Block";
             this.tabconformanceBlock.UseVisualStyleBackColor = true;
@@ -1075,7 +1087,7 @@
             this.chlSelectAll.Location = new System.Drawing.Point(340, 472);
             this.chlSelectAll.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chlSelectAll.Name = "chlSelectAll";
-            this.chlSelectAll.Size = new System.Drawing.Size(128, 24);
+            this.chlSelectAll.Size = new System.Drawing.Size(125, 29);
             this.chlSelectAll.TabIndex = 24;
             this.chlSelectAll.Text = "Select ALL";
             this.chlSelectAll.UseVisualStyleBackColor = true;
@@ -1083,6 +1095,7 @@
             // 
             // grpConformanceBlock
             // 
+            this.grpConformanceBlock.BackColor = System.Drawing.Color.White;
             this.grpConformanceBlock.Controls.Add(this.chkAction);
             this.grpConformanceBlock.Controls.Add(this.chkEventNotification);
             this.grpConformanceBlock.Controls.Add(this.chkSelectiveAccess);
@@ -1109,7 +1122,6 @@
             this.grpConformanceBlock.Controls.Add(this.Resered1);
             this.grpConformanceBlock.Enabled = false;
             this.grpConformanceBlock.ForeColor = System.Drawing.Color.Black;
-            this.grpConformanceBlock.BackColor = System.Drawing.Color.White;
             this.grpConformanceBlock.Location = new System.Drawing.Point(10, 9);
             this.grpConformanceBlock.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grpConformanceBlock.Name = "grpConformanceBlock";
@@ -1395,7 +1407,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(686, 703);
+            this.ClientSize = new System.Drawing.Size(686, 803);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnOK);
@@ -1451,7 +1463,6 @@
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.ComboBox cmbParity;
         private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.ComboBox cmbPort;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.Label label26;
@@ -1530,5 +1541,7 @@
         private System.Windows.Forms.Label lbldedication;
         private System.Windows.Forms.TextBox txtAuthentication;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.CheckedListBox clbPorts;
+        private System.Windows.Forms.CheckBox chkPortSelectAll;
     }
 }

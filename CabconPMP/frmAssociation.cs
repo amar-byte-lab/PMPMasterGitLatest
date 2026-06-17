@@ -1,3 +1,5 @@
+using ApplicationInterface;
+using SerialCommunication;
 ///****************************************************************************
 //'*
 //'*  Projet       : Smart Meter
@@ -23,10 +25,9 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Web.Services.Description;
 using System.Windows.Forms;
 using Utilities;
-using SerialCommunication;
-using ApplicationInterface;
 namespace CabconPMP
 {
     public partial class Association : Form
@@ -45,13 +46,31 @@ namespace CabconPMP
             //-------------------Get Avilable COM Port---------------
             string[] PortNames = objSerialComm.GetAvailablePorts();
             Array.Reverse(PortNames);
-            foreach (string Port in PortNames) cmbPort.Items.Add(Port);
+            foreach (string Port in PortNames) clbPorts.Items.Add(Port);
             //--------------------Set Default Settings-----------------
             DefaultSettings();
             //-------------------Show Custom Setting-----------------------
             ShowDefaultSettings();
             chlSelectAll.Checked = true;
             CheckAllAssociation();
+
+            // If settings contain saved ports, select them
+            try
+            {
+                var saved = objApps.GetSettings();
+                // CommunicationPort stored at index mapped in ShowDefaultSettings flow. We already loaded settings there.
+                // Ensure saved port entries are selected in checked list
+                string commPorts = saved[0];
+                if (!string.IsNullOrEmpty(commPorts))
+                {
+                    var ports = commPorts.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(p => p.Trim()).ToArray();
+                    for (int i = 0; i < clbPorts.Items.Count; i++)
+                    {
+                        if (ports.Contains(clbPorts.Items[i].ToString())) clbPorts.SetItemChecked(i, true);
+                    }
+                }
+            }
+            catch { }
 
         }
         private void ShowDefaultSettings()
@@ -60,8 +79,8 @@ namespace CabconPMP
             {
                 List<string> valueList = objApps.GetSettings();
                 int valIDX = 0;
-                //------------------------Serial Port Settings----------------------------------------
-                cmbPort.Text = valueList[valIDX++];// SerialPortSettings.Default.SerialPort;
+                // legacy single port value retained for compatibility
+                string legacyPort = valueList[valIDX++];// SerialPortSettings.Default.SerialPort;
                 cmbParity.Text = valueList[valIDX++];// SerialPortSettings.Default.Parity;
                 cmbDatabits.Text = valueList[valIDX++];// SerialPortSettings.Default.DataBits;
                 cmbStopBits.Text = valueList[valIDX++];//SerialPortSettings.Default.StopBits;
@@ -132,7 +151,7 @@ namespace CabconPMP
         {
             try
             {
-                if (cmbPort.Items.Count > 0) cmbPort.SelectedIndex = 0;
+                if (clbPorts.Items.Count > 0) { clbPorts.SetItemChecked(0, true); }
                 cmbBaudRate.SelectedIndex = 5;
                 cmbSignonBaudRate.SelectedIndex = 0;
                 cmbParity.SelectedIndex = 0;
@@ -165,7 +184,10 @@ namespace CabconPMP
 
                 if (!IsValidFields()) return;
                 List<string> DataValueList = new List<string>();
-                DataValueList.Add(cmbPort.Text.Trim());
+                // Persist selected ports as comma separated list (from checked list)
+                List<string> selectedPorts = new List<string>();
+                foreach (object it in clbPorts.CheckedItems) selectedPorts.Add(it.ToString());
+                DataValueList.Add(string.Join(",", selectedPorts));
                 DataValueList.Add(cmbParity.Text.Trim());
                 DataValueList.Add(cmbDatabits.Text.Trim());
                 DataValueList.Add(cmbStopBits.Text.Trim());
@@ -644,28 +666,54 @@ namespace CabconPMP
             }
         }
 
-        private void cmbPort_Click(object sender, EventArgs e)
+        //private void cmbPort_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        cmbPort.Items.Clear();
+        //        //-------------------Get Avilable COM Port---------------
+        //        string[] PortNames = objSerialComm.GetAvailablePorts();
+        //        Array.Reverse(PortNames);
+        //        foreach (string Port in PortNames) clbPorts.Items.Add(Port);
+        //        if (clbPorts.Items.Count > 0) clbPorts.SetItemChecked(0, true);
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //    }
+
+
+        //}
+        private bool _updatingSelectAll;
+        private void chkPortSelectAll_CheckedChanged(object sender, EventArgs e)
         {
-            try
-            {
-                cmbPort.Items.Clear();
-                //-------------------Get Avilable COM Port---------------
-                string[] PortNames = objSerialComm.GetAvailablePorts();
-                Array.Reverse(PortNames);
-                foreach (string Port in PortNames) cmbPort.Items.Add(Port);
-                if (cmbPort.Items.Count > 0) cmbPort.SelectedIndex = 0;
-            }
-            catch (Exception)
-            {
+            if (_updatingSelectAll)
+                return;
 
+            _updatingSelectAll = true;
+
+            for (int i = 0; i < clbPorts.Items.Count; i++)
+            {
+                clbPorts.SetItemChecked(i, chkPortSelectAll.Checked);
             }
 
-
+            _updatingSelectAll = false;
         }
 
+        private void clbPorts_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            if (_updatingSelectAll)
+                return;
 
+            BeginInvoke(new Action(() =>
+            {
+                _updatingSelectAll = true;
 
+                chkPortSelectAll.Checked =
+                    clbPorts.CheckedItems.Count == clbPorts.Items.Count;
 
-
+                _updatingSelectAll = false;
+            }));
+        }
     }
 }

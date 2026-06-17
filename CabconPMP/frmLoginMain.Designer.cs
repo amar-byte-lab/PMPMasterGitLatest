@@ -31,11 +31,16 @@ namespace CabconPMP
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmLoginMain));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.PanelLoginControl = new System.Windows.Forms.Panel();
-            this.txtuserID = new CabconPMP.TransparentTextBox();
+            this.chkPortSelectAll = new System.Windows.Forms.CheckBox();
+            this.clbPorts = new System.Windows.Forms.CheckedListBox();
+            this.lblPort = new System.Windows.Forms.Label();
+            this.lblBenchId = new System.Windows.Forms.Label();
             this.btnLogin = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.txtBenchId = new CabconPMP.TransparentTextBox();
+            this.txtuserID = new CabconPMP.TransparentTextBox();
             this.txtPassword = new CabconPMP.TransparentTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.PanelLoginControl.SuspendLayout();
@@ -51,7 +56,7 @@ namespace CabconPMP
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(576, 325);
+            this.pictureBox1.Size = new System.Drawing.Size(1078, 705);
             this.pictureBox1.TabIndex = 22;
             this.pictureBox1.TabStop = false;
             // 
@@ -60,34 +65,72 @@ namespace CabconPMP
             this.PanelLoginControl.BackColor = System.Drawing.Color.White;
             this.PanelLoginControl.BackgroundImage = global::CabconPMP.Properties.Resources.Background;
             this.PanelLoginControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.PanelLoginControl.Controls.Add(this.chkPortSelectAll);
+            this.PanelLoginControl.Controls.Add(this.clbPorts);
+            this.PanelLoginControl.Controls.Add(this.lblPort);
+            this.PanelLoginControl.Controls.Add(this.txtBenchId);
+            this.PanelLoginControl.Controls.Add(this.lblBenchId);
             this.PanelLoginControl.Controls.Add(this.txtuserID);
             this.PanelLoginControl.Controls.Add(this.btnLogin);
             this.PanelLoginControl.Controls.Add(this.btnClose);
             this.PanelLoginControl.Controls.Add(this.label3);
             this.PanelLoginControl.Controls.Add(this.label2);
             this.PanelLoginControl.Controls.Add(this.txtPassword);
-            this.PanelLoginControl.Location = new System.Drawing.Point(141, 152);
+            this.PanelLoginControl.Location = new System.Drawing.Point(568, 225);
             this.PanelLoginControl.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.PanelLoginControl.Name = "PanelLoginControl";
-            this.PanelLoginControl.Size = new System.Drawing.Size(420, 159);
+            this.PanelLoginControl.Size = new System.Drawing.Size(455, 436);
             this.PanelLoginControl.TabIndex = 23;
             // 
-            // txtuserID
+            // chkPortSelectAll
             // 
-            this.txtuserID.Location = new System.Drawing.Point(148, 8);
-            this.txtuserID.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtuserID.MaxLength = 16;
-            this.txtuserID.Name = "txtuserID";
-            this.txtuserID.Size = new System.Drawing.Size(250, 26);
-            this.txtuserID.TabIndex = 0;
-            this.txtuserID.TextChanged += new System.EventHandler(this.txtuserID_TextChanged_1);
-            this.txtuserID.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtuserID_KeyPress);
+            this.chkPortSelectAll.AutoSize = true;
+            this.chkPortSelectAll.Location = new System.Drawing.Point(144, 205);
+            this.chkPortSelectAll.Name = "chkPortSelectAll";
+            this.chkPortSelectAll.Size = new System.Drawing.Size(101, 24);
+            this.chkPortSelectAll.TabIndex = 24;
+            this.chkPortSelectAll.Text = "Select All";
+            this.chkPortSelectAll.UseVisualStyleBackColor = true;
+            this.chkPortSelectAll.CheckedChanged += new System.EventHandler(this.chkPortSelectAll_CheckedChanged);
+            // 
+            // clbPorts
+            // 
+            this.clbPorts.FormattingEnabled = true;
+            this.clbPorts.Location = new System.Drawing.Point(144, 103);
+            this.clbPorts.Name = "clbPorts";
+            this.clbPorts.Size = new System.Drawing.Size(250, 96);
+            this.clbPorts.TabIndex = 23;
+            this.clbPorts.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clbPorts_ItemCheck);
+            // 
+            // lblPort
+            // 
+            this.lblPort.AutoSize = true;
+            this.lblPort.BackColor = System.Drawing.Color.Transparent;
+            this.lblPort.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPort.Location = new System.Drawing.Point(35, 103);
+            this.lblPort.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblPort.Name = "lblPort";
+            this.lblPort.Size = new System.Drawing.Size(92, 20);
+            this.lblPort.TabIndex = 20;
+            this.lblPort.Text = "Select Port";
+            // 
+            // lblBenchId
+            // 
+            this.lblBenchId.AutoSize = true;
+            this.lblBenchId.BackColor = System.Drawing.Color.Transparent;
+            this.lblBenchId.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblBenchId.Location = new System.Drawing.Point(35, 240);
+            this.lblBenchId.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblBenchId.Name = "lblBenchId";
+            this.lblBenchId.Size = new System.Drawing.Size(79, 20);
+            this.lblBenchId.TabIndex = 18;
+            this.lblBenchId.Text = "Bench ID";
             // 
             // btnLogin
             // 
             this.btnLogin.BackColor = System.Drawing.Color.CornflowerBlue;
             this.btnLogin.Font = new System.Drawing.Font("Bookman Old Style", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLogin.Location = new System.Drawing.Point(166, 94);
+            this.btnLogin.Location = new System.Drawing.Point(144, 342);
             this.btnLogin.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(112, 46);
@@ -99,7 +142,7 @@ namespace CabconPMP
             // btnClose
             // 
             this.btnClose.Font = new System.Drawing.Font("Bookman Old Style", 9F, System.Drawing.FontStyle.Bold);
-            this.btnClose.Location = new System.Drawing.Point(288, 94);
+            this.btnClose.Location = new System.Drawing.Point(282, 342);
             this.btnClose.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(112, 46);
@@ -113,7 +156,7 @@ namespace CabconPMP
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(24, 52);
+            this.label3.Location = new System.Drawing.Point(35, 309);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(83, 20);
@@ -125,16 +168,39 @@ namespace CabconPMP
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(24, 12);
+            this.label2.Location = new System.Drawing.Point(35, 273);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(67, 20);
             this.label2.TabIndex = 16;
             this.label2.Text = "User ID";
             // 
+            // txtBenchId
+            // 
+            this.txtBenchId.BackColor = System.Drawing.Color.Transparent;
+            this.txtBenchId.Location = new System.Drawing.Point(144, 237);
+            this.txtBenchId.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtBenchId.MaxLength = 16;
+            this.txtBenchId.Name = "txtBenchId";
+            this.txtBenchId.Size = new System.Drawing.Size(250, 26);
+            this.txtBenchId.TabIndex = 19;
+            // 
+            // txtuserID
+            // 
+            this.txtuserID.BackColor = System.Drawing.Color.Transparent;
+            this.txtuserID.Location = new System.Drawing.Point(144, 270);
+            this.txtuserID.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtuserID.MaxLength = 16;
+            this.txtuserID.Name = "txtuserID";
+            this.txtuserID.Size = new System.Drawing.Size(250, 26);
+            this.txtuserID.TabIndex = 0;
+            this.txtuserID.TextChanged += new System.EventHandler(this.txtuserID_TextChanged_1);
+            this.txtuserID.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtuserID_KeyPress);
+            // 
             // txtPassword
             // 
-            this.txtPassword.Location = new System.Drawing.Point(148, 58);
+            this.txtPassword.BackColor = System.Drawing.Color.Transparent;
+            this.txtPassword.Location = new System.Drawing.Point(144, 306);
             this.txtPassword.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtPassword.MaxLength = 16;
             this.txtPassword.Name = "txtPassword";
@@ -147,7 +213,7 @@ namespace CabconPMP
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(576, 325);
+            this.ClientSize = new System.Drawing.Size(1078, 705);
             this.Controls.Add(this.PanelLoginControl);
             this.Controls.Add(this.pictureBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -175,7 +241,12 @@ namespace CabconPMP
         private System.Windows.Forms.Label label2;
         private CabconPMP.TransparentTextBox txtPassword;
         private CabconPMP.TransparentTextBox txtuserID;
-
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private TransparentTextBox txtBenchId;
+        private System.Windows.Forms.Label lblBenchId;
+        private System.Windows.Forms.Label lblPort;
+        private System.Windows.Forms.CheckedListBox clbPorts;
+        private System.Windows.Forms.CheckBox chkPortSelectAll;
     }
 }
 
