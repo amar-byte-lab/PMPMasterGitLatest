@@ -207,6 +207,12 @@
     <Compile Include="frmAssociation.Designer.cs">
       <DependentUpon>frmAssociation.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmConfiguration_MSD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmConfiguration_MSD.designer.cs">
+      <DependentUpon>frmConfiguration_MSD.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmImportRTRFormat.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -314,6 +320,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmAssociation.resx">
       <DependentUpon>frmAssociation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmConfiguration_MSD.resx">
+      <DependentUpon>frmConfiguration_MSD.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmImportRTRFormat.resx">
       <DependentUpon>frmImportRTRFormat.cs</DependentUpon>
