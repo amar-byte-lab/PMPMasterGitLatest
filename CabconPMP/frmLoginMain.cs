@@ -17,6 +17,7 @@ namespace CabconPMP
         EntityUserManagement objetyusermgt = new EntityUserManagement();
         BALDBConnectionTest objdbcon = new BALDBConnectionTest();
         SerialComm objSerialComm = new SerialComm();
+        Association association = new Association();
 
         int loginLimit = 3;
          public frmLoginMain()
@@ -65,6 +66,11 @@ namespace CabconPMP
                 DataSet ds = objum.Select_LoginUseronUserIDandPWD(objetyusermgt);
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
+
+                    List<string> selectedPorts = new List<string>();
+                    foreach (object it in clbPorts.CheckedItems) selectedPorts.Add(it.ToString());
+                    association.SaveAssociation(selectedPorts);
+
                     objetyusermgt.LogType = ds.Tables[0].Rows[0][2].ToString();
                     frmMain objmain = new frmMain(objetyusermgt);
                     objmain.Show();
@@ -101,6 +107,12 @@ namespace CabconPMP
             string[] PortNames = objSerialComm.GetAvailablePorts();
             Array.Reverse(PortNames);
             foreach (string Port in PortNames) clbPorts.Items.Add(Port);
+            //--------------------Set Default Settings-----------------
+            association.DefaultSettings();
+            //-------------------Show Custom Setting-----------------------
+            association.ShowDefaultSettings();
+            association.CheckAllAssociation();
+
 
             Point panelLoc = PanelLoginControl.Location;
             PanelLoginControl.Parent = pictureBox1;

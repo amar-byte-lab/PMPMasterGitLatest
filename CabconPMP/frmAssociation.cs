@@ -73,7 +73,7 @@ namespace CabconPMP
             catch { }
 
         }
-        private void ShowDefaultSettings()
+        public void ShowDefaultSettings()
         {
             try
             {
@@ -147,7 +147,7 @@ namespace CabconPMP
             {
             }
         }
-        private void DefaultSettings()
+        public void DefaultSettings()
         {
             try
             {
@@ -179,14 +179,23 @@ namespace CabconPMP
 
         private void btnOK_Click(object sender, EventArgs e)
         {
+            List<string> selectedPorts = new List<string>();
+            foreach (object it in clbPorts.CheckedItems) selectedPorts.Add(it.ToString());
+
+            if (!IsValidFields()) return;
+
+            SaveAssociation(selectedPorts);
+
+            MessageBox.Show("Settings saved sucessfully !", "DLMS-PT", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            this.Close();
+        }
+
+        public void SaveAssociation(List<string> selectedPorts)
+        {
             try
             {
-
-                if (!IsValidFields()) return;
                 List<string> DataValueList = new List<string>();
                 // Persist selected ports as comma separated list (from checked list)
-                List<string> selectedPorts = new List<string>();
-                foreach (object it in clbPorts.CheckedItems) selectedPorts.Add(it.ToString());
                 DataValueList.Add(string.Join(",", selectedPorts));
                 DataValueList.Add(cmbParity.Text.Trim());
                 DataValueList.Add(cmbDatabits.Text.Trim());
@@ -241,9 +250,6 @@ namespace CabconPMP
                     MessageBox.Show("Unable To saved Settings !", "DLMS-PT", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                     return;
                 }
-
-                MessageBox.Show("Settings saved sucessfully !", "DLMS-PT", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                this.Close();
             }
             catch (Exception Ex)
             {
@@ -251,7 +257,7 @@ namespace CabconPMP
             }
         }
 
-        private bool IsValidFields()
+        public bool IsValidFields()
         {
             if (cmbClientType.SelectedIndex == 3)
             {
@@ -630,7 +636,7 @@ namespace CabconPMP
         {
             CheckAllAssociation();
         }
-        private void CheckAllAssociation()
+        public void CheckAllAssociation()
         {
             Control.ControlCollection objselectedOption = this.grpConformanceBlock.Controls;
             foreach (Control C in objselectedOption)
