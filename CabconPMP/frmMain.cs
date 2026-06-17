@@ -127,7 +127,7 @@ namespace CabconPMP
         {
             try
             {
-                ToolStripItem[] ts = new ToolStripItem[] { tsm_rejectlist, tsm_newrejection, tsm_newrejectioncompact, tss_Reject, tss_Error };
+                ToolStripItem[] ts = new ToolStripItem[] { tsm_rejectlist };
                 List<int> permissionGivenIdx = new List<int>();
 
                 switch (getUserIndex)
@@ -152,15 +152,6 @@ namespace CabconPMP
                 while (displayIdx < permissionGivenIdx.Count)
                 {
                     ts[permissionGivenIdx[displayIdx]].Visible = false;
-                    switch (permissionGivenIdx[displayIdx])
-                    {
-                        case 0:
-                            toolStripLabelReject.Visible = false;
-                            toolStripLabelError.Visible = false;
-                            break;
-                        case 2:
-                            break;
-                    }
                     displayIdx++;
                 }
             }
@@ -175,7 +166,7 @@ namespace CabconPMP
             try
             {
                 
-                ToolStripMenuItem[] ts = new ToolStripMenuItem[] { runProcedureToolStripMenuItem, tsm_createProcedure, tsm_programList, tsm_procedureopen, programListToolStripMenuItem, tsm_Import_TestProcedureFile, tsm_Export_TestProcedureFile, tsm_Association, tsm_userManagement, tsm_changePassword, tsm_executionReports,tsm_ServerSettings };
+                ToolStripMenuItem[] ts = new ToolStripMenuItem[] { tsm_Association, tsm_userManagement, tsm_changePassword, tsm_executionReports,tsm_ServerSettings };
                 List<int> permissionGivenIdx = new List<int>();
 
                 switch (getUserIndex)
@@ -231,8 +222,6 @@ namespace CabconPMP
                     {
                         case 0:
                             cms_RunProcedure.Visible = false;
-                            ts_ico_TestRun.Visible = false;
-                            tss_RunProcedure.Visible = false;
                             break;
                         case 1:
                             cms_CreateProcedure.Visible = false;
@@ -248,7 +237,6 @@ namespace CabconPMP
                             break;                                           
                         case 8:
                             ts_ico_Association.Visible = false;
-                            tss_Association.Visible = false;
                             break;                      
                         case 11:
                             ts_ico_report.Visible = false;
@@ -265,13 +253,6 @@ namespace CabconPMP
             catch (Exception)
             {
             }
-
-        }
-        private void DefaultPermission()
-        {
-            tsm_New.Visible = false;
-            tsm_openProcedure.Visible = false;
-             
 
         }
         private void ts_Exit_Click(object sender, EventArgs e)
