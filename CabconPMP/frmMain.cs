@@ -631,5 +631,10 @@ namespace CabconPMP
                 return;
             }
         }
+
+        private void calibrationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
