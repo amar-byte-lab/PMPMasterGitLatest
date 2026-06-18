@@ -47,6 +47,7 @@
             this.btnDispAutoMoveAll = new System.Windows.Forms.Button();
             this.lstDisplatAutoSelected = new System.Windows.Forms.ListBox();
             this.label243 = new System.Windows.Forms.Label();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStrip1.SuspendLayout();
             this.groupBox70.SuspendLayout();
             this.SuspendLayout();
@@ -58,6 +59,7 @@
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblSave,
+            this.toolStripSeparator3,
             this.lblReset,
             this.toolStripSeparator2,
             this.lblClose});
@@ -260,6 +262,11 @@
             this.label243.Text = "Auto Scroll Method List";
             this.label243.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 33);
+            // 
             // frmConfiguration
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -305,5 +312,6 @@
         private System.Windows.Forms.ListBox lstDisplatAutoSelected;
         private System.Windows.Forms.Label label243;
         private System.Windows.Forms.ToolStripLabel lblSave;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
     }
 }
