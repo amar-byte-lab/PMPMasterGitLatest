@@ -17,30 +17,12 @@ namespace CabconPMP
 {
     public partial class frmConfiguration : Form
     {
-
- 
-        #region Constant Variables
-
-        public static int DefaultTamperPersistanceTime = 60;
-        public static decimal DefaultTOUPriceSlab = 10.50M;
-
-        #endregion
-
-        LayerInterface objLI = new LayerInterface();
         public delegate void UpdateMainMsgHandler(object sender, UpdateEventArgs e);
         public event UpdateMainMsgHandler UpdateMsg;
- 
+
         public frmConfiguration()
         {
             InitializeComponent(); COMMONENTITY.FormStyleHelper.Apply(this);
-
-            // Wire UI buttons to handlers (designer didn't auto-generate Click subscribers)
-            btnDispAutoMove.Click += btnDispAutoMove_Click;
-            btnDispAutoMoveAll.Click += btnDispAutoMoveAll_Click;
-            btnDispAutoRemove.Click += btnDispAutoRemove_Click;
-            btnDispAutoRemoveAll.Click += btnDispAutoRemoveAll_Click;
-            btnDispAutoMoveUP.Click += btnDispAutoMoveUP_Click;
-            btnDispAutoMoveDown.Click += btnDispAutoMoveDown_Click;
         }
 
         private void frmConfiguration_Load(object sender, EventArgs e)
@@ -271,6 +253,7 @@ namespace CabconPMP
 
         private void lblReset_Click(object sender, EventArgs e)
         {
+            ResetsConfigurations(false);
         }
         private void lblAbort_Click(object sender, EventArgs e)
         {
@@ -283,5 +266,17 @@ namespace CabconPMP
         {
         }
 
+        private void lblSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var s = lstDisplayAutoAll.Items;
+                var s1 = lstDisplatAutoSelected.Items;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error in saving the configuration values. " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

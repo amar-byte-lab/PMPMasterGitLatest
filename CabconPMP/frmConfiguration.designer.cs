@@ -74,6 +74,7 @@
             this.lblSave.Size = new System.Drawing.Size(53, 28);
             this.lblSave.Text = "Save";
             this.lblSave.ToolTipText = "Save Configuration File As *.cfg";
+            this.lblSave.Click += new System.EventHandler(this.lblSave_Click);
             // 
             // lblReset
             // 
@@ -152,6 +153,7 @@
             this.btnDispAutoMoveDown.TabIndex = 42;
             this.btnDispAutoMoveDown.Text = "v";
             this.btnDispAutoMoveDown.UseVisualStyleBackColor = true;
+            this.btnDispAutoMoveDown.Click += new System.EventHandler(this.btnDispAutoMoveDown_Click);
             // 
             // btnDispAutoMoveUP
             // 
@@ -163,6 +165,7 @@
             this.btnDispAutoMoveUP.TabIndex = 41;
             this.btnDispAutoMoveUP.Text = "^";
             this.btnDispAutoMoveUP.UseVisualStyleBackColor = true;
+            this.btnDispAutoMoveUP.Click += new System.EventHandler(this.btnDispAutoMoveUP_Click);
             // 
             // label241
             // 
@@ -171,7 +174,7 @@
             this.label241.Location = new System.Drawing.Point(722, 20);
             this.label241.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label241.Name = "label241";
-            this.label241.Size = new System.Drawing.Size(239, 30);
+            this.label241.Size = new System.Drawing.Size(159, 20);
             this.label241.TabIndex = 40;
             this.label241.Text = "Selected Methods";
             // 
@@ -182,7 +185,7 @@
             this.label242.Location = new System.Drawing.Point(156, 20);
             this.label242.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label242.Name = "label242";
-            this.label242.Size = new System.Drawing.Size(162, 30);
+            this.label242.Size = new System.Drawing.Size(108, 20);
             this.label242.TabIndex = 39;
             this.label242.Text = "All Methods";
             // 
@@ -196,6 +199,7 @@
             this.btnDispAutoMove.TabIndex = 36;
             this.btnDispAutoMove.Text = ">";
             this.btnDispAutoMove.UseVisualStyleBackColor = true;
+            this.btnDispAutoMove.Click += new System.EventHandler(this.btnDispAutoMove_Click);
             // 
             // btnDispAutoRemove
             // 
@@ -207,6 +211,7 @@
             this.btnDispAutoRemove.TabIndex = 37;
             this.btnDispAutoRemove.Text = "<";
             this.btnDispAutoRemove.UseVisualStyleBackColor = true;
+            this.btnDispAutoRemove.Click += new System.EventHandler(this.btnDispAutoRemove_Click);
             // 
             // btnDispAutoRemoveAll
             // 
@@ -218,6 +223,7 @@
             this.btnDispAutoRemoveAll.TabIndex = 38;
             this.btnDispAutoRemoveAll.Text = "<<";
             this.btnDispAutoRemoveAll.UseVisualStyleBackColor = true;
+            this.btnDispAutoRemoveAll.Click += new System.EventHandler(this.btnDispAutoRemoveAll_Click);
             // 
             // btnDispAutoMoveAll
             // 
@@ -229,6 +235,7 @@
             this.btnDispAutoMoveAll.TabIndex = 11;
             this.btnDispAutoMoveAll.Text = ">>";
             this.btnDispAutoMoveAll.UseVisualStyleBackColor = true;
+            this.btnDispAutoMoveAll.Click += new System.EventHandler(this.btnDispAutoMoveAll_Click);
             // 
             // lstDisplatAutoSelected
             // 
