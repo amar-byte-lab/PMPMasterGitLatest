@@ -18,49 +18,7 @@ namespace CabconPMP
     public partial class frmConfiguration : Form
     {
 
-        Label[] lstEventList;
-        CheckBox[] lstEventLog;
-        CheckBox[] lstAlarm;
-        public enum TAMPERCONFIGBIT
-        {
-            Earth_Tamper_Eanble = 0,
-            Reverse_Tamper_Eanble = 1,
-            Magnet_Tamper_Eanble = 2,
-            Single_wire_Tamper_Eanble = 3,
-            Neutral_Disturb_Tamper_Eanble = 4,
-            Over_Voltage_Eanble = 5,
-            Low_Voltage_Eanble = 6,
-            Over_Current_Eanble = 7,
-            Power_fail_Log_Eanble = 8,
-            Over_Load_Eanble = 9,
-            Cover_Open_Log_Eanble = 10,
-            Coms_Card_Removal = 11,
-            Relay_Disconnect_log_Eanble = 12,           
-            Relay_Malfunction_Eanble = 13,
-            ESD_Event_Eanble = 14,
-            Reserved_1 = 15,
-            Reserved_2 = 16,
-            Reserved_3 = 17,
-            Reserved_4 = 18,
-            Reserved_5 = 19,
-            Reserved_6 = 20,
-            Reserved_7 = 21,
-            Reserved_8 = 22,
-            Reserved_9 = 23,
-            Reserved_10 = 24,
-            Reserved_11 = 25,
-            Reserved_12 = 26,
-            Reserved_13 = 27,
-            Reserved_14 = 28,
-            Reserved_15 = 29,
-            Reserved_16 = 30,
-            Reserved_17 = 31          
-
-
-        }
-
-        private string[] strtamperdetails = new string[] { "Earth Tamper", "Reverse Tamper", "Magnet Tamper", "Single wire Tamper", "Neutral Disturb Tamper", "Over Voltage", "Low Voltage", "Over Current", "Power fail Log", "Over Load", "Cover Open Log", "Coms Card Removal", "Relay Connect-Disconnect Log", "Relay Malfunction", "ESD Event" };
-
+ 
         #region Constant Variables
 
         public static int DefaultTamperPersistanceTime = 60;
@@ -68,75 +26,23 @@ namespace CabconPMP
 
         #endregion
 
-        TextBox[] txtobjtampPersistance;
         LayerInterface objLI = new LayerInterface();
         public delegate void UpdateMainMsgHandler(object sender, UpdateEventArgs e);
         public event UpdateMainMsgHandler UpdateMsg;
-        UpdateEventArgs args = null;
-        bool IsAbort = false;
-        string pfdata = string.Empty;        
-        byte[] HDLCCommand = new byte[200];
-        //byte HDLCIndex = 0;
-        string data = string.Empty;
-        string opencfgFilePath = "";
+ 
         public frmConfiguration()
         {
-            InitializeComponent();
+            InitializeComponent(); COMMONENTITY.FormStyleHelper.Apply(this);
+
+            // Wire UI buttons to handlers (designer didn't auto-generate Click subscribers)
+            btnDispAutoMove.Click += btnDispAutoMove_Click;
+            btnDispAutoMoveAll.Click += btnDispAutoMoveAll_Click;
+            btnDispAutoRemove.Click += btnDispAutoRemove_Click;
+            btnDispAutoRemoveAll.Click += btnDispAutoRemoveAll_Click;
+            btnDispAutoMoveUP.Click += btnDispAutoMoveUP_Click;
+            btnDispAutoMoveDown.Click += btnDispAutoMoveDown_Click;
         }
 
-        private void txtPersistanceEarthO_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (char.IsNumber(e.KeyChar)) { }
-            else e.Handled = e.KeyChar != (char)Keys.Back;
-        }
-
-        private void txtPersistanceMagnetO_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (char.IsNumber(e.KeyChar)) { }
-            else e.Handled = e.KeyChar != (char)Keys.Back;
-        }
-
-        private void txtPersistanceRevO_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (char.IsNumber(e.KeyChar)) { }
-            else e.Handled = e.KeyChar != (char)Keys.Back;
-        }
-
-        private void txtPersistancePoweroffO_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (char.IsNumber(e.KeyChar)) { }
-            else e.Handled = e.KeyChar != (char)Keys.Back;
-        }
-
-        private void txtPersistanceSingleWireO_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (char.IsNumber(e.KeyChar)) { }
-            else e.Handled = e.KeyChar != (char)Keys.Back;
-        }
-
-        private void txtPersistanceVoltageDistO_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (char.IsNumber(e.KeyChar)) { }
-            else e.Handled = e.KeyChar != (char)Keys.Back;
-        }
-
-        private void txtPersistanceEarthR_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (char.IsNumber(e.KeyChar)) { }
-            else e.Handled = e.KeyChar != (char)Keys.Back;
-        }
-
-        private void txtPersistanceMagnetR_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (char.IsNumber(e.KeyChar)) { }
-            else e.Handled = e.KeyChar != (char)Keys.Back;
-        }
-
-        private void txtPersistanceRevR_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (char.IsNumber(e.KeyChar)) { }
-            else e.Handled = e.KeyChar != (char)Keys.Back;
-        }
         private void frmConfiguration_Load(object sender, EventArgs e)
         {
 
@@ -167,20 +73,18 @@ namespace CabconPMP
             while (ItemIndex < ParameterValue.Length)
             {
                 lstDisplayAutoAll.Items.Add(ParameterValue[ItemIndex]);
+                ItemIndex++;
             }
         }
 
+        // '>' : Move selected items from All -> Selected (transfer)
         private void btnDispAutoMove_Click(object sender, EventArgs e)
         {
-            if (lstDisplatAutoSelected.Items.Count >= 64)
-            {
-                if (MessageBox.Show("Maximum Selection Limit is Only 64 Parameter!!" + "\n" + "Your Current Selection is: " + lstDisplatAutoSelected.Items.Count.ToString() + " Parameters \n" + "Do You Want to Add Selected Items ?", "DLMS-PT", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No) return;
-            }
             MoveItem(lstDisplayAutoAll, lstDisplatAutoSelected);
             lblDisplayParaTotalSelected.Text = "Total Selected:" + "\n          " + lstDisplatAutoSelected.Items.Count.ToString();
-
         }
 
+        // '>>' : Move all items from All -> Selected (transfer)
         private void btnDispAutoMoveAll_Click(object sender, EventArgs e)
         {
             MoveAll(lstDisplayAutoAll, lstDisplatAutoSelected);
@@ -192,48 +96,177 @@ namespace CabconPMP
             }
         }
 
-        private void MoveAll(ListBox lstDisplatAutoAll, ListBox lstSelect)
-        {
-
-            lstSelect.Items.Clear();
-            lstSelect.Items.AddRange(lstDisplatAutoAll.Items);
-
-        }
-
+        // '<' : Move selected items from Selected -> All (transfer back)
         private void btnDispAutoRemove_Click(object sender, EventArgs e)
         {
             RemoveItem(lstDisplayAutoAll, lstDisplatAutoSelected);
             lblDisplayParaTotalSelected.Text = "Total Selected:" + "\n          " + lstDisplatAutoSelected.Items.Count.ToString();
         }
 
-        private void MoveItem(ListBox lstTotal, ListBox lstSelect)
+        // '<<' : Move all items from Selected -> All
+        private void btnDispAutoRemoveAll_Click(object sender, EventArgs e)
         {
-            int lstAllIdx = lstTotal.SelectedIndex + 1;
-            int SelectedIdx = lstSelect.SelectedIndex;
-            if (lstTotal.SelectedItems.Count < 0) { lstTotal.SelectedIndex = 0; return; }
-            foreach (object item in lstTotal.SelectedItems)
-            {
-                if (lstSelect.SelectedIndex >= 0) lstSelect.Items.Insert(++SelectedIdx, item);
-                else lstSelect.Items.Add(item);
-            }
-            lstTotal.SelectedIndex = -1;
-            lstSelect.SelectedIndex = -1;
-            if (lstSelect.Items.Count >= SelectedIdx) lstSelect.SelectedIndex = SelectedIdx;
-            if (lstAllIdx < lstTotal.Items.Count) lstTotal.SelectedIndex = lstAllIdx;
-            lstTotal.Focus();
+            MoveAll(lstDisplatAutoSelected, lstDisplayAutoAll);
+            lblDisplayParaTotalSelected.Text = "Total Selected:" + "\n          " + lstDisplatAutoSelected.Items.Count.ToString();
         }
 
-        private void RemoveItem(ListBox lstTotal, ListBox lstSelect)
+        // '^' : Move selected items up within Selected list
+        private void btnDispAutoMoveUP_Click(object sender, EventArgs e)
         {
-            int lstselectedIdx = lstSelect.SelectedIndex;
-            if (lstSelect.SelectedItems.Count == 0 && lstSelect.Items.Count > 0) { lstSelect.SelectedIndex = 0; return; }
-            while (lstSelect.SelectedIndices.Count > 0)
+            MoveSelectedUp(lstDisplatAutoSelected);
+            // no change in count
+        }
+
+        // 'v' : Move selected items down within Selected list
+        private void btnDispAutoMoveDown_Click(object sender, EventArgs e)
+        {
+            MoveSelectedDown(lstDisplatAutoSelected);
+        }
+
+        // Transfer all items from source -> destination (destination appended, then source cleared)
+        private void MoveAll(ListBox source, ListBox destination)
+        {
+            if (source == null || destination == null) return;
+
+            var items = source.Items.Cast<object>().ToArray();
+            if (items.Length == 0) return;
+
+            // Append items to destination
+            destination.BeginUpdate();
+            foreach (var it in items)
+                destination.Items.Add(it);
+            destination.EndUpdate();
+
+            // Clear source
+            source.Items.Clear();
+        }
+
+        // Move selected items from source -> destination (preserve order)
+        private void MoveItem(ListBox source, ListBox destination)
+        {
+            if (source == null || destination == null) return;
+            if (source.SelectedItems.Count == 0) return;
+
+            var toMove = source.SelectedItems.Cast<object>().ToList();
+
+            // Insert into destination preserving order and current selection index logic
+            int insertIndex = destination.SelectedIndex >= 0 ? destination.SelectedIndex + 1 : destination.Items.Count;
+            if (insertIndex < 0) insertIndex = 0;
+
+            destination.BeginUpdate();
+            foreach (var item in toMove)
             {
-                lstSelect.Items.RemoveAt(lstSelect.SelectedIndex);
+                destination.Items.Insert(insertIndex++, item);
             }
-            if (lstSelect.Items.Count > lstselectedIdx) lstSelect.SelectedIndex = lstselectedIdx;
-            else if (lstSelect.Items.Count >= 1) lstSelect.SelectedIndex = lstSelect.Items.Count - 1;
-            lstSelect.Focus();
+            destination.EndUpdate();
+
+            // Remove from source
+            foreach (var item in toMove)
+                source.Items.Remove(item);
+
+            // Update selection on destination to reflect the moved block
+            int firstNewIndex = insertIndex - toMove.Count;
+            destination.ClearSelected();
+            for (int i = 0; i < toMove.Count; i++)
+                destination.SetSelected(firstNewIndex + i, true);
+        }
+
+        // Move selected items from 'selected list' back to 'all list'
+        private void RemoveItem(ListBox targetAll, ListBox selectedList)
+        {
+            if (targetAll == null || selectedList == null) return;
+            if (selectedList.SelectedItems.Count == 0) return;
+
+            var toMove = selectedList.SelectedItems.Cast<object>().ToList();
+
+            // Append to targetAll (end)
+            targetAll.BeginUpdate();
+            foreach (var item in toMove)
+                targetAll.Items.Add(item);
+            targetAll.EndUpdate();
+
+            // Remove from selectedList
+            foreach (var item in toMove)
+                selectedList.Items.Remove(item);
+
+            // adjust selection
+            if (selectedList.Items.Count > 0)
+            {
+                int selIdx = Math.Min(selectedList.Items.Count - 1, selectedList.SelectedIndex);
+                if (selIdx >= 0) selectedList.SelectedIndex = selIdx;
+            }
+        }
+
+        // Move selected items up one position within the same list
+        private void MoveSelectedUp(ListBox list)
+        {
+            if (list == null) return;
+            int n = list.Items.Count;
+            if (n <= 1) return;
+
+            var items = list.Items.Cast<object>().ToList();
+            var selectedFlags = new bool[n];
+            foreach (int i in list.SelectedIndices) selectedFlags[i] = true;
+
+            // If topmost is selected, nothing to move for that item.
+            for (int i = 1; i < n; i++)
+            {
+                if (selectedFlags[i] && !selectedFlags[i - 1])
+                {
+                    // swap items and flags
+                    var tmpItem = items[i - 1];
+                    items[i - 1] = items[i];
+                    items[i] = tmpItem;
+                    selectedFlags[i - 1] = true;
+                    selectedFlags[i] = false;
+                }
+            }
+
+            // Update UI
+            list.BeginUpdate();
+            list.Items.Clear();
+            foreach (var it in items) list.Items.Add(it);
+            list.EndUpdate();
+
+            // Restore selection
+            list.ClearSelected();
+            for (int i = 0; i < selectedFlags.Length; i++)
+                if (selectedFlags[i]) list.SetSelected(i, true);
+        }
+
+        // Move selected items down one position within the same list
+        private void MoveSelectedDown(ListBox list)
+        {
+            if (list == null) return;
+            int n = list.Items.Count;
+            if (n <= 1) return;
+
+            var items = list.Items.Cast<object>().ToList();
+            var selectedFlags = new bool[n];
+            foreach (int i in list.SelectedIndices) selectedFlags[i] = true;
+
+            for (int i = n - 2; i >= 0; i--)
+            {
+                if (selectedFlags[i] && !selectedFlags[i + 1])
+                {
+                    var tmpItem = items[i + 1];
+                    items[i + 1] = items[i];
+                    items[i] = tmpItem;
+                    selectedFlags[i + 1] = true;
+                    selectedFlags[i] = false;
+                }
+            }
+
+            // Update UI
+            list.BeginUpdate();
+            list.Items.Clear();
+            foreach (var it in items) list.Items.Add(it);
+            list.EndUpdate();
+
+            // Restore selection
+            list.ClearSelected();
+            for (int i = 0; i < selectedFlags.Length; i++)
+                if (selectedFlags[i]) list.SetSelected(i, true);
         }
 
         private void lblReset_Click(object sender, EventArgs e)

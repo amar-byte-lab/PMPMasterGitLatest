@@ -29,10 +29,9 @@
         private void InitializeComponent()
         {
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.lblSave = new System.Windows.Forms.ToolStripLabel();
             this.lblReset = new System.Windows.Forms.ToolStripLabel();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.lblAbort = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.lblClose = new System.Windows.Forms.ToolStripLabel();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.groupBox70 = new System.Windows.Forms.GroupBox();
@@ -48,7 +47,6 @@
             this.btnDispAutoMoveAll = new System.Windows.Forms.Button();
             this.lstDisplatAutoSelected = new System.Windows.Forms.ListBox();
             this.label243 = new System.Windows.Forms.Label();
-            this.lblSave = new System.Windows.Forms.ToolStripLabel();
             this.toolStrip1.SuspendLayout();
             this.groupBox70.SuspendLayout();
             this.SuspendLayout();
@@ -60,10 +58,8 @@
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblSave,
-            this.lblAbort,
             this.lblReset,
             this.toolStripSeparator2,
-            this.toolStripSeparator3,
             this.lblClose});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
@@ -71,6 +67,13 @@
             this.toolStrip1.Size = new System.Drawing.Size(1267, 33);
             this.toolStrip1.TabIndex = 16;
             this.toolStrip1.Text = "toolStrip1";
+            // 
+            // lblSave
+            // 
+            this.lblSave.Name = "lblSave";
+            this.lblSave.Size = new System.Drawing.Size(53, 28);
+            this.lblSave.Text = "Save";
+            this.lblSave.ToolTipText = "Save Configuration File As *.cfg";
             // 
             // lblReset
             // 
@@ -84,19 +87,6 @@
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 33);
-            // 
-            // lblAbort
-            // 
-            this.lblAbort.Name = "lblAbort";
-            this.lblAbort.Size = new System.Drawing.Size(63, 28);
-            this.lblAbort.Text = "Abort";
-            this.lblAbort.ToolTipText = "Abort Read/Write";
-            this.lblAbort.Click += new System.EventHandler(this.lblAbort_Click);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 33);
             // 
             // lblClose
             // 
@@ -181,9 +171,9 @@
             this.label241.Location = new System.Drawing.Point(722, 20);
             this.label241.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label241.Name = "label241";
-            this.label241.Size = new System.Drawing.Size(185, 20);
+            this.label241.Size = new System.Drawing.Size(239, 30);
             this.label241.TabIndex = 40;
-            this.label241.Text = "Selected Parameters";
+            this.label241.Text = "Selected Methods";
             // 
             // label242
             // 
@@ -192,9 +182,9 @@
             this.label242.Location = new System.Drawing.Point(156, 20);
             this.label242.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label242.Name = "label242";
-            this.label242.Size = new System.Drawing.Size(134, 20);
+            this.label242.Size = new System.Drawing.Size(162, 30);
             this.label242.TabIndex = 39;
-            this.label242.Text = "All Parameters";
+            this.label242.Text = "All Methods";
             // 
             // btnDispAutoMove
             // 
@@ -260,15 +250,8 @@
             this.label243.Name = "label243";
             this.label243.Size = new System.Drawing.Size(300, 25);
             this.label243.TabIndex = 46;
-            this.label243.Text = "Auto Scroll Parameter List";
+            this.label243.Text = "Auto Scroll Method List";
             this.label243.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblSave
-            // 
-            this.lblSave.Name = "lblSave";
-            this.lblSave.Size = new System.Drawing.Size(53, 28);
-            this.lblSave.Text = "Save";
-            this.lblSave.ToolTipText = "Save Configuration File As *.cfg";
             // 
             // frmConfiguration
             // 
@@ -299,8 +282,6 @@
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripLabel lblReset;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripLabel lblAbort;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripLabel lblClose;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.GroupBox groupBox70;

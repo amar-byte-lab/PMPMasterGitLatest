@@ -639,8 +639,20 @@ namespace CabconPMP
 
         private void selectProceduresToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmConfiguration objfrm = new frmConfiguration();
-            objfrm.ShowDialog();
+            try
+            {
+        using (var objfrmConfig = new frmConfiguration())
+        {
+            objfrmConfig.UpdateMsg += MainForm_UpdateMsg;
+            objfrmConfig.StartPosition = FormStartPosition.CenterParent;
+            objfrmConfig.ShowDialog(this); // modal, owned by this form
+            objfrmConfig.UpdateMsg -= MainForm_UpdateMsg;
+        }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unable to open configuration: " + ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
