@@ -1,6 +1,6 @@
-﻿namespace APP_E150MicroStar
+﻿namespace CabconPMP
 {
-    partial class frmConfiguration_MSD
+    partial class frmConfiguration
     {
         /// <summary>
         /// Required designer variable.
@@ -48,6 +48,7 @@
             this.btnDispAutoMoveAll = new System.Windows.Forms.Button();
             this.lstDisplatAutoSelected = new System.Windows.Forms.ListBox();
             this.label243 = new System.Windows.Forms.Label();
+            this.lblSave = new System.Windows.Forms.ToolStripLabel();
             this.toolStrip1.SuspendLayout();
             this.groupBox70.SuspendLayout();
             this.SuspendLayout();
@@ -58,9 +59,10 @@
             this.toolStrip1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lblSave,
+            this.lblAbort,
             this.lblReset,
             this.toolStripSeparator2,
-            this.lblAbort,
             this.toolStripSeparator3,
             this.lblClose});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
@@ -261,18 +263,25 @@
             this.label243.Text = "Auto Scroll Parameter List";
             this.label243.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // frmConfiguration_MSD
+            // lblSave
+            // 
+            this.lblSave.Name = "lblSave";
+            this.lblSave.Size = new System.Drawing.Size(53, 28);
+            this.lblSave.Text = "Save";
+            this.lblSave.ToolTipText = "Save Configuration File As *.cfg";
+            // 
+            // frmConfiguration
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1267, 769);
+            this.ClientSize = new System.Drawing.Size(1267, 840);
             this.Controls.Add(this.label243);
             this.Controls.Add(this.groupBox70);
             this.Controls.Add(this.toolStrip1);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "frmConfiguration_MSD";
+            this.Name = "frmConfiguration";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Configuration";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmConfiguration_FormClosing);
@@ -307,5 +316,6 @@
         private System.Windows.Forms.Button btnDispAutoMoveAll;
         private System.Windows.Forms.ListBox lstDisplatAutoSelected;
         private System.Windows.Forms.Label label243;
+        private System.Windows.Forms.ToolStripLabel lblSave;
     }
 }

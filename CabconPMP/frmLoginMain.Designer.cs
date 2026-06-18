@@ -34,13 +34,13 @@ namespace CabconPMP
             this.chkPortSelectAll = new System.Windows.Forms.CheckBox();
             this.clbPorts = new System.Windows.Forms.CheckedListBox();
             this.lblPort = new System.Windows.Forms.Label();
+            this.txtBenchId = new CabconPMP.TransparentTextBox();
             this.lblBenchId = new System.Windows.Forms.Label();
+            this.txtuserID = new CabconPMP.TransparentTextBox();
             this.btnLogin = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.txtBenchId = new CabconPMP.TransparentTextBox();
-            this.txtuserID = new CabconPMP.TransparentTextBox();
             this.txtPassword = new CabconPMP.TransparentTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.PanelLoginControl.SuspendLayout();
@@ -101,6 +101,7 @@ namespace CabconPMP
             this.clbPorts.Size = new System.Drawing.Size(250, 96);
             this.clbPorts.TabIndex = 23;
             this.clbPorts.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clbPorts_ItemCheck);
+            this.clbPorts.SelectedIndexChanged += new System.EventHandler(this.clbPorts_SelectedIndexChanged);
             // 
             // lblPort
             // 
@@ -114,6 +115,16 @@ namespace CabconPMP
             this.lblPort.TabIndex = 20;
             this.lblPort.Text = "Select Port";
             // 
+            // txtBenchId
+            // 
+            this.txtBenchId.BackColor = System.Drawing.Color.Transparent;
+            this.txtBenchId.Location = new System.Drawing.Point(144, 237);
+            this.txtBenchId.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtBenchId.MaxLength = 16;
+            this.txtBenchId.Name = "txtBenchId";
+            this.txtBenchId.Size = new System.Drawing.Size(250, 26);
+            this.txtBenchId.TabIndex = 19;
+            // 
             // lblBenchId
             // 
             this.lblBenchId.AutoSize = true;
@@ -125,6 +136,18 @@ namespace CabconPMP
             this.lblBenchId.Size = new System.Drawing.Size(79, 20);
             this.lblBenchId.TabIndex = 18;
             this.lblBenchId.Text = "Bench ID";
+            // 
+            // txtuserID
+            // 
+            this.txtuserID.BackColor = System.Drawing.Color.Transparent;
+            this.txtuserID.Location = new System.Drawing.Point(144, 270);
+            this.txtuserID.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtuserID.MaxLength = 16;
+            this.txtuserID.Name = "txtuserID";
+            this.txtuserID.Size = new System.Drawing.Size(250, 26);
+            this.txtuserID.TabIndex = 0;
+            this.txtuserID.TextChanged += new System.EventHandler(this.txtuserID_TextChanged_1);
+            this.txtuserID.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtuserID_KeyPress);
             // 
             // btnLogin
             // 
@@ -174,28 +197,6 @@ namespace CabconPMP
             this.label2.Size = new System.Drawing.Size(67, 20);
             this.label2.TabIndex = 16;
             this.label2.Text = "User ID";
-            // 
-            // txtBenchId
-            // 
-            this.txtBenchId.BackColor = System.Drawing.Color.Transparent;
-            this.txtBenchId.Location = new System.Drawing.Point(144, 237);
-            this.txtBenchId.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtBenchId.MaxLength = 16;
-            this.txtBenchId.Name = "txtBenchId";
-            this.txtBenchId.Size = new System.Drawing.Size(250, 26);
-            this.txtBenchId.TabIndex = 19;
-            // 
-            // txtuserID
-            // 
-            this.txtuserID.BackColor = System.Drawing.Color.Transparent;
-            this.txtuserID.Location = new System.Drawing.Point(144, 270);
-            this.txtuserID.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtuserID.MaxLength = 16;
-            this.txtuserID.Name = "txtuserID";
-            this.txtuserID.Size = new System.Drawing.Size(250, 26);
-            this.txtuserID.TabIndex = 0;
-            this.txtuserID.TextChanged += new System.EventHandler(this.txtuserID_TextChanged_1);
-            this.txtuserID.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtuserID_KeyPress);
             // 
             // txtPassword
             // 

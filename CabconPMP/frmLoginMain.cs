@@ -66,7 +66,13 @@ namespace CabconPMP
                 DataSet ds = objum.Select_LoginUseronUserIDandPWD(objetyusermgt);
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
+                    //--------------------Set Default Settings-----------------
+                    association.DefaultSettings();
+                    //-------------------Show Custom Setting-----------------------
+                    association.ShowDefaultSettings();
+                    association.CheckAllAssociation();
 
+                    //-------------------Save Association Setting-----------------------
                     List<string> selectedPorts = new List<string>();
                     foreach (object it in clbPorts.CheckedItems) selectedPorts.Add(it.ToString());
                     association.SaveAssociation(selectedPorts);
@@ -107,12 +113,6 @@ namespace CabconPMP
             string[] PortNames = objSerialComm.GetAvailablePorts();
             Array.Reverse(PortNames);
             foreach (string Port in PortNames) clbPorts.Items.Add(Port);
-            //--------------------Set Default Settings-----------------
-            association.DefaultSettings();
-            //-------------------Show Custom Setting-----------------------
-            association.ShowDefaultSettings();
-            association.CheckAllAssociation();
-
 
             Point panelLoc = PanelLoginControl.Location;
             PanelLoginControl.Parent = pictureBox1;
@@ -196,6 +196,11 @@ namespace CabconPMP
 
                 _updatingSelectAll = false;
             }));
+        }
+
+        private void clbPorts_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

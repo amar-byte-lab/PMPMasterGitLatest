@@ -636,5 +636,11 @@ namespace CabconPMP
         {
 
         }
+
+        private void selectProceduresToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmConfiguration objfrm = new frmConfiguration();
+            objfrm.ShowDialog();
+        }
     }
 }

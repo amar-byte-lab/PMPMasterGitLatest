@@ -13,10 +13,9 @@ using System.IO;
 using System.Text.RegularExpressions;
 using Utilities;
 using ApplicationInterface;
-namespace APP_E150MicroStar
+namespace CabconPMP
 {
-
-    public partial class frmConfiguration_MSD : Form
+    public partial class frmConfiguration : Form
     {
 
         Label[] lstEventList;
@@ -80,11 +79,11 @@ namespace APP_E150MicroStar
         //byte HDLCIndex = 0;
         string data = string.Empty;
         string opencfgFilePath = "";
-        public frmConfiguration_MSD(string openFilePath)
+        public frmConfiguration()
         {
             InitializeComponent();
-        }            
- 
+        }
+
         private void txtPersistanceEarthO_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (char.IsNumber(e.KeyChar)) { }
@@ -141,6 +140,100 @@ namespace APP_E150MicroStar
         private void frmConfiguration_Load(object sender, EventArgs e)
         {
 
+            ResetsConfigurations(false);
+
+        }
+
+        private void ResetsConfigurations(bool IsReset)
+        {
+            try
+            {
+                FillDisplayParametersList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error in resetting the configuration values. " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void FillDisplayParametersList()
+        {
+            lstDisplayAutoAll.Items.Clear();
+            lstDisplatAutoSelected.Items.Clear();
+            DisplayParameterList objdispara = new DisplayParameterList();
+            Dictionary<string, int> displayPara = objdispara.GetDisplayParameterList_MicroStarDLMS();
+            string[] ParameterValue = displayPara.Keys.ToArray();
+            int ItemIndex = 0;
+            while (ItemIndex < ParameterValue.Length)
+            {
+                lstDisplayAutoAll.Items.Add(ParameterValue[ItemIndex]);
+            }
+        }
+
+        private void btnDispAutoMove_Click(object sender, EventArgs e)
+        {
+            if (lstDisplatAutoSelected.Items.Count >= 64)
+            {
+                if (MessageBox.Show("Maximum Selection Limit is Only 64 Parameter!!" + "\n" + "Your Current Selection is: " + lstDisplatAutoSelected.Items.Count.ToString() + " Parameters \n" + "Do You Want to Add Selected Items ?", "DLMS-PT", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No) return;
+            }
+            MoveItem(lstDisplayAutoAll, lstDisplatAutoSelected);
+            lblDisplayParaTotalSelected.Text = "Total Selected:" + "\n          " + lstDisplatAutoSelected.Items.Count.ToString();
+
+        }
+
+        private void btnDispAutoMoveAll_Click(object sender, EventArgs e)
+        {
+            MoveAll(lstDisplayAutoAll, lstDisplatAutoSelected);
+            lblDisplayParaTotalSelected.Text = "Total Selected:" + "\n          " + lstDisplatAutoSelected.Items.Count.ToString();
+            if (lstDisplatAutoSelected.Items.Count > 64)
+            {
+                MessageBox.Show("Maximum Selection Limit is Only 64 Parameter!!" + "\n" + "Your Current Selection is: " + lstDisplatAutoSelected.Items.Count.ToString() + " Parameters", "PowerTool", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+        }
+
+        private void MoveAll(ListBox lstDisplatAutoAll, ListBox lstSelect)
+        {
+
+            lstSelect.Items.Clear();
+            lstSelect.Items.AddRange(lstDisplatAutoAll.Items);
+
+        }
+
+        private void btnDispAutoRemove_Click(object sender, EventArgs e)
+        {
+            RemoveItem(lstDisplayAutoAll, lstDisplatAutoSelected);
+            lblDisplayParaTotalSelected.Text = "Total Selected:" + "\n          " + lstDisplatAutoSelected.Items.Count.ToString();
+        }
+
+        private void MoveItem(ListBox lstTotal, ListBox lstSelect)
+        {
+            int lstAllIdx = lstTotal.SelectedIndex + 1;
+            int SelectedIdx = lstSelect.SelectedIndex;
+            if (lstTotal.SelectedItems.Count < 0) { lstTotal.SelectedIndex = 0; return; }
+            foreach (object item in lstTotal.SelectedItems)
+            {
+                if (lstSelect.SelectedIndex >= 0) lstSelect.Items.Insert(++SelectedIdx, item);
+                else lstSelect.Items.Add(item);
+            }
+            lstTotal.SelectedIndex = -1;
+            lstSelect.SelectedIndex = -1;
+            if (lstSelect.Items.Count >= SelectedIdx) lstSelect.SelectedIndex = SelectedIdx;
+            if (lstAllIdx < lstTotal.Items.Count) lstTotal.SelectedIndex = lstAllIdx;
+            lstTotal.Focus();
+        }
+
+        private void RemoveItem(ListBox lstTotal, ListBox lstSelect)
+        {
+            int lstselectedIdx = lstSelect.SelectedIndex;
+            if (lstSelect.SelectedItems.Count == 0 && lstSelect.Items.Count > 0) { lstSelect.SelectedIndex = 0; return; }
+            while (lstSelect.SelectedIndices.Count > 0)
+            {
+                lstSelect.Items.RemoveAt(lstSelect.SelectedIndex);
+            }
+            if (lstSelect.Items.Count > lstselectedIdx) lstSelect.SelectedIndex = lstselectedIdx;
+            else if (lstSelect.Items.Count >= 1) lstSelect.SelectedIndex = lstSelect.Items.Count - 1;
+            lstSelect.Focus();
         }
 
         private void lblReset_Click(object sender, EventArgs e)

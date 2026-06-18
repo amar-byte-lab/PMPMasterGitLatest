@@ -36,6 +36,8 @@
             this.tsm_userManagement = new System.Windows.Forms.ToolStripMenuItem();
             this.tsm_changePassword = new System.Windows.Forms.ToolStripMenuItem();
             this.tsm_ServerSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.calibrationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.verificationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ts_report = new System.Windows.Forms.ToolStripMenuItem();
             this.tsm_executionReports = new System.Windows.Forms.ToolStripMenuItem();
             this.tsm_parametersWiseReport = new System.Windows.Forms.ToolStripMenuItem();
@@ -44,6 +46,9 @@
             this.routineTestReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.backupDataReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsm_rejectlist = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DLMSStas = new System.Windows.Forms.StatusStrip();
             this.stsReady = new System.Windows.Forms.ToolStripStatusLabel();
@@ -52,9 +57,14 @@
             this.dlmsCommStatusmsh2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblLoginInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.ts_ico_report = new System.Windows.Forms.ToolStripLabel();
             this.tss_Report = new System.Windows.Forms.ToolStripSeparator();
+            this.ts_ico_Association = new System.Windows.Forms.ToolStripLabel();
+            this.ts_Help = new System.Windows.Forms.ToolStripLabel();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.ts_Exit = new System.Windows.Forms.ToolStripLabel();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolRetry = new System.Windows.Forms.ToolStripLabel();
             this.cms_Open = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cms_openProcedure = new System.Windows.Forms.ToolStripMenuItem();
             this.cms_OpenProgram = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,16 +74,7 @@
             this.cms_CreateProgram = new System.Windows.Forms.ToolStripMenuItem();
             this.lblMainScreenMsg = new System.Windows.Forms.Label();
             this.pcbBackgroundImage = new System.Windows.Forms.PictureBox();
-            this.ts_ico_report = new System.Windows.Forms.ToolStripLabel();
-            this.ts_ico_Association = new System.Windows.Forms.ToolStripLabel();
-            this.ts_Help = new System.Windows.Forms.ToolStripLabel();
-            this.ts_Exit = new System.Windows.Forms.ToolStripLabel();
-            this.toolRetry = new System.Windows.Forms.ToolStripLabel();
-            this.calibrationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.verificationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.contentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectProceduresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.DLMSStas.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -88,8 +89,8 @@
             this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ts_configuration,
             this.calibrationToolStripMenuItem,
+            this.ts_configuration,
             this.verificationToolStripMenuItem,
             this.ts_report,
             this.helpToolStripMenuItem,
@@ -139,6 +140,21 @@
             this.tsm_ServerSettings.Size = new System.Drawing.Size(259, 34);
             this.tsm_ServerSettings.Text = "Server Settings";
             this.tsm_ServerSettings.Click += new System.EventHandler(this.tsm_ServerSettings_Click);
+            // 
+            // calibrationToolStripMenuItem
+            // 
+            this.calibrationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.selectProceduresToolStripMenuItem});
+            this.calibrationToolStripMenuItem.Name = "calibrationToolStripMenuItem";
+            this.calibrationToolStripMenuItem.Size = new System.Drawing.Size(113, 29);
+            this.calibrationToolStripMenuItem.Text = "Calibration";
+            this.calibrationToolStripMenuItem.Click += new System.EventHandler(this.calibrationToolStripMenuItem_Click);
+            // 
+            // verificationToolStripMenuItem
+            // 
+            this.verificationToolStripMenuItem.Name = "verificationToolStripMenuItem";
+            this.verificationToolStripMenuItem.Size = new System.Drawing.Size(115, 29);
+            this.verificationToolStripMenuItem.Text = "Verification";
             // 
             // ts_report
             // 
@@ -202,6 +218,30 @@
             this.tsm_rejectlist.Size = new System.Drawing.Size(391, 34);
             this.tsm_rejectlist.Text = "Rejection List Report";
             this.tsm_rejectlist.Click += new System.EventHandler(this.tsm_rejectlist_Click);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem,
+            this.contentsToolStripMenuItem});
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(65, 29);
+            this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(185, 34);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // contentsToolStripMenuItem
+            // 
+            this.contentsToolStripMenuItem.Name = "contentsToolStripMenuItem";
+            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(185, 34);
+            this.contentsToolStripMenuItem.Text = "Contents";
+            this.contentsToolStripMenuItem.Visible = false;
+            this.contentsToolStripMenuItem.Click += new System.EventHandler(this.contentsToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
@@ -286,20 +326,66 @@
             this.toolStrip1.Text = "toolStrip1";
             this.toolStrip1.Visible = false;
             // 
+            // ts_ico_report
+            // 
+            this.ts_ico_report.Image = ((System.Drawing.Image)(resources.GetObject("ts_ico_report.Image")));
+            this.ts_ico_report.Name = "ts_ico_report";
+            this.ts_ico_report.Size = new System.Drawing.Size(105, 55);
+            this.ts_ico_report.Text = "    Report    ";
+            this.ts_ico_report.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.ts_ico_report.Click += new System.EventHandler(this.toolStripLabel3_Click);
+            // 
             // tss_Report
             // 
             this.tss_Report.Name = "tss_Report";
             this.tss_Report.Size = new System.Drawing.Size(6, 60);
+            // 
+            // ts_ico_Association
+            // 
+            this.ts_ico_Association.Image = global::CabconPMP.Properties.Resources.alliance;
+            this.ts_ico_Association.Name = "ts_ico_Association";
+            this.ts_ico_Association.Size = new System.Drawing.Size(103, 55);
+            this.ts_ico_Association.Text = "Association";
+            this.ts_ico_Association.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.ts_ico_Association.Click += new System.EventHandler(this.ts_Association_Click);
+            // 
+            // ts_Help
+            // 
+            this.ts_Help.Image = ((System.Drawing.Image)(resources.GetObject("ts_Help.Image")));
+            this.ts_Help.Name = "ts_Help";
+            this.ts_Help.Size = new System.Drawing.Size(114, 55);
+            this.ts_Help.Text = "       Help      ";
+            this.ts_Help.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.ts_Help.Visible = false;
+            this.ts_Help.Click += new System.EventHandler(this.ts_Help_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
             this.toolStripSeparator4.Size = new System.Drawing.Size(6, 60);
             // 
+            // ts_Exit
+            // 
+            this.ts_Exit.Image = ((System.Drawing.Image)(resources.GetObject("ts_Exit.Image")));
+            this.ts_Exit.Name = "ts_Exit";
+            this.ts_Exit.Size = new System.Drawing.Size(99, 55);
+            this.ts_Exit.Text = "      Exit      ";
+            this.ts_Exit.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.ts_Exit.Click += new System.EventHandler(this.ts_Exit_Click);
+            // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 60);
+            // 
+            // toolRetry
+            // 
+            this.toolRetry.Image = ((System.Drawing.Image)(resources.GetObject("toolRetry.Image")));
+            this.toolRetry.Name = "toolRetry";
+            this.toolRetry.Size = new System.Drawing.Size(106, 55);
+            this.toolRetry.Text = "     Calibrate";
+            this.toolRetry.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolRetry.Click += new System.EventHandler(this.toolRetry_Click);
             // 
             // cms_Open
             // 
@@ -381,88 +467,12 @@
             this.pcbBackgroundImage.TabStop = false;
             this.pcbBackgroundImage.Click += new System.EventHandler(this.pcbBackgroundImage_Click);
             // 
-            // ts_ico_report
+            // selectProceduresToolStripMenuItem
             // 
-            this.ts_ico_report.Image = ((System.Drawing.Image)(resources.GetObject("ts_ico_report.Image")));
-            this.ts_ico_report.Name = "ts_ico_report";
-            this.ts_ico_report.Size = new System.Drawing.Size(105, 55);
-            this.ts_ico_report.Text = "    Report    ";
-            this.ts_ico_report.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.ts_ico_report.Click += new System.EventHandler(this.toolStripLabel3_Click);
-            // 
-            // ts_ico_Association
-            // 
-            this.ts_ico_Association.Image = global::CabconPMP.Properties.Resources.alliance;
-            this.ts_ico_Association.Name = "ts_ico_Association";
-            this.ts_ico_Association.Size = new System.Drawing.Size(103, 55);
-            this.ts_ico_Association.Text = "Association";
-            this.ts_ico_Association.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.ts_ico_Association.Click += new System.EventHandler(this.ts_Association_Click);
-            // 
-            // ts_Help
-            // 
-            this.ts_Help.Image = ((System.Drawing.Image)(resources.GetObject("ts_Help.Image")));
-            this.ts_Help.Name = "ts_Help";
-            this.ts_Help.Size = new System.Drawing.Size(114, 55);
-            this.ts_Help.Text = "       Help      ";
-            this.ts_Help.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.ts_Help.Visible = false;
-            this.ts_Help.Click += new System.EventHandler(this.ts_Help_Click);
-            // 
-            // ts_Exit
-            // 
-            this.ts_Exit.Image = ((System.Drawing.Image)(resources.GetObject("ts_Exit.Image")));
-            this.ts_Exit.Name = "ts_Exit";
-            this.ts_Exit.Size = new System.Drawing.Size(99, 55);
-            this.ts_Exit.Text = "      Exit      ";
-            this.ts_Exit.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.ts_Exit.Click += new System.EventHandler(this.ts_Exit_Click);
-            // 
-            // toolRetry
-            // 
-            this.toolRetry.Image = ((System.Drawing.Image)(resources.GetObject("toolRetry.Image")));
-            this.toolRetry.Name = "toolRetry";
-            this.toolRetry.Size = new System.Drawing.Size(106, 55);
-            this.toolRetry.Text = "     Calibrate";
-            this.toolRetry.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.toolRetry.Click += new System.EventHandler(this.toolRetry_Click);
-            // 
-            // calibrationToolStripMenuItem
-            // 
-            this.calibrationToolStripMenuItem.Name = "calibrationToolStripMenuItem";
-            this.calibrationToolStripMenuItem.Size = new System.Drawing.Size(113, 29);
-            this.calibrationToolStripMenuItem.Text = "Calibration";
-            this.calibrationToolStripMenuItem.Click += new System.EventHandler(this.calibrationToolStripMenuItem_Click);
-            // 
-            // verificationToolStripMenuItem
-            // 
-            this.verificationToolStripMenuItem.Name = "verificationToolStripMenuItem";
-            this.verificationToolStripMenuItem.Size = new System.Drawing.Size(115, 29);
-            this.verificationToolStripMenuItem.Text = "Verification";
-            // 
-            // aboutToolStripMenuItem
-            // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
-            this.aboutToolStripMenuItem.Text = "About";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-            // 
-            // contentsToolStripMenuItem
-            // 
-            this.contentsToolStripMenuItem.Name = "contentsToolStripMenuItem";
-            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
-            this.contentsToolStripMenuItem.Text = "Contents";
-            this.contentsToolStripMenuItem.Visible = false;
-            this.contentsToolStripMenuItem.Click += new System.EventHandler(this.contentsToolStripMenuItem_Click);
-            // 
-            // helpToolStripMenuItem
-            // 
-            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem,
-            this.contentsToolStripMenuItem});
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(65, 29);
-            this.helpToolStripMenuItem.Text = "Help";
+            this.selectProceduresToolStripMenuItem.Name = "selectProceduresToolStripMenuItem";
+            this.selectProceduresToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.selectProceduresToolStripMenuItem.Text = "Select Procedures";
+            this.selectProceduresToolStripMenuItem.Click += new System.EventHandler(this.selectProceduresToolStripMenuItem_Click);
             // 
             // frmMain
             // 
@@ -543,6 +553,7 @@
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem contentsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem selectProceduresToolStripMenuItem;
     }
 }
 
