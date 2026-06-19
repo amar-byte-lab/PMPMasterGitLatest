@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CabconPMP.datalayer
@@ -24,28 +25,33 @@ namespace CabconPMP.datalayer
                         PortName = "COM1",
                         PCBAId = "PCBA001"
                     },
-                    new PortInfo
-                    {
-                        Position = 2,
-                        PortName = "COM2",
-                        PCBAId = "PCBA002"
-                    },
-                    new PortInfo
-                    {
-                        Position = 3,
-                        PortName = "COM3",
-                        PCBAId = "PCBA003"
-                    },
-                    new PortInfo
-                    {
-                        Position = 4,
-                        PortName = "COM4",
-                        PCBAId = "PCBA004"
-                    }
+                    //new PortInfo
+                    //{
+                    //    Position = 2,
+                    //    PortName = "COM2",
+                    //    PCBAId = "PCBA002"
+                    //},
+                    //new PortInfo
+                    //{
+                    //    Position = 3,
+                    //    PortName = "COM3",
+                    //    PCBAId = "PCBA003"
+                    //},
+                    //new PortInfo
+                    //{
+                    //    Position = 4,
+                    //    PortName = "COM4",
+                    //    PCBAId = "PCBA004"
+                    //}
                 };
-        public async Task<positionResponse> Procedure1()
+
+        // All procedures now accept a CancellationToken and honor it
+        public async Task<positionResponse> Procedure1(CancellationToken ct)
         {
-            await Task.Delay(10000); // Simulate some processing delay
+            // allow cancellation during simulated work
+            await Task.Delay(10000, ct);
+            ct.ThrowIfCancellationRequested();
+
             return new positionResponse()
             {
                 Result = "Response_Method1",
@@ -53,9 +59,11 @@ namespace CabconPMP.datalayer
             };
         }
 
-        public async Task<positionResponse> Procedure2()
+        public async Task<positionResponse> Procedure2(CancellationToken ct)
         {
-            await Task.Delay(10000); // Simulate some processing delay
+            await Task.Delay(10000, ct);
+            ct.ThrowIfCancellationRequested();
+
             return new positionResponse()
             {
                 Result = "Response_Method2",
@@ -63,10 +71,10 @@ namespace CabconPMP.datalayer
             };
         }
 
-        public async Task<positionResponse> Procedure3()
+        public async Task<positionResponse> Procedure3(CancellationToken ct)
         {
-
-            await Task.Delay(10000); // Simulate some processing delay
+            await Task.Delay(10000, ct);
+            ct.ThrowIfCancellationRequested();
 
             return new positionResponse()
             {
@@ -75,14 +83,21 @@ namespace CabconPMP.datalayer
             };
         }
 
-        public async Task<positionResponse> Procedure4()
+        public async Task<positionResponse> Procedure4(CancellationToken ct)
         {
-            await Task.Delay(10000); // Simulate some processing delay
             try
             {
+                await Task.Delay(10000, ct);
+                ct.ThrowIfCancellationRequested();
+
                 throw new Exception("Test Failure");
             }
-            catch (Exception ex)
+            catch (OperationCanceledException)
+            {
+                // propagate cancellation
+                throw;
+            }
+            catch (Exception)
             {
                 return new positionResponse()
                 {
@@ -92,14 +107,21 @@ namespace CabconPMP.datalayer
             }
         }
 
-        public async Task<positionResponse> Procedure5()
+        public async Task<positionResponse> Procedure5(CancellationToken ct)
         {
-            await Task.Delay(10000); // Simulate some processing delay
             try
             {
+                await Task.Delay(10000, ct);
+                ct.ThrowIfCancellationRequested();
+
                 throw new Exception("Test Failure");
             }
-            catch (Exception ex)
+            catch (OperationCanceledException)
+            {
+                // propagate cancellation
+                throw;
+            }
+            catch (Exception)
             {
                return new positionResponse
                 {
@@ -109,9 +131,6 @@ namespace CabconPMP.datalayer
             }
         }
     }
-
-
-
 }
 
 public class invokedProcedure
@@ -142,5 +161,12 @@ public class ProcedureInfo
 {
     public int Index { get; set; }
     public string Name { get; set; }
-    public Func<positionResponse> Method { get; set; }
+    // updated method signature to accept CancellationToken
+    public Func<CancellationToken, Task<positionResponse>> Method { get; set; }
+}
+
+public enum ExecutionMode
+{
+    AllSteps,
+    SingleStep
 }
