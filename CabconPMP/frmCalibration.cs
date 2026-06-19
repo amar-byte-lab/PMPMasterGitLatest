@@ -2,18 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web.UI.WebControls;
 using System.Windows.Forms;
-using static SmartCalibration.Constants.GlobalConstants;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+
 
 namespace CabconPMP
 {
@@ -29,8 +23,8 @@ new BindingList<invokedProcedure>();
         private readonly ManualResetEventSlim _pauseEvent =
     new ManualResetEventSlim(true);
 
-        Dictionary<string, Func<positionResponse>> procedures =
-           new Dictionary<string, Func<positionResponse>>();
+        Dictionary<ProcedureInfo, Func<Task<positionResponse>>> procedures =
+           new Dictionary<ProcedureInfo, Func<Task<positionResponse>>>();
 
         private CancellationTokenSource _cts;
 
@@ -39,16 +33,23 @@ new BindingList<invokedProcedure>();
         public frmCalibration()
         {
             InitializeComponent();
+            _pauseEvent = new ManualResetEventSlim(true);
             procedures = fd.procedureNames
                 .ToDictionary(
-                    name => name,
+                    name => new ProcedureInfo
+                    {
+                        Index = name.Index,
+                        Name = name.Name
+                    },
                     name =>
                     {
                         MethodInfo method =
-                            typeof(FakeData).GetMethod(name);
+                            typeof(FakeData).GetMethod(name.Name);
 
-                        return new Func<positionResponse>(
-                            () => (positionResponse)method.Invoke(fd, null));
+                        return new Func<Task<positionResponse>>(async () =>
+                        {
+                            return await (Task<positionResponse>)method.Invoke(fd, null);
+                        });
                     });
         }
 
@@ -60,30 +61,32 @@ new BindingList<invokedProcedure>();
 
         private async void btnStart_Click(object sender, EventArgs e)
         {
-            
-            await ExecuteAllStepsAsync();
+
+            await ExecuteAllStepsAsync(procedures);
+            //await ExecuteSingleStepAsync(procedures.ElementAt(0));
         }
         private async Task<List<ProcedureResult>> ExecuteProcedureAsync(
-    KeyValuePair<string, Func<positionResponse>> procedure,
+    KeyValuePair<ProcedureInfo, Func<Task<positionResponse>>> procedure,
     CancellationToken token)
         {
             List<Task<ProcedureResult>> tasks = new List<Task<ProcedureResult>>();
 
             foreach (PortInfo port in fd.portList)
             {
-                tasks.Add(Task.Run(() => 
+                tasks.Add(Task.Run(async () =>
                 {
                     token.ThrowIfCancellationRequested();
 
                     _pauseEvent.Wait(token);
 
-                    positionResponse result = procedure.Value();
-                    UpdatePositionGrid(result);
+                    positionResponse result = await procedure.Value();
+
+                    await UpdatePositionGrid(new positionResponse { Position = port.Position, Result = result.Result, Status = result.Status });
 
                     return new ProcedureResult
                     {
                         Position = port.Position,
-                        ProcedureName = procedure.Key,
+                        ProcedureName = procedure.Key.Name,
                         Response = result.Result,
                         Status = result.Status
                     };
@@ -93,33 +96,25 @@ new BindingList<invokedProcedure>();
             return (await Task.WhenAll(tasks)).ToList();
         }
 
-        public async Task ExecuteAllStepsAsync()
+        public async Task ExecuteAllStepsAsync(Dictionary<ProcedureInfo, Func<Task<positionResponse>>> procedures)
         {
             _cts = new CancellationTokenSource();
-            int slNo = 1;
+
             foreach (var procedure in procedures)
             {
-                UpdateProcedureGrid(new invokedProcedure { SlNo = slNo++, ProcedureName = procedure.Key });
+                await Task.Run(async () => await UpdateProcedureGrid(new invokedProcedure { SlNo = procedure.Key.Index, ProcedureName = procedure.Key.Name }));
+
                 _pauseEvent.Wait(_cts.Token);
 
                 var results = await ExecuteProcedureAsync(procedure, _cts.Token);
-
-
-                bool anyFail = results.Any(x => x.Status == "Fail");
             }
         }
-        //Single Step Mode
-        private int _currentProcedureIndex = 0;
 
-        public async Task ExecuteSingleStepAsync()
+        public async Task ExecuteSingleStepAsync(KeyValuePair<ProcedureInfo, Func<Task<positionResponse>>> procedure)
         {
-            if (_currentProcedureIndex >= procedures.Count)
-                return;
+            _cts = new CancellationTokenSource();
 
-            var procedure =
-                procedures.ElementAt(_currentProcedureIndex);
-
-            //UpdateProcedureGrid(new invokedProcedure { SlNo = slNo++, ProcedureName = procedure.Key });
+            await Task.Run(async () => await UpdateProcedureGrid(new invokedProcedure { SlNo = procedure.Key.Index, ProcedureName = procedure.Key.Name }));
             _pauseEvent.Wait(_cts.Token);
 
             var results =
@@ -127,7 +122,6 @@ new BindingList<invokedProcedure>();
                     procedure,
                     _cts.Token);
 
-            _currentProcedureIndex++;
         }
 
         private void btnPause_Click(object sender, EventArgs e)
@@ -141,25 +135,43 @@ new BindingList<invokedProcedure>();
             _cts.Cancel();
         }
 
-        private void UpdatePositionGrid(positionResponse result)
+        private Task UpdatePositionGrid(positionResponse result)
         {
-            _positionResultGrid.Add(new positionResponse
+            if (InvokeRequired)
             {
-                Result = result.Result,
-                Status = result.Status
-            });
+                BeginInvoke(new Action(() => UpdatePositionGrid(result)));
+                return Task.CompletedTask;
+            }
 
-            //dataGridView1.DataSource = _positionResultGrid;
+            _positionResultGrid.Add(result);
+
+            dataGridView1.DataSource = _positionResultGrid;
+            return Task.CompletedTask;
+
         }
-        private void UpdateProcedureGrid(invokedProcedure procedure)
+        private Task UpdateProcedureGrid(invokedProcedure procedure)
         {
-            _procedureGrid.Add(new invokedProcedure
+            if (InvokeRequired)
             {
-                SlNo = procedure.SlNo,
-                ProcedureName = procedure.ProcedureName
-            });
+                BeginInvoke(new Action(() => UpdateProcedureGrid(procedure)));
+                return Task.CompletedTask;
+            }
+
+            _procedureGrid.Add(procedure);
 
             dataGridView2.DataSource = _procedureGrid;
+
+            int lastRowIndex = dataGridView2.Rows.Count - 1;
+
+            if (lastRowIndex >= 0)
+            {
+                dataGridView2.CurrentCell =
+                    dataGridView2.Rows[lastRowIndex -1].Cells[0];
+
+                dataGridView2.Rows[lastRowIndex].Selected = true;
+            }
+
+            return Task.CompletedTask;
         }
     }
 }

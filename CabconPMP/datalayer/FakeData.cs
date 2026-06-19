@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CabconPMP.datalayer
 {
     public class FakeData
     {
-        public List<string> procedureNames = new List<string>()
-            {
-                "Procedure1",
-                "Procedure2",
-                "Procedure3",
-                "Procedure4",
-                "Procedure5"
-            };
+        public List<ProcedureInfo> procedureNames = new List<ProcedureInfo>
+                {
+                    new ProcedureInfo { Index = 1, Name = "Procedure1" },
+                    new ProcedureInfo { Index = 2, Name = "Procedure2" },
+                    new ProcedureInfo { Index = 3, Name = "Procedure3" },
+                    new ProcedureInfo { Index = 4, Name = "Procedure4" },
+                    new ProcedureInfo { Index = 5, Name = "Procedure5" }
+                };
+
+
         public List<PortInfo> portList = new List<PortInfo>
                 {
                     new PortInfo
@@ -40,8 +43,9 @@ namespace CabconPMP.datalayer
                         PCBAId = "PCBA004"
                     }
                 };
-        public positionResponse Procedure1()
+        public async Task<positionResponse> Procedure1()
         {
+            await Task.Delay(10000); // Simulate some processing delay
             return new positionResponse()
             {
                 Result = "Response_Method1",
@@ -49,8 +53,9 @@ namespace CabconPMP.datalayer
             };
         }
 
-        public positionResponse Procedure2()
+        public async Task<positionResponse> Procedure2()
         {
+            await Task.Delay(10000); // Simulate some processing delay
             return new positionResponse()
             {
                 Result = "Response_Method2",
@@ -58,8 +63,11 @@ namespace CabconPMP.datalayer
             };
         }
 
-        public positionResponse Procedure3()
+        public async Task<positionResponse> Procedure3()
         {
+
+            await Task.Delay(10000); // Simulate some processing delay
+
             return new positionResponse()
             {
                 Result = "Response_Method3",
@@ -67,8 +75,9 @@ namespace CabconPMP.datalayer
             };
         }
 
-        public positionResponse Procedure4()
+        public async Task<positionResponse> Procedure4()
         {
+            await Task.Delay(10000); // Simulate some processing delay
             try
             {
                 throw new Exception("Test Failure");
@@ -83,15 +92,16 @@ namespace CabconPMP.datalayer
             }
         }
 
-        public positionResponse Procedure5()
+        public async Task<positionResponse> Procedure5()
         {
+            await Task.Delay(10000); // Simulate some processing delay
             try
             {
                 throw new Exception("Test Failure");
             }
             catch (Exception ex)
             {
-                return new positionResponse()
+               return new positionResponse
                 {
                     Result = "Response_Method5",
                     Status = "Fail"
@@ -124,11 +134,13 @@ public class ProcedureResult
 }
 public class positionResponse
 {
-    public string Result { get; set; }
+    public int Position { get; set; }
     public string Status { get; set; }
+    public string Result { get; set; }
 }
 public class ProcedureInfo
 {
+    public int Index { get; set; }
     public string Name { get; set; }
     public Func<positionResponse> Method { get; set; }
 }
