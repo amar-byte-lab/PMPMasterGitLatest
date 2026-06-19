@@ -654,5 +654,11 @@ namespace CabconPMP
                 MessageBox.Show("Unable to open configuration: " + ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void calibrateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmCalibration frmCalibration = new frmCalibration();
+            frmCalibration.ShowDialog();
+        }
     }
 }

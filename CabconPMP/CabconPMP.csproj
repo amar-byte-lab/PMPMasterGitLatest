@@ -187,6 +187,7 @@
     <Compile Include="datalayer\ConfigHandler.cs" />
     <Compile Include="datalayer\ConnectedMeterCollector.cs" />
     <Compile Include="datalayer\FactoryBenchSample.cs" />
+    <Compile Include="datalayer\FakeData.cs" />
     <Compile Include="datalayer\IBenchSampleHandler.cs" />
     <Compile Include="datalayer\Meter.cs" />
     <Compile Include="datalayer\SM110BenchSample.cs" />
@@ -206,6 +207,12 @@
     </Compile>
     <Compile Include="frmAssociation.Designer.cs">
       <DependentUpon>frmAssociation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCalibration.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCalibration.Designer.cs">
+      <DependentUpon>frmCalibration.cs</DependentUpon>
     </Compile>
     <Compile Include="frmConfiguration.cs">
       <SubType>Form</SubType>
@@ -320,6 +327,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmAssociation.resx">
       <DependentUpon>frmAssociation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCalibration.resx">
+      <DependentUpon>frmCalibration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmConfiguration.resx">
       <DependentUpon>frmConfiguration.cs</DependentUpon>
