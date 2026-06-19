@@ -37,7 +37,7 @@
             this.lblProcedure = new System.Windows.Forms.Label();
             this.btnStart = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.btnPause = new System.Windows.Forms.Button();
+            this.btnPauseResume = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
             this.lblRange = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -125,15 +125,15 @@
             this.comboBox1.Size = new System.Drawing.Size(426, 28);
             this.comboBox1.TabIndex = 22;
             // 
-            // btnPause
+            // btnPauseResume
             // 
-            this.btnPause.Location = new System.Drawing.Point(848, 593);
-            this.btnPause.Name = "btnPause";
-            this.btnPause.Size = new System.Drawing.Size(138, 81);
-            this.btnPause.TabIndex = 23;
-            this.btnPause.Text = "Pause";
-            this.btnPause.UseVisualStyleBackColor = true;
-            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
+            this.btnPauseResume.Location = new System.Drawing.Point(848, 593);
+            this.btnPauseResume.Name = "btnPauseResume";
+            this.btnPauseResume.Size = new System.Drawing.Size(138, 81);
+            this.btnPauseResume.TabIndex = 23;
+            this.btnPauseResume.Text = "Pause";
+            this.btnPauseResume.UseVisualStyleBackColor = true;
+            this.btnPauseResume.Click += new System.EventHandler(this.btnPauseResume_Click);
             // 
             // btnStop
             // 
@@ -211,7 +211,7 @@
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.lblRange);
             this.Controls.Add(this.btnStop);
-            this.Controls.Add(this.btnPause);
+            this.Controls.Add(this.btnPauseResume);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.lblProcedure);
@@ -238,7 +238,7 @@
         private System.Windows.Forms.Label lblProcedure;
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Button btnPause;
+        private System.Windows.Forms.Button btnPauseResume;
         private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.Label lblRange;
         private System.Windows.Forms.TextBox textBox1;

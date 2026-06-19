@@ -33,6 +33,13 @@ new BindingList<invokedProcedure>();
         public frmCalibration()
         {
             InitializeComponent();
+
+            btnPauseResume.Text = "Pause";
+            btnPauseResume.Enabled = true;
+
+            btnStart.Enabled = true;
+            btnStop.Enabled = false;
+
             _pauseEvent = new ManualResetEventSlim(true);
             procedures = fd.procedureNames
                 .ToDictionary(
@@ -61,7 +68,8 @@ new BindingList<invokedProcedure>();
 
         private async void btnStart_Click(object sender, EventArgs e)
         {
-
+            btnStart.Enabled = false;
+            btnStop.Enabled = true;
             await ExecuteAllStepsAsync(procedures);
             //await ExecuteSingleStepAsync(procedures.ElementAt(0));
         }
@@ -81,7 +89,15 @@ new BindingList<invokedProcedure>();
 
                     positionResponse result = await procedure.Value();
 
-                    await UpdatePositionGrid(new positionResponse { Position = port.Position, Result = result.Result, Status = result.Status });
+                    _ = Task.Run(async () =>
+                    {
+                        await UpdatePositionGrid(new positionResponse
+                        {
+                            Position = port.Position,
+                            Result = result.Result,
+                            Status = result.Status
+                        });
+                    });
 
                     return new ProcedureResult
                     {
@@ -102,7 +118,7 @@ new BindingList<invokedProcedure>();
 
             foreach (var procedure in procedures)
             {
-                await Task.Run(async () => await UpdateProcedureGrid(new invokedProcedure { SlNo = procedure.Key.Index, ProcedureName = procedure.Key.Name }));
+                _ = Task.Run(async () => await UpdateProcedureGrid(new invokedProcedure { SlNo = procedure.Key.Index, ProcedureName = procedure.Key.Name }));
 
                 _pauseEvent.Wait(_cts.Token);
 
@@ -123,15 +139,26 @@ new BindingList<invokedProcedure>();
                     _cts.Token);
 
         }
-
-        private void btnPause_Click(object sender, EventArgs e)
+        private void btnPauseResume_Click(object sender, EventArgs e)
         {
-            _pauseEvent.Reset(); //Pause
-            _pauseEvent.Set(); //Resume
+            if (btnPauseResume.Text == "Pause")
+            {
+               // _pauseEvent.Reset();
+                btnPauseResume.Text = "Resume";
+            }
+            else
+            {
+               // _pauseEvent.Set();
+                btnPauseResume.Text = "Pause";
+            }
         }
 
         private void btnStop_Click(object sender, EventArgs e)
         {
+
+            btnStart.Enabled = true;
+            btnStop.Enabled = false;
+
             _cts.Cancel();
         }
 
