@@ -657,8 +657,8 @@ namespace CabconPMP
 
         private void calibrateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmCalibration frmCalibration = new frmCalibration();
-            frmCalibration.ShowDialog();
+            //frmCalibration frmCalibration = new frmCalibration();
+            //frmCalibration.ShowDialog();
         }
     }
 }

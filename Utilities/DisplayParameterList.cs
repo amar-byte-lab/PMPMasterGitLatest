@@ -120,12 +120,15 @@ namespace Utilities
             
  
             return dictionaryDisplayList;
-      }
+      } 
 
         public Dictionary<string, int> GetDisplayParameterList_MicroStarDLMS()
         {
             Dictionary<string, int> dictionaryDisplayList = new Dictionary<string, int>();
             int ItemIDX = 1;
+            dictionaryDisplayList.Add("READ PCBA ID", ItemIDX++);
+            dictionaryDisplayList.Add("CALIBRATE", ItemIDX++);
+
             dictionaryDisplayList.Add("Cummulative Active Energy", ItemIDX++);//1
             dictionaryDisplayList.Add("Rate 1 Active Energy", ItemIDX++);//2
             dictionaryDisplayList.Add("Rate 2 Active Energy", ItemIDX++);//3

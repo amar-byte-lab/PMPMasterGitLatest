@@ -13,83 +13,53 @@ namespace CabconPMP
 {
     public partial class frmCalibration : Form
     {
+        public List<KeyValuePair<int, string>> _selectedItems { get; set; }
 
         private BindingList<positionResponse> _positionResultGrid =
     new BindingList<positionResponse>();
-
-        private BindingList<ProcedureInfo> _procedureGrid =
-new BindingList<ProcedureInfo>();
 
         // keep ManualResetEventSlim mutable (initialize once here)
         private readonly ManualResetEventSlim _pauseEvent =
     new ManualResetEventSlim(true);
 
         // now procedures accept a CancellationToken so we can propagate cancellation
-        Dictionary<ProcedureInfo, Func<CancellationToken, Task<positionResponse>>> procedures =
-           new Dictionary<ProcedureInfo, Func<CancellationToken, Task<positionResponse>>>();
+        Dictionary<KeyValuePair<int, string>, Func<CancellationToken, Task<positionResponse>>> procedures =
+           new Dictionary<KeyValuePair<int, string>, Func<CancellationToken, Task<positionResponse>>>();
 
         private CancellationTokenSource _cts;
 
 
         FakeData fd = new FakeData();
-        public frmCalibration()
+        public frmCalibration(List<KeyValuePair<int, string>> selectedItems)
         {
             InitializeComponent();
-            procedures = fd.procedureNames
-    .ToDictionary(
-        name => new ProcedureInfo
-        {
-            Index = name.Index,
-            Name = name.Name
-        },
-        name =>
-        {
-            // locate method taking a CancellationToken
-            MethodInfo method =
-                typeof(FakeData).GetMethod(name.Name, new[] { typeof(CancellationToken) });
 
-            if (method == null)
-            {
-                throw new InvalidOperationException($"Method '{name.Name}(CancellationToken)' not found on FakeData.");
-            }
+            //Populate Procedures name in dataGridView2
+            _selectedItems = selectedItems;
+            dataGridView2.DataSource = null;
+            dataGridView2.DataSource = _selectedItems;
 
-            // return a function that invokes the method and returns Task<positionResponse>
-            return new Func<CancellationToken, Task<positionResponse>>(token =>
-            {
-                return (Task<positionResponse>)method.Invoke(fd, new object[] { token });
-            });
-        });
-            Reset();
+            //Combobox initialisation
+            comboBox1.DataSource = Enum.GetValues(typeof(ExecutionMode));
+            comboBox1.SelectedItem = ExecutionMode.SingleStep;
+            dataGridView2.Rows[0].Selected = true;
+
+            _cts = new CancellationTokenSource();
+
+            DefaultPageState();
         }
 
-        private void Reset()
+        private void DefaultPageState()
         {
-            // Default state: only Start enabled
+            //Set Default State of the page
             btnStart.Enabled = true;
             btnStop.Enabled = false;
 
             btnPauseResume.Text = "Pause";
             btnPauseResume.Enabled = false;
 
-            //dataGridView1.DataSource = _positionResultGrid;
-
-            _procedureGrid = new BindingList<ProcedureInfo>(procedures.Keys.OrderBy(p => p.Index).ToList());
-
-            dataGridView2.DataSource = _procedureGrid;
-
-
-            comboBox1.DataSource = Enum.GetValues(typeof(ExecutionMode));
-            comboBox1.SelectedItem = ExecutionMode.AllSteps;
-
-
-
-            // Ensure any paused threads are released so they observe cancellation quickly
+            //Ensure any paused threads are released so they observe cancellation quickly
             _pauseEvent.Set();
-        }
-
-        private void frmCalibration_Load(object sender, EventArgs e)
-        {
-
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -100,6 +70,8 @@ new BindingList<ProcedureInfo>();
             btnPauseResume.Enabled = true;
             btnPauseResume.Text = "Pause";
 
+            dataGridView1.Rows.Clear();
+
             // ensure not paused when starting
             _pauseEvent.Set();
 
@@ -109,25 +81,29 @@ new BindingList<ProcedureInfo>();
                 try
                 {
 
-                    var mode = (ExecutionMode)comboBox1.SelectedItem;
+                    var mode = (ExecutionMode)Invoke(new Func<ExecutionMode>(() => (ExecutionMode)comboBox1.SelectedItem));
+
+                   // ExecuteProcedureAsync(
+                        //procedures.First(), CancellationToken.None).Wait();
 
                     if (mode == ExecutionMode.AllSteps)
                     {
-                        // Execute all procedures
-                        await ExecuteAllStepsAsync(procedures);
+                        // Run all items one by one
+                        foreach (var item in _selectedItems)
+                        {
+                            await RunStep(item, _cts.Token);
+                        }
                     }
                     else
                     {
-                        if (_selectedProcedure == null)
+                        if (dataGridView2.SelectedRows.Count == 0)
                         {
                             MessageBox.Show("Please select a row.");
                             return;
                         }
 
-                        var selectedProcedure = procedures.FirstOrDefault(p => p.Key.Name == _selectedProcedure.Name);
-
-                        // Execute only selected procedure
-                        await ExecuteSingleStepAsync(selectedProcedure);
+                        // Run only one selected item
+                        await RunStep(_selectedItems[Convert.ToInt32(dataGridView2.SelectedRows[0].Cells[0].Value)], _cts.Token);
                     }
 
                     
@@ -165,11 +141,19 @@ new BindingList<ProcedureInfo>();
                 }
             });
         }
-        private async Task<List<ProcedureResult>> ExecuteProcedureAsync(
-    KeyValuePair<ProcedureInfo, Func<CancellationToken, Task<positionResponse>>> procedure,
-    CancellationToken token)
+
+        private async Task<List<ProcedureResult>> RunStep(KeyValuePair<int, string> stepName, CancellationToken token)
         {
+            // Find the corresponding procedure for the selected step
             List<Task<ProcedureResult>> tasks = new List<Task<ProcedureResult>>();
+
+            // Update procedure grid on UI without blocking main flow
+            if (!IsDisposed && IsHandleCreated)
+            {
+                BeginInvoke(new Action(async () => await UpdateProcedureGrid(new invokedProcedure { SlNo = stepName.Key, ProcedureName = stepName.Value })));
+            }
+
+            dataGridView1.Rows.Clear();
 
             foreach (PortInfo port in fd.portList)
             {
@@ -181,13 +165,21 @@ new BindingList<ProcedureInfo>();
                     _pauseEvent.Wait(token);
 
                     // Start the procedure, passing the cancellation token to the real method
-                    Task<positionResponse> operationTask = null;
                     try
                     {
-                        operationTask = procedure.Value(token);
+                        switch (stepName.Value)
+                        {
+                            case "READ PCBA ID":
+                                procedures[stepName] = async (ct) => await fd.Procedure1(ct);
+                                break;
+                            case "CALIBRATE":
+                                procedures[stepName] = async (ct) => await fd.Procedure2(ct);
+                                break;
+                            default:
+                                throw new InvalidOperationException($"No procedure defined for step {stepName.Value}");
+                        }
 
-                        // Await the operation (it will observe the token and throw if cancelled)
-                        positionResponse result = await operationTask.ConfigureAwait(false);
+                        var response = await procedures[stepName](token);
 
                         // update UI asynchronously (do not block worker)
                         if (!IsDisposed && IsHandleCreated)
@@ -197,8 +189,8 @@ new BindingList<ProcedureInfo>();
                                 await UpdatePositionGrid(new positionResponse
                                 {
                                     Position = port.Position,
-                                    Result = result.Result,
-                                    Status = result.Status
+                                    Result = response.Result,
+                                    Status = response.Status
                                 });
                             });
                         }
@@ -206,9 +198,9 @@ new BindingList<ProcedureInfo>();
                         return new ProcedureResult
                         {
                             Position = port.Position,
-                            ProcedureName = procedure.Key.Name,
-                            Response = result.Result,
-                            Status = result.Status
+                            ProcedureName = stepName.Value,
+                            Response = response.Result,
+                            Status = response.Status
                         };
                     }
                     catch (OperationCanceledException)
@@ -222,70 +214,26 @@ new BindingList<ProcedureInfo>();
                         string resp = null;
                         try
                         {
-                            if (operationTask != null && operationTask.IsCompleted)
-                            {
-                                resp = operationTask.Result?.Result;
-                            }
+                            //if (operationTask != null && operationTask.IsCompleted)
+                            //{
+                            //    resp = operationTask.Result?.Result;
+                            //}
                         }
                         catch { /* ignore */ }
 
                         return new ProcedureResult
                         {
                             Position = port.Position,
-                            ProcedureName = procedure.Key.Name,
+                            ProcedureName = stepName.Value,
                             Response = resp,
                             Status = "Error"
                         };
                     }
                 }, token));
             }
-
             return (await Task.WhenAll(tasks)).ToList();
         }
 
-        public async Task ExecuteAllStepsAsync(Dictionary<ProcedureInfo, Func<CancellationToken, Task<positionResponse>>> procedures)
-        {
-            _cts = new CancellationTokenSource();
-
-            try
-            {
-                foreach (var procedure in procedures)
-                {
-                    // honor pause / cancellation before starting procedure
-                    _pauseEvent.Wait(_cts.Token);
-
-                    // Update procedure grid on UI without blocking main flow
-                    if (!IsDisposed && IsHandleCreated)
-                    {
-                        BeginInvoke(new Action(async () => await UpdateProcedureGrid(new invokedProcedure { SlNo = procedure.Key.Index, ProcedureName = procedure.Key.Name })));
-                    }
-
-                    var results = await ExecuteProcedureAsync(procedure, _cts.Token);
-                }
-            }
-            finally
-            {
-                // nothing to dispose here; final cleanup in caller
-            }
-        }
-
-        public async Task ExecuteSingleStepAsync(KeyValuePair<ProcedureInfo, Func<CancellationToken, Task<positionResponse>>> procedure)
-        {
-            _cts = new CancellationTokenSource();
-
-            if (!IsDisposed && IsHandleCreated)
-            {
-                BeginInvoke(new Action(async () => await UpdateProcedureGrid(new invokedProcedure { SlNo = procedure.Key.Index, ProcedureName = procedure.Key.Name })));
-            }
-
-            _pauseEvent.Wait(_cts.Token);
-
-            var results =
-                await ExecuteProcedureAsync(
-                    procedure,
-                    _cts.Token);
-
-        }
         private void btnPauseResume_Click(object sender, EventArgs e)
         {
             if (IsDisposed) return;
@@ -310,7 +258,7 @@ new BindingList<ProcedureInfo>();
                 _cts.Cancel();
             }
 
-            Reset();
+            DefaultPageState();
         }
 
         private Task UpdatePositionGrid(positionResponse result)
@@ -346,9 +294,9 @@ new BindingList<ProcedureInfo>();
             if (lastRowIndex >= 0)
             {
                 if (lastRowIndex - 1 >= 0)
-                    dataGridView2.CurrentCell = dataGridView2.Rows[procedure.SlNo - 1].Cells[0];
+                    dataGridView2.CurrentCell = dataGridView2.Rows[procedure.SlNo].Cells[0];
 
-                dataGridView2.Rows[procedure.SlNo - 1].Selected = true;
+                dataGridView2.Rows[procedure.SlNo].Selected = true;
                 dataGridView2.Enabled = false;
             }
 
@@ -361,29 +309,14 @@ new BindingList<ProcedureInfo>();
 
             if (mode == ExecutionMode.AllSteps)
             {
-                dataGridView1.ClearSelection();
-                dataGridView1.Enabled = false;
+                dataGridView2.ClearSelection();
+                dataGridView2.Enabled = false;
             }
             else
             {
-                dataGridView1.Enabled = true;
+                dataGridView2.Rows[0].Selected = true;
+                dataGridView2.Enabled = true;
             }
-        }
-
-        private ProcedureInfo _selectedProcedure;
-
-        private void dataGridView2_CellClick(object sender,
-            DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0)
-                return;
-
-            if ((ExecutionMode)comboBox1.SelectedItem
-                != ExecutionMode.SingleStep)
-                return;
-
-            _selectedProcedure =
-                (ProcedureInfo)dataGridView1.Rows[e.RowIndex].DataBoundItem;
         }
     }
 }

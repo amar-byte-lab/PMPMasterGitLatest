@@ -7,16 +7,6 @@ namespace CabconPMP.datalayer
 {
     public class FakeData
     {
-        public List<ProcedureInfo> procedureNames = new List<ProcedureInfo>
-                {
-                    new ProcedureInfo { Index = 1, Name = "Procedure1" },
-                    new ProcedureInfo { Index = 2, Name = "Procedure2" },
-                    new ProcedureInfo { Index = 3, Name = "Procedure3" },
-                    new ProcedureInfo { Index = 4, Name = "Procedure4" },
-                    new ProcedureInfo { Index = 5, Name = "Procedure5" }
-                };
-
-
         public List<PortInfo> portList = new List<PortInfo>
                 {
                     new PortInfo
@@ -25,12 +15,12 @@ namespace CabconPMP.datalayer
                         PortName = "COM1",
                         PCBAId = "PCBA001"
                     },
-                    //new PortInfo
-                    //{
-                    //    Position = 2,
-                    //    PortName = "COM2",
-                    //    PCBAId = "PCBA002"
-                    //},
+                    new PortInfo
+                    {
+                        Position = 2,
+                        PortName = "COM2",
+                        PCBAId = "PCBA002"
+                    },
                     //new PortInfo
                     //{
                     //    Position = 3,
@@ -157,13 +147,13 @@ public class positionResponse
     public string Status { get; set; }
     public string Result { get; set; }
 }
-public class ProcedureInfo
-{
-    public int Index { get; set; }
-    public string Name { get; set; }
-    // updated method signature to accept CancellationToken
-    public Func<CancellationToken, Task<positionResponse>> Method { get; set; }
-}
+//public class ProcedureInfo
+//{
+//    public int Index { get; set; }
+//    public string Name { get; set; }
+//    // updated method signature to accept CancellationToken
+//    public Func<CancellationToken, Task<positionResponse>> Method { get; set; }
+//}
 
 public enum ExecutionMode
 {

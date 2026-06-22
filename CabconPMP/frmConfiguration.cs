@@ -270,8 +270,12 @@ namespace CabconPMP
         {
             try
             {
-                var s = lstDisplayAutoAll.Items;
-                var s1 = lstDisplatAutoSelected.Items;
+                if (lstDisplatAutoSelected.Items.Count > 0)
+                {
+                    frmCalibration objcalib = new frmCalibration(lstDisplatAutoSelected.Items.Cast<string>().Select((item, index) => new KeyValuePair<int, string>(index, item)).ToList());
+                    objcalib.ShowDialog();
+                }
+
             }
             catch (Exception ex)
             {
