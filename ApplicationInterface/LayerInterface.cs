@@ -79,6 +79,15 @@ namespace ApplicationInterface
         }
         #endregion
 
+        public List<string> GetAssociatedPortList()
+        {
+            var csv = SerialPortSettings.Default.SerialPort ?? string.Empty;
+            return csv.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                 .Select(s => s.Trim())
+                 .Where(s => !string.IsNullOrEmpty(s))
+                 .ToList();
+        }
+
         public  List<string> GetMeterTypeList()
         {
             List<string> meterTypeList = new List<string>();
@@ -143,7 +152,7 @@ namespace ApplicationInterface
             try
             {
                 args = new UpdateEventArgs(msgString, isError);
-                UpdatedLed(this, args);
+                UpdatedLed?.Invoke(this, args);
             }
             catch (Exception)
             {
@@ -1969,7 +1978,7 @@ namespace ApplicationInterface
       public void DisplayStatusMsg(string msgString, bool isError)
       {
           args = new UpdateEventArgs(msgString, isError);
-          UpdatedLed(this, args);
+          UpdatedLed?.Invoke(this, args);
       }
 
       public string TestString()
@@ -2657,7 +2666,7 @@ namespace ApplicationInterface
           try
           {
               args = new UpdateEventArgs(msgString, isError);
-              UpdatedLed(this, args);
+              UpdatedLed?.Invoke(this, args);
           }
           catch (Exception)
           {

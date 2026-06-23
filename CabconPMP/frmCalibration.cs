@@ -1,4 +1,6 @@
-﻿using CabconPMP.datalayer;
+﻿using ApplicationInterface;
+using CabconPMP.datalayer;
+using COMMONENTITY;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,7 +9,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace CabconPMP
 {
@@ -15,50 +17,115 @@ namespace CabconPMP
     {
         public List<KeyValuePair<int, string>> _selectedItems { get; set; }
 
-        private BindingList<positionResponse> _positionResultGrid =
-    new BindingList<positionResponse>();
+        // now store position responses with a string payload (matches FakeData)
+        private BindingList<positionResponse<string>> _positionResultGrid =
+            new BindingList<positionResponse<string>>();
 
         // keep ManualResetEventSlim mutable (initialize once here)
         private readonly ManualResetEventSlim _pauseEvent =
-    new ManualResetEventSlim(true);
+            new ManualResetEventSlim(true);
 
-        // now procedures accept a CancellationToken so we can propagate cancellation
-        Dictionary<KeyValuePair<int, string>, Func<CancellationToken, Task<positionResponse>>> procedures =
-           new Dictionary<KeyValuePair<int, string>, Func<CancellationToken, Task<positionResponse>>>();
+        // generic-compat procedures map:
+        // key: procedure name, value: Func<object input, CancellationToken, Task<object response>>
+        // we use object here so we can register arbitrary typed procedures and invoke them from generic callers
+        private readonly Dictionary<string, Func<object, CancellationToken, LayerInterface, Task<object>>> _procedures =
+            new Dictionary<string, Func<object, CancellationToken, LayerInterface, Task<object>>>();
 
         private CancellationTokenSource _cts;
 
-
         FakeData fd = new FakeData();
+
+        LayerInterface layer = new LayerInterface();
+        List<string> portList = new List<string>();
+        List<PortInfo> ports = new List<PortInfo>();
+
+
         public frmCalibration(List<KeyValuePair<int, string>> selectedItems)
         {
             InitializeComponent();
 
-            //Populate Procedures name in dataGridView2
+            // Populate Procedures name in dataGridView2
             _selectedItems = selectedItems;
             dataGridView2.DataSource = null;
             dataGridView2.DataSource = _selectedItems;
 
-            //Combobox initialisation
+            // Combobox initialisation
             comboBox1.DataSource = Enum.GetValues(typeof(ExecutionMode));
             comboBox1.SelectedItem = ExecutionMode.SingleStep;
             dataGridView2.Rows[0].Selected = true;
 
+
+
+
             _cts = new CancellationTokenSource();
+
+            BuildPortList();
+
+            RegisterProcedures();
 
             DefaultPageState();
         }
 
+        private void BuildPortList()
+        {
+            // Build actual port list from SerialPortSettings Default CSV (e.g. "COM5,COM4,COM3")
+            try
+            {
+                // Get Associated PortList
+                ports = new List<PortInfo>();
+                portList = layer.GetAssociatedPortList();
+                for (int i = 0; i < portList.Count; i++)
+                {
+                    ports.Add(new PortInfo { Position = i + 1, PortName = portList[i], PCBAId = string.Empty });
+                }
+            }
+            catch
+            {
+                // fallback to FakeData portList if parsing fails
+            }
+
+            if (ports.Count == 0)
+            {
+                // fall back to existing fd.portList
+                ports.AddRange(fd.portList);
+            }
+        }
+
+        private void RegisterProcedures()
+        {
+            // Register procedure adapters here.
+            // Each registration adapts a strongly-typed method to the object-based delegate used by the runtime.
+            // For current FakeData methods the concrete return type is positionResponse<string>
+            _procedures["READ PCBA ID"] = async (input, ct, layer) =>
+            {
+                var resp = await fd.ReadPCBAId(ct, layer).ConfigureAwait(false);
+                return (object)resp;
+            };
+
+            _procedures["READ Meter RTC"] = async (input, ct, layer) =>
+            {
+                var resp = await fd.ReadMeterRtc(ct, layer).ConfigureAwait(false);
+                return (object)resp;
+            };
+
+            _procedures["CALIBRATE"] = async (input, ct, layer) =>
+            {
+                var resp = await fd.Calibrate(ct, layer).ConfigureAwait(false);
+                return (object)resp;
+            };
+
+        }
+
         private void DefaultPageState()
         {
-            //Set Default State of the page
+            // Set Default State of the page
             btnStart.Enabled = true;
             btnStop.Enabled = false;
 
             btnPauseResume.Text = "Pause";
             btnPauseResume.Enabled = false;
 
-            //Ensure any paused threads are released so they observe cancellation quickly
+            // Ensure any paused threads are released so they observe cancellation quickly
             _pauseEvent.Set();
         }
 
@@ -80,37 +147,38 @@ namespace CabconPMP
             {
                 try
                 {
-
                     var mode = (ExecutionMode)Invoke(new Func<ExecutionMode>(() => (ExecutionMode)comboBox1.SelectedItem));
-
-                   // ExecuteProcedureAsync(
-                        //procedures.First(), CancellationToken.None).Wait();
 
                     if (mode == ExecutionMode.AllSteps)
                     {
                         // Run all items one by one
                         foreach (var item in _selectedItems)
                         {
-                            await RunStep(item, _cts.Token);
+                            // current FakeData procedures ignore input; pass null
+                            await RunStep<object, positionResponse<string>>(item, null, _cts.Token).ConfigureAwait(false);
                         }
                     }
                     else
                     {
                         if (dataGridView2.SelectedRows.Count == 0)
                         {
-                            MessageBox.Show("Please select a row.");
+                            if (!IsDisposed && IsHandleCreated)
+                            {
+                                BeginInvoke(new Action(() =>
+                                {
+                                    MessageBox.Show("Please select a row.");
+                                }));
+                            }
                             return;
                         }
 
-                        // Run only one selected item
-                        await RunStep(_selectedItems[Convert.ToInt32(dataGridView2.SelectedRows[0].Cells[0].Value)], _cts.Token);
+                        var selectedIndex = Convert.ToInt32(dataGridView2.SelectedRows[0].Cells[0].Value);
+                        await RunStep<object, positionResponse<string>>(_selectedItems[selectedIndex], null, _cts.Token).ConfigureAwait(false);
                     }
-
-                    
                 }
                 catch (OperationCanceledException)
                 {
-                    // expected when user clicks Stop
+                    // expected when user clicks Stop - swallow or optionally log
                 }
                 catch (Exception ex)
                 {
@@ -142,96 +210,211 @@ namespace CabconPMP
             });
         }
 
-        private async Task<List<ProcedureResult>> RunStep(KeyValuePair<int, string> stepName, CancellationToken token)
+        // Generic ProcedureResult so callers can get strongly-typed responses
+        private class ProcedureResult<TResponse>
         {
-            // Find the corresponding procedure for the selected step
-            List<Task<ProcedureResult>> tasks = new List<Task<ProcedureResult>>();
+            public int Position { get; set; }
+            public string ProcedureName { get; set; }
+            public TResponse Response { get; set; }
+            public string Status { get; set; }
+        }
+
+        // Helper: asynchronous-friendly wait while paused
+        private async Task WaitWhilePausedAsync(CancellationToken token)
+        {
+            // ManualResetEventSlim is synchronous; avoid blocking a thread pool thread.
+            // Polling with a short delay gives an async non-blocking wait and still respects cancellation.
+            while (!_pauseEvent.IsSet)
+            {
+                token.ThrowIfCancellationRequested();
+                await Task.Delay(50, token).ConfigureAwait(false);
+            }
+        }
+
+        // RunStep is generic over input and response types.
+        // Creates a LayerInterface per-serial-port (from SerialPortSettings.Default.SerialPort CSV),
+        // connects, runs the registered procedure, then disconnects.
+        // Concurrency controlled with SemaphoreSlim. Respects pause/cancellation and updates UI.
+        private async Task<List<ProcedureResult<TResponse>>> RunStep<TInput, TResponse>(KeyValuePair<int, string> stepName, TInput input, CancellationToken token)
+        {
+            var tasks = new List<Task<ProcedureResult<TResponse>>>();
 
             // Update procedure grid on UI without blocking main flow
             if (!IsDisposed && IsHandleCreated)
             {
-                BeginInvoke(new Action(async () => await UpdateProcedureGrid(new invokedProcedure { SlNo = stepName.Key, ProcedureName = stepName.Value })));
+                // fire-and-forget UI update (UpdateProcedureGrid handles InvokeRequired)
+                BeginInvoke(new Action(async () => await UpdateProcedureGrid(new invokedProcedure { SlNo = stepName.Key, ProcedureName = stepName.Value }).ConfigureAwait(false)));
             }
 
-            dataGridView1.Rows.Clear();
+            // Choose a sensible concurrency level for IO-bound meter communications.
+            int maxConcurrency = Math.Min(ports.Count, Math.Max(1, Environment.ProcessorCount * 2));
+            var semaphore = new SemaphoreSlim(maxConcurrency, maxConcurrency);
 
-            foreach (PortInfo port in fd.portList)
+            foreach (PortInfo port in ports)
             {
-                tasks.Add(Task.Run(async () =>
+                // Create an async task per-port that acquires the semaphore to control concurrency.
+                Task<ProcedureResult<TResponse>> portTask = Task.Run(async () =>
                 {
-                    token.ThrowIfCancellationRequested();
-
-                    // Wait here if paused, but still observe cancellation
-                    _pauseEvent.Wait(token);
-
-                    // Start the procedure, passing the cancellation token to the real method
+                    LayerInterface layer = null;
+                    await semaphore.WaitAsync(token).ConfigureAwait(false);
                     try
                     {
-                        switch (stepName.Value)
+                        token.ThrowIfCancellationRequested();
+
+                        // Await asynchronously while paused so we don't block thread pool threads.
+                        await WaitWhilePausedAsync(token).ConfigureAwait(false);
+
+                        // Create and connect LayerInterface for this specific COM port.
+                        layer = new LayerInterface();
+                        bool connected = false;
+                        try
                         {
-                            case "READ PCBA ID":
-                                procedures[stepName] = async (ct) => await fd.Procedure1(ct);
-                                break;
-                            case "CALIBRATE":
-                                procedures[stepName] = async (ct) => await fd.Procedure2(ct);
-                                break;
-                            default:
-                                throw new InvalidOperationException($"No procedure defined for step {stepName.Value}");
+                            // LayerInterface.ConnectToMeter(serialPortName) is synchronous.
+                            // It sets SerialPortSettings.Default.SerialPort and performs physical/HDLC/association.
+                            connected = layer.ConnectToMeter(port.PortName);
                         }
-
-                        var response = await procedures[stepName](token);
-
-                        // update UI asynchronously (do not block worker)
-                        if (!IsDisposed && IsHandleCreated)
+                        catch (Exception connEx)
                         {
-                            _ = Task.Run(async () =>
+                            connected = false;
+                            if (!IsDisposed && IsHandleCreated)
                             {
-                                await UpdatePositionGrid(new positionResponse
+                                BeginInvoke(new Action(() =>
                                 {
-                                    Position = port.Position,
-                                    Result = response.Result,
-                                    Status = response.Status
-                                });
-                            });
+                                    MessageBox.Show($"Connection error on {port.PortName}: {connEx.Message}", "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }));
+                            }
                         }
 
-                        return new ProcedureResult
+                        if (!connected)
+                        {
+                            return new ProcedureResult<TResponse>
+                            {
+                                Position = port.Position,
+                                ProcedureName = stepName.Value,
+                                Response = default(TResponse),
+                                Status = "ConnectFailed"
+                            };
+                        }
+
+                        // Resolve registered procedure adapter
+                        if (!_procedures.TryGetValue(stepName.Value, out var adapter))
+                        {
+                            throw new InvalidOperationException($"No procedure defined for step {stepName.Value}");
+                        }
+
+                        // Call adapter (returns Task<object>) and await its completion.
+                        object rawResponse = await adapter((object)input, token, layer).ConfigureAwait(false);
+
+                        // Attempt to convert response to expected type TResponse
+                        TResponse typedResponse;
+                        try
+                        {
+                            if (rawResponse == null)
+                            {
+                                typedResponse = default(TResponse);
+                            }
+                            else if (rawResponse is TResponse tr)
+                            {
+                                typedResponse = tr;
+                            }
+                            else
+                            {
+                                typedResponse = (TResponse)Convert.ChangeType(rawResponse, typeof(TResponse));
+                            }
+                        }
+                        catch (Exception castEx)
+                        {
+                            typedResponse = default(TResponse);
+                            if (!IsDisposed && IsHandleCreated)
+                            {
+                                BeginInvoke(new Action(() =>
+                                {
+                                    MessageBox.Show($"Procedure '{stepName.Value}' returned an unexpected response type: {castEx.Message}", "Type Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                }));
+                            }
+                        }
+
+                        // If possible, extract positionResponse-like info for UI grid update
+                        try
+                        {
+                            var posResp = TryExtractPositionResponse(rawResponse);
+                            if (posResp != null && !IsDisposed && IsHandleCreated)
+                            {
+                                // ensure Position matches current port
+                                posResp.Position = port.Position;
+                                // UpdatePositionGrid is safe to call from background thread (it marshals to UI)
+                                _ = UpdatePositionGrid(posResp);
+                            }
+                        }
+                        catch
+                        {
+                            // ignore UI update extraction errors
+                        }
+
+                        return new ProcedureResult<TResponse>
                         {
                             Position = port.Position,
                             ProcedureName = stepName.Value,
-                            Response = response.Result,
-                            Status = response.Status
+                            Response = typedResponse,
+                            Status = ExtractStatusFromResponse(rawResponse) ?? "OK"
                         };
                     }
                     catch (OperationCanceledException)
                     {
-                        // propagate cancellation to caller
+                        // rethrow to allow Task.WhenAll to observe cancellation
                         throw;
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        // If underlying operation fails, return a failed ProcedureResult
-                        string resp = null;
-                        try
+                        if (!IsDisposed && IsHandleCreated)
                         {
-                            //if (operationTask != null && operationTask.IsCompleted)
-                            //{
-                            //    resp = operationTask.Result?.Result;
-                            //}
+                            BeginInvoke(new Action(() =>
+                            {
+                                MessageBox.Show($"Error in procedure '{stepName.Value}' for port {port.PortName}: {ex.Message}", "Procedure Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }));
                         }
-                        catch { /* ignore */ }
 
-                        return new ProcedureResult
+                        return new ProcedureResult<TResponse>
                         {
                             Position = port.Position,
                             ProcedureName = stepName.Value,
-                            Response = resp,
+                            Response = default(TResponse),
                             Status = "Error"
                         };
                     }
-                }, token));
+                    finally
+                    {
+                        // Always try to disconnect this port's LayerInterface instance
+                        try
+                        {
+                            if (layer != null)
+                            {
+                                // AssociationDisconnect will call PhysicalLayerDisconnect in finally
+                                layer.AssociationDisconnect();
+                            }
+                        }
+                        catch
+                        {
+                            // ignore disconnect errors
+                        }
+
+                        semaphore.Release();
+                    }
+                }, token);
+
+                tasks.Add(portTask);
             }
-            return (await Task.WhenAll(tasks)).ToList();
+
+            try
+            {
+                var completed = await Task.WhenAll(tasks).ConfigureAwait(false);
+                return completed.ToList();
+            }
+            finally
+            {
+                // Clean up semaphore
+                semaphore.Dispose();
+            }
         }
 
         private void btnPauseResume_Click(object sender, EventArgs e)
@@ -252,7 +435,6 @@ namespace CabconPMP
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-
             if (_cts != null && !_cts.IsCancellationRequested)
             {
                 _cts.Cancel();
@@ -261,7 +443,7 @@ namespace CabconPMP
             DefaultPageState();
         }
 
-        private Task UpdatePositionGrid(positionResponse result)
+        private Task UpdatePositionGrid(positionResponse<string> result)
         {
             // If control/form is closing or not created, drop update
             if (IsDisposed || !IsHandleCreated)
@@ -277,7 +459,6 @@ namespace CabconPMP
 
             dataGridView1.DataSource = _positionResultGrid;
             return Task.CompletedTask;
-
         }
         private Task UpdateProcedureGrid(invokedProcedure procedure)
         {
@@ -318,5 +499,94 @@ namespace CabconPMP
                 dataGridView2.Enabled = true;
             }
         }
+
+        #region Helpers to extract UI fields from arbitrary response objects
+
+        // Tries to build a positionResponse<string> from an arbitrary response object by:
+        // 1) direct cast to positionResponse<string>
+        // 2) if type is positionResponse<T>, extract Payload and Status and convert payload to string
+        // 3) reflection: reading "Result" and "Status" properties (legacy)
+        private positionResponse<string> TryExtractPositionResponse(object resp)
+        {
+            if (resp == null) return null;
+
+            // direct strong-typed
+            if (resp is positionResponse<string> direct)
+            {
+                return direct;
+            }
+
+            var type = resp.GetType();
+
+            // if it's a positionResponse<T>, get Payload and Status by reflection
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(positionResponse<>))
+            {
+                var payloadProp = type.GetProperty("Payload", BindingFlags.Public | BindingFlags.Instance);
+                var statusProp = type.GetProperty("Status", BindingFlags.Public | BindingFlags.Instance);
+                var positionProp = type.GetProperty("Position", BindingFlags.Public | BindingFlags.Instance);
+
+                var payloadVal = payloadProp?.GetValue(resp);
+                var statusVal = statusProp?.GetValue(resp);
+                var posVal = positionProp?.GetValue(resp);
+
+                return new positionResponse<string>
+                {
+                    Position = posVal is int p ? p : 0,
+                    Payload = payloadVal?.ToString(),
+                    Status = statusVal?.ToString()
+                };
+            }
+
+            // legacy shape support: look for Result + Status properties
+            var resultProp = type.GetProperty("Result", BindingFlags.Public | BindingFlags.Instance);
+            var statusPropLegacy = type.GetProperty("Status", BindingFlags.Public | BindingFlags.Instance);
+            var positionPropLegacy = type.GetProperty("Position", BindingFlags.Public | BindingFlags.Instance);
+
+            if (resultProp != null && statusPropLegacy != null)
+            {
+                var resultVal = resultProp.GetValue(resp);
+                var statusVal = statusPropLegacy.GetValue(resp);
+                var posVal = positionPropLegacy?.GetValue(resp);
+
+                return new positionResponse<string>
+                {
+                    Position = posVal is int p ? p : 0,
+                    Payload = resultVal?.ToString(),
+                    Status = statusVal?.ToString()
+                };
+            }
+
+            return null;
+        }
+
+        // Attempts to extract a status string from a response object
+        private string ExtractStatusFromResponse(object resp)
+        {
+            if (resp == null) return null;
+
+            var type = resp.GetType();
+
+            var statusProp = type.GetProperty("Status", BindingFlags.Public | BindingFlags.Instance);
+            if (statusProp != null)
+            {
+                var statusVal = statusProp.GetValue(resp);
+                return statusVal?.ToString();
+            }
+
+            // if payload-based positionResponse
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(positionResponse<>))
+            {
+                var statusProp2 = type.GetProperty("Status", BindingFlags.Public | BindingFlags.Instance);
+                if (statusProp2 != null)
+                {
+                    var statusVal2 = statusProp2.GetValue(resp);
+                    return statusVal2?.ToString();
+                }
+            }
+
+            return null;
+        }
+
+        #endregion
     }
 }
