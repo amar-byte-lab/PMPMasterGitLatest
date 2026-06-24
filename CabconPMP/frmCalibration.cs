@@ -88,12 +88,6 @@ namespace CabconPMP
             {
                 // fallback to FakeData portList if parsing fails
             }
-
-            if (ports.Count == 0)
-            {
-                // fall back to existing fd.portList
-                ports.AddRange(fd.portList);
-            }
         }
 
         private void RegisterProcedures()
@@ -103,25 +97,31 @@ namespace CabconPMP
             // For current FakeData methods the concrete return type is positionResponse<string>
             _procedures["READ PCBA ID"] = async (input, ct, layer, objComMethod) =>
             {
-                var resp = await fd.ReadPCBAId(ct, layer).ConfigureAwait(false);
+                var resp = await fd.ReadPCBAId(ct, layer, objComMethod).ConfigureAwait(false);
                 return (object)resp;
             };
 
             _procedures["READ Meter RTC"] = async (input, ct, layer, objComMethod) =>
             {
-                var resp = await fd.ReadMeterRtc(ct, layer).ConfigureAwait(false);
+                var resp = await fd.ReadMeterRtc(ct, layer, objComMethod).ConfigureAwait(false);
                 return (object)resp;
             };
 
             _procedures["CALIBRATE"] = async (input, ct, layer, objComMethod) =>
             {
-                var resp = await fd.Calibrate(ct, layer).ConfigureAwait(false);
+                var resp = await fd.Calibrate(ct, layer, objComMethod).ConfigureAwait(false);
                 return (object)resp;
             };
 
             _procedures["Read Energy"] = async (input, ct, layer, objComMethod) =>
             {
                 var resp = await fd.ReadEnergy(ct, layer, objComMethod).ConfigureAwait(false);
+                return (object)resp;
+            };
+
+            _procedures["Meter Reset"] = async (input, ct, layer, objComMethod) =>
+            {
+                var resp = await fd.MeterReset(ct, layer, objComMethod).ConfigureAwait(false);
                 return (object)resp;
             };
 
@@ -536,7 +536,6 @@ namespace CabconPMP
                     dataGridView2.CurrentCell = dataGridView2.Rows[procedure.SlNo].Cells[0];
 
                 dataGridView2.Rows[procedure.SlNo].Selected = true;
-                dataGridView2.Enabled = false;
             }
 
             return Task.CompletedTask;

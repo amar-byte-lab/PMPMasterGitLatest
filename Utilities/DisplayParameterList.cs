@@ -130,6 +130,7 @@ namespace Utilities
             dictionaryDisplayList.Add("CALIBRATE", ItemIDX++);
             dictionaryDisplayList.Add("READ Meter RTC", ItemIDX++);
             dictionaryDisplayList.Add("Read Energy", ItemIDX++);
+            dictionaryDisplayList.Add("Meter Reset", ItemIDX++);
 
             dictionaryDisplayList.Add("Cummulative Active Energy", ItemIDX++);//1
             dictionaryDisplayList.Add("Rate 1 Active Energy", ItemIDX++);//2
