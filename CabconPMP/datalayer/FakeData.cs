@@ -124,6 +124,22 @@ namespace CabconPMP.datalayer
             };
         }
 
+        public async Task<positionResponse<string>> ReadEnergy(CancellationToken ct, LayerInterface layer, CommonCommandMethods ccm)
+        {
+            int testExecutionStatus = -1;
+            string readenergyResponse = ccm.VerifyEnergy("", "0", "5000");
+            if (readenergyResponse.IndexOf(StaticVariables.ERRORPreFix) < 0) testExecutionStatus = (int)StaticVariables.ExecutionReurnStatus.Pass;
+            else testExecutionStatus = (int)StaticVariables.ExecutionReurnStatus.Fail;
+
+            ct.ThrowIfCancellationRequested();
+
+            return new positionResponse<string>()
+            {
+                Payload = readenergyResponse,
+                Status = testExecutionStatus == (int)StaticVariables.ExecutionReurnStatus.Pass ? "Pass" : "Fail"
+            };
+        }
+
         public async Task<positionResponse<string>> ReadPCBAId(CancellationToken ct, LayerInterface layer)
         {
 

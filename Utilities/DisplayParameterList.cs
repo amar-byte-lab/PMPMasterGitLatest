@@ -129,6 +129,7 @@ namespace Utilities
             dictionaryDisplayList.Add("READ PCBA ID", ItemIDX++);
             dictionaryDisplayList.Add("CALIBRATE", ItemIDX++);
             dictionaryDisplayList.Add("READ Meter RTC", ItemIDX++);
+            dictionaryDisplayList.Add("Read Energy", ItemIDX++);
 
             dictionaryDisplayList.Add("Cummulative Active Energy", ItemIDX++);//1
             dictionaryDisplayList.Add("Rate 1 Active Energy", ItemIDX++);//2

@@ -1,9 +1,11 @@
 ﻿using ApplicationInterface;
 using CabconPMP.datalayer;
 using COMMONENTITY;
+using SerialCommunication;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -28,14 +30,17 @@ namespace CabconPMP
         // generic-compat procedures map:
         // key: procedure name, value: Func<object input, CancellationToken, Task<object response>>
         // we use object here so we can register arbitrary typed procedures and invoke them from generic callers
-        private readonly Dictionary<string, Func<object, CancellationToken, LayerInterface, Task<object>>> _procedures =
-            new Dictionary<string, Func<object, CancellationToken, LayerInterface, Task<object>>>();
+        private readonly Dictionary<string, Func<object, CancellationToken, LayerInterface, CommonCommandMethods, Task<object>>> _procedures =
+            new Dictionary<string, Func<object, CancellationToken, LayerInterface, CommonCommandMethods, Task<object>>>();
+
+        // The communication stack below frmCalibration is stateful and uses shared globals.
+        // Serialize meter sessions so one port cannot overwrite another port's active COM settings.
+        private readonly SemaphoreSlim _meterSessionGate = new SemaphoreSlim(1, 1);
 
         private CancellationTokenSource _cts;
 
         FakeData fd = new FakeData();
 
-        LayerInterface layer = new LayerInterface();
         List<string> portList = new List<string>();
         List<PortInfo> ports = new List<PortInfo>();
 
@@ -73,7 +78,7 @@ namespace CabconPMP
             {
                 // Get Associated PortList
                 ports = new List<PortInfo>();
-                portList = layer.GetAssociatedPortList();
+                portList = new LayerInterface().GetAssociatedPortList();
                 for (int i = 0; i < portList.Count; i++)
                 {
                     ports.Add(new PortInfo { Position = i + 1, PortName = portList[i], PCBAId = string.Empty });
@@ -96,21 +101,27 @@ namespace CabconPMP
             // Register procedure adapters here.
             // Each registration adapts a strongly-typed method to the object-based delegate used by the runtime.
             // For current FakeData methods the concrete return type is positionResponse<string>
-            _procedures["READ PCBA ID"] = async (input, ct, layer) =>
+            _procedures["READ PCBA ID"] = async (input, ct, layer, objComMethod) =>
             {
                 var resp = await fd.ReadPCBAId(ct, layer).ConfigureAwait(false);
                 return (object)resp;
             };
 
-            _procedures["READ Meter RTC"] = async (input, ct, layer) =>
+            _procedures["READ Meter RTC"] = async (input, ct, layer, objComMethod) =>
             {
                 var resp = await fd.ReadMeterRtc(ct, layer).ConfigureAwait(false);
                 return (object)resp;
             };
 
-            _procedures["CALIBRATE"] = async (input, ct, layer) =>
+            _procedures["CALIBRATE"] = async (input, ct, layer, objComMethod) =>
             {
                 var resp = await fd.Calibrate(ct, layer).ConfigureAwait(false);
+                return (object)resp;
+            };
+
+            _procedures["Read Energy"] = async (input, ct, layer, objComMethod) =>
+            {
+                var resp = await fd.ReadEnergy(ct, layer, objComMethod).ConfigureAwait(false);
                 return (object)resp;
             };
 
@@ -131,6 +142,12 @@ namespace CabconPMP
 
         private void btnStart_Click(object sender, EventArgs e)
         {
+            if (_cts != null)
+            {
+                _cts.Dispose();
+            }
+            _cts = new CancellationTokenSource();
+
             // update UI immediately
             btnStart.Enabled = false;
             btnStop.Enabled = true;
@@ -175,10 +192,6 @@ namespace CabconPMP
                         var selectedIndex = Convert.ToInt32(dataGridView2.SelectedRows[0].Cells[0].Value);
                         await RunStep<object, positionResponse<string>>(_selectedItems[selectedIndex], null, _cts.Token).ConfigureAwait(false);
                     }
-                }
-                catch (OperationCanceledException)
-                {
-                    // expected when user clicks Stop - swallow or optionally log
                 }
                 catch (Exception ex)
                 {
@@ -256,16 +269,27 @@ namespace CabconPMP
                 Task<ProcedureResult<TResponse>> portTask = Task.Run(async () =>
                 {
                     LayerInterface layer = null;
-                    await semaphore.WaitAsync(token).ConfigureAwait(false);
+                    CommonCommandMethods ccm = null;
+                    bool semaphoreTaken = false;
+                    bool sessionTaken = false;
                     try
                     {
+                        await semaphore.WaitAsync(token).ConfigureAwait(false);
+                        semaphoreTaken = true;
+
+                        await _meterSessionGate.WaitAsync(token).ConfigureAwait(false);
+                        sessionTaken = true;
+
                         token.ThrowIfCancellationRequested();
 
                         // Await asynchronously while paused so we don't block thread pool threads.
                         await WaitWhilePausedAsync(token).ConfigureAwait(false);
+                        token.ThrowIfCancellationRequested();
 
                         // Create and connect LayerInterface for this specific COM port.
                         layer = new LayerInterface();
+                        ccm = new CommonCommandMethods();
+
                         bool connected = false;
                         try
                         {
@@ -287,13 +311,15 @@ namespace CabconPMP
 
                         if (!connected)
                         {
-                            return new ProcedureResult<TResponse>
+                            var connectResult = new ProcedureResult<TResponse>
                             {
                                 Position = port.Position,
                                 ProcedureName = stepName.Value,
                                 Response = default(TResponse),
                                 Status = "ConnectFailed"
                             };
+                            await UpdatePositionGrid(BuildGridRow(connectResult, $"Connection failed on {port.PortName}")).ConfigureAwait(false);
+                            return connectResult;
                         }
 
                         // Resolve registered procedure adapter
@@ -303,7 +329,7 @@ namespace CabconPMP
                         }
 
                         // Call adapter (returns Task<object>) and await its completion.
-                        object rawResponse = await adapter((object)input, token, layer).ConfigureAwait(false);
+                        object rawResponse = await adapter((object)input, token, layer, ccm).ConfigureAwait(false);
 
                         // Attempt to convert response to expected type TResponse
                         TResponse typedResponse;
@@ -334,35 +360,46 @@ namespace CabconPMP
                             }
                         }
 
-                        // If possible, extract positionResponse-like info for UI grid update
-                        try
-                        {
-                            var posResp = TryExtractPositionResponse(rawResponse);
-                            if (posResp != null && !IsDisposed && IsHandleCreated)
-                            {
-                                // ensure Position matches current port
-                                posResp.Position = port.Position;
-                                // UpdatePositionGrid is safe to call from background thread (it marshals to UI)
-                                _ = UpdatePositionGrid(posResp);
-                            }
-                        }
-                        catch
-                        {
-                            // ignore UI update extraction errors
-                        }
+                        object responseObj = typedResponse;
+                        var responseText = responseObj?.ToString();
 
-                        return new ProcedureResult<TResponse>
+                        var responseResult = new ProcedureResult<TResponse>
                         {
                             Position = port.Position,
                             ProcedureName = stepName.Value,
                             Response = typedResponse,
                             Status = ExtractStatusFromResponse(rawResponse) ?? "OK"
                         };
+
+                        var gridRow = TryExtractPositionResponse(rawResponse);
+                        if (gridRow == null)
+                        {
+                            gridRow = BuildGridRow(responseResult, responseText);
+                        }
+                        else
+                        {
+                            gridRow.Position = port.Position;
+                            gridRow.Status = responseResult.Status;
+                            if (string.IsNullOrWhiteSpace(gridRow.Payload))
+                            {
+                                gridRow.Payload = responseText;
+                            }
+                        }
+
+                        await UpdatePositionGrid(gridRow).ConfigureAwait(false);
+                        return responseResult;
                     }
                     catch (OperationCanceledException)
                     {
-                        // rethrow to allow Task.WhenAll to observe cancellation
-                        throw;
+                        var cancelResult = new ProcedureResult<TResponse>
+                        {
+                            Position = port.Position,
+                            ProcedureName = stepName.Value,
+                            Response = default(TResponse),
+                            Status = "Cancelled"
+                        };
+                        await UpdatePositionGrid(BuildGridRow(cancelResult, "Cancelled")).ConfigureAwait(false);
+                        return cancelResult;
                     }
                     catch (Exception ex)
                     {
@@ -374,13 +411,16 @@ namespace CabconPMP
                             }));
                         }
 
-                        return new ProcedureResult<TResponse>
+                        var errorResult = new ProcedureResult<TResponse>
                         {
                             Position = port.Position,
                             ProcedureName = stepName.Value,
                             Response = default(TResponse),
                             Status = "Error"
                         };
+
+                        await UpdatePositionGrid(BuildGridRow(errorResult, ex.Message)).ConfigureAwait(false);
+                        return errorResult;
                     }
                     finally
                     {
@@ -398,9 +438,17 @@ namespace CabconPMP
                             // ignore disconnect errors
                         }
 
-                        semaphore.Release();
+                        if (semaphoreTaken)
+                        {
+                            semaphore.Release();
+                        }
+
+                        if (sessionTaken)
+                        {
+                            _meterSessionGate.Release();
+                        }
                     }
-                }, token);
+                });
 
                 tasks.Add(portTask);
             }
@@ -439,8 +487,8 @@ namespace CabconPMP
             {
                 _cts.Cancel();
             }
-
             DefaultPageState();
+            _pauseEvent.Set();
         }
 
         private Task UpdatePositionGrid(positionResponse<string> result)
@@ -459,6 +507,16 @@ namespace CabconPMP
 
             dataGridView1.DataSource = _positionResultGrid;
             return Task.CompletedTask;
+        }
+
+        private positionResponse<string> BuildGridRow<TResponse>(ProcedureResult<TResponse> result, string payload)
+        {
+            return new positionResponse<string>
+            {
+                Position = result.Position,
+                Status = result.Status,
+                Payload = payload ?? string.Empty
+            };
         }
         private Task UpdateProcedureGrid(invokedProcedure procedure)
         {
