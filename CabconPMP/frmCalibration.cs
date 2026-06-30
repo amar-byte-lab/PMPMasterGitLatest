@@ -69,6 +69,45 @@ namespace CabconPMP
             RegisterProcedures();
 
             DefaultPageState();
+
+            LoadBenchParameters();
+        }
+
+        private void LoadBenchParameters()
+        {
+            // Load bench parameters from configuration or defaults
+            //_cts.Cancel();
+
+            // Bench Base Values
+            this.UbValue.Text = Bench.Instance.UB.ToString(CultureInfo.InvariantCulture);
+            this.IbValue.Text = Bench.Instance.IB.ToString(CultureInfo.InvariantCulture);
+            this.fValue.Text = Bench.Instance.FREQ.ToString(CultureInfo.InvariantCulture);
+            this.ImValue.Text = Bench.Instance.IMax.ToString(CultureInfo.InvariantCulture);
+
+            // Monitoring Values 
+            this.UValue1.Text = Bench.Instance.UA.ToString(CultureInfo.InvariantCulture);
+            this.UValue2.Text = Bench.Instance.UB.ToString(CultureInfo.InvariantCulture);
+            this.UValue3.Text = Bench.Instance.UC.ToString(CultureInfo.InvariantCulture);
+
+            this.IValue1.Text = Bench.Instance.IA.ToString(CultureInfo.InvariantCulture);
+            this.IValue2.Text = Bench.Instance.IB.ToString(CultureInfo.InvariantCulture);
+            this.IValue3.Text = Bench.Instance.IC.ToString(CultureInfo.InvariantCulture);
+
+            this.PhiValue1.Text = Bench.Instance.PHI.ToString(CultureInfo.InvariantCulture);
+            this.PhiValue2.Text = Bench.Instance.PHI.ToString(CultureInfo.InvariantCulture);
+            this.PhiValue3.Text = Bench.Instance.PHI.ToString(CultureInfo.InvariantCulture);
+
+            // BenchActual Power
+            this.pValue.Text = Bench.Instance.ActivePower.ToString(CultureInfo.InvariantCulture);
+            this.qValue.Text = Bench.Instance.ReactivePower.ToString(CultureInfo.InvariantCulture);
+            this.sValue.Text = Bench.Instance.ApparentPower.ToString(CultureInfo.InvariantCulture);
+
+            // Bench Environmental Values
+            this.tempValue.Text = Bench.Instance.Temperature.ToString(CultureInfo.InvariantCulture);
+            this.humidityValue.Text = Bench.Instance.Humidity.ToString(CultureInfo.InvariantCulture);
+
+
+            //_cts.Dispose();
         }
 
         private void BuildPortList()

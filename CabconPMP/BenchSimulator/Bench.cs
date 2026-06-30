@@ -15,28 +15,104 @@ namespace CabconPMP.BenchSimulator
             get { return _instance.Value; }
         }
 
-        // Voltage
-        public double UA { get; private set; }
-        public double UB { get; private set; }
-        public double UC { get; private set; }
-
-        // Current
-        public double IA { get; private set; }
-        public double IB { get; private set; }
-        public double IC { get; private set; }
-
         public double IMax { get; private set; }
         public bool IsImax { get; private set; }
 
         // Other Parameters
-        public double PHI { get; private set; }
-        public double FREQ { get; private set; }
+        public double FREQ { get => _freq; private set => _freq = Math.Round(value, 2); }
+        private double _freq;
+
         public string Waveform { get; private set; }
         public string PhaseSeq { get; private set; }
 
         // Environmental Parameters
-        public double Temperature { get; private set; } = 0.0;
-        public double Humidity { get; private set; } = 0.0;
+        public double Temperature { get => _temperature; private set => _temperature = Math.Round(value, 2); }
+        private double _temperature = 0.0;
+        public double Humidity { get => _humidity; private set => _humidity = Math.Round(value, 2); }
+        private double _humidity = 0.0;
+
+
+        private double _ua;
+        private double _ub;
+        private double _uc;
+        private double _ia;
+        private double _ib;
+        private double _ic;
+        private double _phi;
+
+        public double UA
+        {
+            get => _ua;
+            set
+            {
+                _ua = Math.Round(value, 2);
+                CalculatePower();
+            }
+        }
+
+        public double UB
+        {
+            get => _ub;
+            set
+            {
+                _ub = Math.Round(value, 2);
+                CalculatePower();
+            }
+        }
+
+        public double UC
+        {
+            get => _uc;
+            set
+            {
+                _uc = Math.Round(value, 2);
+                CalculatePower();
+            }
+        }
+
+        public double IA
+        {
+            get => _ia;
+            set
+            {
+                _ia = Math.Round(value, 2);
+                CalculatePower();
+            }
+        }
+
+        public double IB
+        {
+            get => _ib;
+            set
+            {
+                _ib = Math.Round(value, 2);
+                CalculatePower();
+            }
+        }
+
+        public double IC
+        {
+            get => _ic;
+            set
+            {
+                _ic = Math.Round(value, 2);
+                CalculatePower();
+            }
+        }
+
+        public double PHI
+        {
+            get => _phi;
+            set
+            {
+                _phi = Math.Round(value, 2);
+                CalculatePower();
+            }
+        }
+
+        public double ApparentPower { get; private set; } //(S) => [VA]
+        public double ActivePower { get; private set; } //(P) => [W]
+        public double ReactivePower { get; private set; } //(Q) => [VAR]
 
         private Bench()
         {
@@ -44,6 +120,17 @@ namespace CabconPMP.BenchSimulator
 
             // Refresh every 5 seconds
             _timer = new Timer(UpdateValues, null, 5000, 5000);
+        }
+
+        private void CalculatePower()
+        {
+            double voltage = (UA + UB + UC) / 3.0;
+            double current = (IA + IB + IC) / 3.0;
+            double phi = PHI * Math.PI / 180.0;
+
+            ApparentPower = Math.Round(Math.Sqrt(3) * voltage * current, 2);
+            ActivePower = Math.Round(ApparentPower * Math.Cos(phi), 2);
+            ReactivePower = Math.Round(ApparentPower * Math.Sin(phi), 2);
         }
 
         private void UpdateValues(object state)
