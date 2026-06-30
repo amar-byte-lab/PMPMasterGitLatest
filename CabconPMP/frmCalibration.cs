@@ -1,4 +1,5 @@
 ﻿using ApplicationInterface;
+using CabconPMP.BenchSimulator;
 using CabconPMP.datalayer;
 using COMMONENTITY;
 using SerialCommunication;
@@ -44,7 +45,6 @@ namespace CabconPMP
         List<string> portList = new List<string>();
         List<PortInfo> ports = new List<PortInfo>();
 
-
         public frmCalibration(List<KeyValuePair<int, string>> selectedItems)
         {
             InitializeComponent();
@@ -59,7 +59,7 @@ namespace CabconPMP
             comboBox1.SelectedItem = ExecutionMode.SingleStep;
             dataGridView2.Rows[0].Selected = true;
 
-
+            Bench.Instance.Start();
 
 
             _cts = new CancellationTokenSource();

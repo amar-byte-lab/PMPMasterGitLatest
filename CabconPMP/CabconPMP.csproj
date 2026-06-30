@@ -157,6 +157,7 @@
     <Compile Include="actions\SM310Action.cs" />
     <Compile Include="actions\SPS2Action.cs" />
     <Compile Include="actions\UpdateEventArgs.cs" />
+    <Compile Include="BenchSimulator\Bench.cs" />
     <Compile Include="communication\AARQ.cs" />
     <Compile Include="communication\basecosem.cs" />
     <Compile Include="communication\basehdlc.cs" />
