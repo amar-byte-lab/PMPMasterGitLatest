@@ -174,7 +174,7 @@ namespace CabconPMP.UI
             this.tabControl1.Location = new System.Drawing.Point(10, 35);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(737, 451);
+            this.tabControl1.Size = new System.Drawing.Size(1009, 555);
             this.tabControl1.TabIndex = 1;
             // 
             // tabCommon
@@ -382,7 +382,7 @@ namespace CabconPMP.UI
             this.tabDevices.Location = new System.Drawing.Point(4, 22);
             this.tabDevices.Name = "tabDevices";
             this.tabDevices.Padding = new System.Windows.Forms.Padding(3);
-            this.tabDevices.Size = new System.Drawing.Size(729, 425);
+            this.tabDevices.Size = new System.Drawing.Size(1001, 529);
             this.tabDevices.TabIndex = 1;
             this.tabDevices.Text = "Test devices";
             this.tabDevices.UseVisualStyleBackColor = true;
@@ -796,7 +796,7 @@ namespace CabconPMP.UI
             this.tabExecute.Controls.Add(this.lblLogs);
             this.tabExecute.Location = new System.Drawing.Point(4, 22);
             this.tabExecute.Name = "tabExecute";
-            this.tabExecute.Size = new System.Drawing.Size(729, 425);
+            this.tabExecute.Size = new System.Drawing.Size(1001, 529);
             this.tabExecute.TabIndex = 3;
             this.tabExecute.Text = "Execute";
             this.tabExecute.UseVisualStyleBackColor = true;
@@ -818,7 +818,7 @@ namespace CabconPMP.UI
             this.grpLiveTelemetry.Controls.Add(this.lblPhaseC);
             this.grpLiveTelemetry.Controls.Add(this.lblPhaseB);
             this.grpLiveTelemetry.Controls.Add(this.lblPhaseA);
-            this.grpLiveTelemetry.Location = new System.Drawing.Point(467, 69);
+            this.grpLiveTelemetry.Location = new System.Drawing.Point(745, 98);
             this.grpLiveTelemetry.Name = "grpLiveTelemetry";
             this.grpLiveTelemetry.Size = new System.Drawing.Size(253, 108);
             this.grpLiveTelemetry.TabIndex = 11;
@@ -957,7 +957,7 @@ namespace CabconPMP.UI
             this.grpEnvValues.Controls.Add(this.lblHumidity);
             this.grpEnvValues.Controls.Add(this.txtEnvTemp);
             this.grpEnvValues.Controls.Add(this.lblTemp);
-            this.grpEnvValues.Location = new System.Drawing.Point(467, 264);
+            this.grpEnvValues.Location = new System.Drawing.Point(743, 296);
             this.grpEnvValues.Name = "grpEnvValues";
             this.grpEnvValues.Size = new System.Drawing.Size(253, 61);
             this.grpEnvValues.TabIndex = 14;
@@ -1006,7 +1006,7 @@ namespace CabconPMP.UI
             this.grpActualPower.Controls.Add(this.lblTotalQ);
             this.grpActualPower.Controls.Add(this.txtTotalP);
             this.grpActualPower.Controls.Add(this.lblTotalP);
-            this.grpActualPower.Location = new System.Drawing.Point(467, 182);
+            this.grpActualPower.Location = new System.Drawing.Point(745, 212);
             this.grpActualPower.Name = "grpActualPower";
             this.grpActualPower.Size = new System.Drawing.Size(253, 78);
             this.grpActualPower.TabIndex = 13;
@@ -1067,9 +1067,9 @@ namespace CabconPMP.UI
             // grpRangeLimits
             // 
             this.grpRangeLimits.Controls.Add(this.lblRangeLimits);
-            this.grpRangeLimits.Location = new System.Drawing.Point(133, 286);
+            this.grpRangeLimits.Location = new System.Drawing.Point(6, 7);
             this.grpRangeLimits.Name = "grpRangeLimits";
-            this.grpRangeLimits.Size = new System.Drawing.Size(163, 39);
+            this.grpRangeLimits.Size = new System.Drawing.Size(403, 39);
             this.grpRangeLimits.TabIndex = 10;
             this.grpRangeLimits.TabStop = false;
             this.grpRangeLimits.Text = "Range of Limits";
@@ -1093,7 +1093,7 @@ namespace CabconPMP.UI
             this.grpBaseValues.Controls.Add(this.lblBaseIb);
             this.grpBaseValues.Controls.Add(this.txtBaseUb);
             this.grpBaseValues.Controls.Add(this.lblBaseUb);
-            this.grpBaseValues.Location = new System.Drawing.Point(467, 4);
+            this.grpBaseValues.Location = new System.Drawing.Point(745, 24);
             this.grpBaseValues.Name = "grpBaseValues";
             this.grpBaseValues.Size = new System.Drawing.Size(253, 65);
             this.grpBaseValues.TabIndex = 9;
@@ -1170,7 +1170,7 @@ namespace CabconPMP.UI
             // 
             // btnStop
             // 
-            this.btnStop.Location = new System.Drawing.Point(240, 381);
+            this.btnStop.Location = new System.Drawing.Point(679, 307);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(47, 30);
             this.btnStop.TabIndex = 8;
@@ -1180,7 +1180,7 @@ namespace CabconPMP.UI
             // 
             // btnPause
             // 
-            this.btnPause.Location = new System.Drawing.Point(189, 381);
+            this.btnPause.Location = new System.Drawing.Point(626, 307);
             this.btnPause.Name = "btnPause";
             this.btnPause.Size = new System.Drawing.Size(47, 30);
             this.btnPause.TabIndex = 7;
@@ -1190,9 +1190,9 @@ namespace CabconPMP.UI
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(137, 381);
+            this.btnStart.Location = new System.Drawing.Point(570, 307);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(47, 30);
+            this.btnStart.Size = new System.Drawing.Size(50, 30);
             this.btnStart.TabIndex = 6;
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = true;
@@ -1202,15 +1202,15 @@ namespace CabconPMP.UI
             // 
             this.cmbStep.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbStep.FormattingEnabled = true;
-            this.cmbStep.Location = new System.Drawing.Point(137, 347);
+            this.cmbStep.Location = new System.Drawing.Point(419, 313);
             this.cmbStep.Name = "cmbStep";
-            this.cmbStep.Size = new System.Drawing.Size(159, 21);
+            this.cmbStep.Size = new System.Drawing.Size(134, 21);
             this.cmbStep.TabIndex = 5;
             // 
             // lblSingleStep
             // 
             this.lblSingleStep.AutoSize = true;
-            this.lblSingleStep.Location = new System.Drawing.Point(137, 331);
+            this.lblSingleStep.Location = new System.Drawing.Point(416, 297);
             this.lblSingleStep.Name = "lblSingleStep";
             this.lblSingleStep.Size = new System.Drawing.Size(29, 13);
             this.lblSingleStep.TabIndex = 4;
@@ -1221,17 +1221,19 @@ namespace CabconPMP.UI
             this.dgvExecuteSteps.AllowUserToAddRows = false;
             this.dgvExecuteSteps.AllowUserToDeleteRows = false;
             this.dgvExecuteSteps.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvExecuteSteps.Location = new System.Drawing.Point(137, 22);
+            this.dgvExecuteSteps.Location = new System.Drawing.Point(418, 24);
+            this.dgvExecuteSteps.MultiSelect = false;
             this.dgvExecuteSteps.Name = "dgvExecuteSteps";
             this.dgvExecuteSteps.ReadOnly = true;
             this.dgvExecuteSteps.RowHeadersVisible = false;
-            this.dgvExecuteSteps.Size = new System.Drawing.Size(321, 260);
+            this.dgvExecuteSteps.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvExecuteSteps.Size = new System.Drawing.Size(321, 256);
             this.dgvExecuteSteps.TabIndex = 3;
             // 
             // lblExeSteps
             // 
             this.lblExeSteps.AutoSize = true;
-            this.lblExeSteps.Location = new System.Drawing.Point(137, 4);
+            this.lblExeSteps.Location = new System.Drawing.Point(415, 4);
             this.lblExeSteps.Name = "lblExeSteps";
             this.lblExeSteps.Size = new System.Drawing.Size(82, 13);
             this.lblExeSteps.TabIndex = 2;
@@ -1240,15 +1242,15 @@ namespace CabconPMP.UI
             // lstOverview
             // 
             this.lstOverview.FormattingEnabled = true;
-            this.lstOverview.Location = new System.Drawing.Point(9, 22);
+            this.lstOverview.Location = new System.Drawing.Point(3, 63);
             this.lstOverview.Name = "lstOverview";
-            this.lstOverview.Size = new System.Drawing.Size(121, 394);
+            this.lstOverview.Size = new System.Drawing.Size(407, 459);
             this.lstOverview.TabIndex = 1;
             // 
             // lblOverview
             // 
             this.lblOverview.AutoSize = true;
-            this.lblOverview.Location = new System.Drawing.Point(9, 4);
+            this.lblOverview.Location = new System.Drawing.Point(3, 49);
             this.lblOverview.Name = "lblOverview";
             this.lblOverview.Size = new System.Drawing.Size(52, 13);
             this.lblOverview.TabIndex = 0;
@@ -1256,18 +1258,18 @@ namespace CabconPMP.UI
             // 
             // txtLogs
             // 
-            this.txtLogs.Location = new System.Drawing.Point(309, 347);
+            this.txtLogs.Location = new System.Drawing.Point(416, 363);
             this.txtLogs.Multiline = true;
             this.txtLogs.Name = "txtLogs";
             this.txtLogs.ReadOnly = true;
             this.txtLogs.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLogs.Size = new System.Drawing.Size(412, 70);
+            this.txtLogs.Size = new System.Drawing.Size(580, 159);
             this.txtLogs.TabIndex = 2;
             // 
             // lblLogs
             // 
             this.lblLogs.AutoSize = true;
-            this.lblLogs.Location = new System.Drawing.Point(309, 331);
+            this.lblLogs.Location = new System.Drawing.Point(416, 347);
             this.lblLogs.Name = "lblLogs";
             this.lblLogs.Size = new System.Drawing.Size(30, 13);
             this.lblLogs.TabIndex = 1;
@@ -1338,7 +1340,7 @@ namespace CabconPMP.UI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(758, 495);
+            this.ClientSize = new System.Drawing.Size(1022, 591);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.lblBenchName);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;

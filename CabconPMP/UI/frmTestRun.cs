@@ -72,13 +72,14 @@ namespace CabconPMP.UI
             dgvMeters.AutoGenerateColumns = false;
             SetupMetersGridColumns();
 
-            //dgvSequence.AutoGenerateColumns = false;
-            SetupSequenceGridColumns();
-
             dgvExecuteSteps.AutoGenerateColumns = false;
             SetupExecuteStepsGridColumns();
 
             InitializeOverviewList();
+
+            // Subscribe to tab change so selected procedures are loaded only when Execute tab is shown.
+            tabControl1.SelectedIndexChanged -= TabControl1_SelectedIndexChanged;
+            tabControl1.SelectedIndexChanged += TabControl1_SelectedIndexChanged;
 
             if (_initialSelectedRun != null)
             {
@@ -210,21 +211,9 @@ namespace CabconPMP.UI
             dgvMeters.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "ClientNo", HeaderText = "Client No", Width = 90 });
         }
 
-        private void SetupSequenceGridColumns()
-        {
-            dgvExecuteSteps.Columns.Add(new DataGridViewCheckBoxColumn { DataPropertyName = "No", HeaderText = "Run", Width = 40 });
-            dgvExecuteSteps.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Test", HeaderText = "Step", ReadOnly = true, Width = 40 });
-            //dgvSequence.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Name", HeaderText = "Name", ReadOnly = true, Width = 120 });
-            //dgvSequence.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "UA", HeaderText = "UA %", ReadOnly = true, Width = 50 });
-            //dgvSequence.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "IA", HeaderText = "IA %", ReadOnly = true, Width = 50 });
-            //dgvSequence.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "PHI", HeaderText = "PHI", ReadOnly = true, Width = 60 });
-            //dgvSequence.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "FREQ", HeaderText = "FREQ", ReadOnly = true, Width = 60 });
-            //dgvSequence.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Timeout", HeaderText = "Time", ReadOnly = true, Width = 60 });
-        }
-
         private void SetupExecuteStepsGridColumns()
         {
-            dgvExecuteSteps.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "StepNo", HeaderText = "Step", ReadOnly = true, Width = 45 });
+            dgvExecuteSteps.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "StepNo", HeaderText = "Step No.", ReadOnly = true, Width = 45 });
             dgvExecuteSteps.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Name", HeaderText = "Step Name", ReadOnly = true, Width = 180 });
             dgvExecuteSteps.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Timeout", HeaderText = "Time Limit", ReadOnly = true, Width = 80 });
         }
@@ -635,92 +624,6 @@ namespace CabconPMP.UI
                 $"Total Selected:\n          {_selectedProcedures.Count}";
         }
 
-        //--------------------
-
-        // Sequence of Procedures tab methods
-        //private async void btnSeqAdd_Click(object sender, EventArgs e)
-        //{
-        //    if (lstAvailableProcedures.SelectedItem is TestProcedure proc)
-        //    {
-        //        try
-        //        {
-        //            var fullProc = await _procedureRepository.GetByIdAsync(proc.ProcedureID);
-        //            if (fullProc != null && fullProc.Steps.Count > 0)
-        //            {
-        //                foreach (var step in fullProc.Steps)
-        //                {
-        //                    short nextStepNo = (short)(_sequenceList.Count + 1);
-        //                    _sequenceList.Add(new RStepRow
-        //                    {
-        //                        Select = true,
-        //                        StepNo = nextStepNo,
-        //                        Name = $"{proc.Name} - {step.Name}",
-        //                        UA = step.UA,
-        //                        IA = step.IA,
-        //                        PHI = step.PHI,
-        //                        FREQ = step.FREQ,
-        //                        Timeout = step.Timeout,
-        //                        ACMDS = step.ACMDS,
-        //                        BCMDS = step.BCMDS,
-        //                        CCMDS = step.CCMDS
-        //                    });
-        //                }
-
-        //                // Rebind grids and execute tab options
-
-        //                dgvExecuteSteps.DataSource = null;
-        //                dgvExecuteSteps.DataSource = _sequenceList;
-
-        //                cmbStep.Items.Clear();
-        //                foreach (var s in _sequenceList)
-        //                {
-        //                    cmbStep.Items.Add($"{s.StepNo}: {s.Name}");
-        //                }
-        //                if (cmbStep.Items.Count > 0) cmbStep.SelectedIndex = 0;
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            MessageBox.Show($"Failed to add procedure steps: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //        }
-        //    }
-        //}
-
-        //private void btnSeqDel_Click(object sender, EventArgs e)
-        //{
-        //    if (dgvSequence.SelectedRows.Count > 0)
-        //    {
-        //        List<RStepRow> toRemove = new List<RStepRow>();
-        //        foreach (DataGridViewRow row in dgvSequence.SelectedRows)
-        //        {
-        //            if (row.DataBoundItem is RStepRow step)
-        //            {
-        //                toRemove.Add(step);
-        //            }
-        //        }
-
-        //        foreach (var step in toRemove)
-        //        {
-        //            _sequenceList.Remove(step);
-        //        }
-
-        //        // Re-index remaining sequence steps
-        //        for (short i = 0; i < _sequenceList.Count; i++)
-        //        {
-        //            _sequenceList[i].StepNo = (short)(i + 1);
-        //        }
-
-        //        dgvSequence.Refresh();
-        //        dgvExecuteSteps.Refresh();
-
-        //        cmbStep.Items.Clear();
-        //        foreach (var s in _sequenceList)
-        //        {
-        //            cmbStep.Items.Add($"{s.StepNo}: {s.Name}");
-        //        }
-        //        if (cmbStep.Items.Count > 0) cmbStep.SelectedIndex = 0;
-        //    }
-        //}
 
         // Thread-safe dispatch logging and monitoring helpers
         private void Log(string message)
@@ -1045,6 +948,77 @@ namespace CabconPMP.UI
         private void btnReset_Click(object sender, EventArgs e)
         {
             ResetProcedures();
+        }
+
+        // Populate sequence grid when Execute tab is selected.
+        private async void TabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (tabControl1.SelectedTab == tabExecute)
+                {
+                    await PopulateExecuteSequenceFromSelectedProceduresAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to populate execute sequence: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Build _sequenceList from _selectedProcedures and bind to dgvExecuteSteps.
+        private async Task PopulateExecuteSequenceFromSelectedProceduresAsync()
+        {
+            _sequenceList.Clear();
+
+            if (_selectedProcedures == null || _selectedProcedures.Count == 0)
+            {
+                dgvExecuteSteps.DataSource = null;
+                dgvExecuteSteps.DataSource = _sequenceList;
+                return;
+            }
+
+            short nextStepNo = 1;
+
+            foreach (var proc in _selectedProcedures)
+            {
+                TestProcedure fullProc = proc;
+                try
+                {
+                    // Try to get full procedure (with steps) from repository, fall back to item in list
+                    var fetched = await _procedureRepository.GetByIdAsync(proc.ProcedureID);
+                    if (fetched != null) fullProc = fetched;
+                }
+                catch
+                {
+                    // ignore fetch errors, use proc (it may already contain steps)
+                }
+
+                if (fullProc?.Steps == null || fullProc.Steps.Count == 0)
+                    continue;
+
+                foreach (var step in fullProc.Steps)
+                {
+                    _sequenceList.Add(new RStepRow
+                    {
+                        Select = true,
+                        StepNo = nextStepNo++,
+                        Name = $"{proc.Name} - {step.Name}",
+                        UA = step.UA,
+                        IA = step.IA,
+                        PHI = step.PHI,
+                        FREQ = step.FREQ,
+                        Timeout = step.Timeout,
+                        ACMDS = step.ACMDS,
+                        BCMDS = step.BCMDS,
+                        CCMDS = step.CCMDS
+                    });
+                }
+            }
+
+            // Rebind grid
+            dgvExecuteSteps.DataSource = null;
+            dgvExecuteSteps.DataSource = _sequenceList;
         }
     }
 
