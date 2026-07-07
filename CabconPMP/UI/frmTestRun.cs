@@ -1,4 +1,8 @@
+using CabconPMP.Data;
+//using CabconPMP.Hardware;
+using CabconPMP.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,11 +11,11 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using CabconPMP.Data;
-//using CabconPMP.Hardware;
-using CabconPMP.Models;
+using Utilities;
+
 //using CabconPMP.Sequencer;
 using static CabconPMP.Data.MeterTypeRepository;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace CabconPMP.UI
 {
@@ -27,12 +31,14 @@ namespace CabconPMP.UI
 
         private Bench _bench;
         private List<MeterType> _meterTypes = new List<MeterType>();
-        private List<TestProcedure> _procedures = new List<TestProcedure>();
-        private TestProcedure _selectedProcedure;
+
+        private BindingList<TestProcedure> _availableProcedures;
+        private BindingList<TestProcedure> _selectedProcedures;
+        private List<TestProcedure> _originalProcedures;
 
         private BindingList<MeterAllocationRow> _metersList = new BindingList<MeterAllocationRow>();
         private BindingList<RStepRow> _sequenceList = new BindingList<RStepRow>();
-        
+
         // Sequencer variables
         private CancellationTokenSource _cts;
         private ManualResetEventSlim _pauseEvent = new ManualResetEventSlim(true);
@@ -66,7 +72,7 @@ namespace CabconPMP.UI
             dgvMeters.AutoGenerateColumns = false;
             SetupMetersGridColumns();
 
-            dgvSequence.AutoGenerateColumns = false;
+            //dgvSequence.AutoGenerateColumns = false;
             SetupSequenceGridColumns();
 
             dgvExecuteSteps.AutoGenerateColumns = false;
@@ -97,8 +103,8 @@ namespace CabconPMP.UI
                 btnPause.Enabled = false;
                 btnStop.Enabled = false;
                 grpDeviceInputs.Enabled = false;
-                btnSeqAdd.Enabled = false;
-                btnSeqDel.Enabled = false;
+                //btnSeqAdd.Enabled = false;
+                //btnSeqDel.Enabled = false;
 
                 // Load allocated meters
                 var runMeters = await _runRepository.GetMetersForRunAsync(_initialSelectedRun.RunID);
@@ -108,8 +114,8 @@ namespace CabconPMP.UI
                     _metersList.Add(new MeterAllocationRow
                     {
                         PositionNo = m.PositionNo,
+                        Status = m.Status == 1,
                         MSN = m.MSN,
-                        Enabled = m.Status == 1,
                         MeterType = m.MeterName ?? "",
                         OwnerNo = m.OwnerNo ?? "",
                         YearOfManufacture = m.YearOfManufacture?.ToString() ?? "",
@@ -142,13 +148,11 @@ namespace CabconPMP.UI
                         CCMDS = s.CCMDS
                     });
                 }
-                dgvSequence.DataSource = _sequenceList;
-                dgvSequence.ReadOnly = true;
                 dgvExecuteSteps.DataSource = _sequenceList;
 
                 // Load results
                 var runResults = await _runRepository.GetResultsForRunAsync(_initialSelectedRun.RunID);
-                
+
                 // Initialize results columns
                 dgvResults.Columns.Clear();
                 dgvResults.Columns.Add("colPos", "Pos");
@@ -193,8 +197,9 @@ namespace CabconPMP.UI
 
         private void SetupMetersGridColumns()
         {
-            dgvMeters.Columns.Add(new DataGridViewCheckBoxColumn { DataPropertyName = "Enabled", HeaderText = "Active", Width = 50 });
+            //dgvMeters.Columns.Add(new DataGridViewCheckBoxColumn { DataPropertyName = "Enabled", HeaderText = "Active", Width = 50 });
             dgvMeters.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "PositionNo", HeaderText = "Pos", ReadOnly = true, Width = 40 });
+            dgvMeters.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Status", HeaderText = "Status", ReadOnly = true, Width = 40 });
             dgvMeters.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "MeterType", HeaderText = "Meter Type", Width = 100 });
             dgvMeters.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "MSN", HeaderText = "MSN", Width = 90 });
             dgvMeters.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "OwnerNo", HeaderText = "Owner No", Width = 90 });
@@ -207,14 +212,14 @@ namespace CabconPMP.UI
 
         private void SetupSequenceGridColumns()
         {
-            dgvSequence.Columns.Add(new DataGridViewCheckBoxColumn { DataPropertyName = "Select", HeaderText = "Run", Width = 40 });
-            dgvSequence.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "StepNo", HeaderText = "Step", ReadOnly = true, Width = 40 });
-            dgvSequence.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Name", HeaderText = "Name", ReadOnly = true, Width = 120 });
-            dgvSequence.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "UA", HeaderText = "UA %", ReadOnly = true, Width = 50 });
-            dgvSequence.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "IA", HeaderText = "IA %", ReadOnly = true, Width = 50 });
-            dgvSequence.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "PHI", HeaderText = "PHI", ReadOnly = true, Width = 60 });
-            dgvSequence.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "FREQ", HeaderText = "FREQ", ReadOnly = true, Width = 60 });
-            dgvSequence.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Timeout", HeaderText = "Time", ReadOnly = true, Width = 60 });
+            dgvExecuteSteps.Columns.Add(new DataGridViewCheckBoxColumn { DataPropertyName = "No", HeaderText = "Run", Width = 40 });
+            dgvExecuteSteps.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Test", HeaderText = "Step", ReadOnly = true, Width = 40 });
+            //dgvSequence.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Name", HeaderText = "Name", ReadOnly = true, Width = 120 });
+            //dgvSequence.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "UA", HeaderText = "UA %", ReadOnly = true, Width = 50 });
+            //dgvSequence.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "IA", HeaderText = "IA %", ReadOnly = true, Width = 50 });
+            //dgvSequence.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "PHI", HeaderText = "PHI", ReadOnly = true, Width = 60 });
+            //dgvSequence.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "FREQ", HeaderText = "FREQ", ReadOnly = true, Width = 60 });
+            //dgvSequence.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Timeout", HeaderText = "Time", ReadOnly = true, Width = 60 });
         }
 
         private void SetupExecuteStepsGridColumns()
@@ -245,10 +250,21 @@ namespace CabconPMP.UI
                 cmbMeterType.ValueMember = "MeterTypeID";
 
                 var pr = await _procedureRepository.GetAllAsync();
-                _procedures = pr.ToList();
-                lstAvailableProcedures.DataSource = _procedures;
+
+                _originalProcedures = pr.ToList();
+
+                _availableProcedures = new BindingList<TestProcedure>(pr.ToList());
+                _selectedProcedures = new BindingList<TestProcedure>();
+
+                lstAvailableProcedures.DataSource = _availableProcedures;
                 lstAvailableProcedures.DisplayMember = "Name";
                 lstAvailableProcedures.ValueMember = "ProcedureID";
+
+                lstDisplatAutoSelected.DataSource = _selectedProcedures;
+                lstDisplatAutoSelected.DisplayMember = "Name";
+                lstDisplatAutoSelected.ValueMember = "ProcedureID";
+
+
 
                 // Setup combo options for devices
                 cmbContractNo.Items.AddRange(new object[] { "CON-2026-01", "CON-2026-02", "CON-EX-09" });
@@ -257,6 +273,10 @@ namespace CabconPMP.UI
                 cmbContractNo.SelectedIndex = 0;
                 cmbClient.SelectedIndex = 0;
                 cmbClientNo.SelectedIndex = 0;
+
+                // Combobox Stepl initialisation
+                cmbStep.DataSource = Enum.GetValues(typeof(ExecutionMode));
+                cmbStep.SelectedItem = ExecutionMode.SingleStep;
             }
             catch (Exception ex)
             {
@@ -268,22 +288,22 @@ namespace CabconPMP.UI
         {
             int positions = _bench?.NumPosition ?? 48;
             _metersList.Clear();
-            for (int i = 1; i <= positions; i++)
-            {
-                _metersList.Add(new MeterAllocationRow
-                {
-                    PositionNo = (short)i,
-                    Enabled = true,
-                    MeterType = "",
-                    MSN = "",
-                    OwnerNo = "",
-                    YearOfManufacture = DateTime.Now.Year.ToString(),
-                    LastApproval = "None",
-                    ContractNo = "",
-                    ClientName = "",
-                    ClientNo = ""
-                });
-            }
+            //for (int i = 1; i <= positions; i++)
+            //{
+            //    _metersList.Add(new MeterAllocationRow
+            //    {
+            //        PositionNo = (short)i,
+            //        Status = true,
+            //        MeterType = "",
+            //        MSN = "",
+            //        OwnerNo = "",
+            //        YearOfManufacture = DateTime.Now.Year.ToString(),
+            //        LastApproval = "None",
+            //        ContractNo = "",
+            //        ClientName = "",
+            //        ClientNo = ""
+            //    });
+            //}
             dgvMeters.DataSource = _metersList;
         }
 
@@ -426,92 +446,281 @@ namespace CabconPMP.UI
             }
         }
 
+        //--------------------
+
+        // '>' : Move selected items from All -> Selected (transfer)
+        private void btnDispAutoMove_Click(object sender, EventArgs e)
+        {
+            MoveItem();
+        }
+
+        // '>>' : Move all items from All -> Selected (transfer)
+        private void btnDispAutoMoveAll_Click(object sender, EventArgs e)
+        {
+            MoveAll();
+        }
+
+        // '<' : Move selected items from Selected -> All (transfer back)
+        private void btnDispAutoRemove_Click(object sender, EventArgs e)
+        {
+            MoveBack();
+        }
+
+        // '<<' : Move all items from Selected -> All
+        private void btnDispAutoRemoveAll_Click(object sender, EventArgs e)
+        {
+            MoveBackAll();
+        }
+
+        // '^' : Move selected items up within Selected list
+        private void btnDispAutoMoveUP_Click(object sender, EventArgs e)
+        {
+            MoveSelectedUp();
+            // no change in count
+        }
+
+        // 'v' : Move selected items down within Selected list
+        private void btnDispAutoMoveDown_Click(object sender, EventArgs e)
+        {
+            MoveSelectedDown();
+        }
+
+
+        // Transfer all items from source -> destination (destination appended, then source cleared)
+        private void MoveAll()
+        {
+            var items = _availableProcedures.ToList();
+
+            foreach (var item in items)
+            {
+                _selectedProcedures.Add(item);
+                _availableProcedures.Remove(item);
+            }
+
+            lblDisplayParaTotalSelected.Text =
+                $"Total Selected:\n          {_selectedProcedures.Count}";
+        }
+
+        // Move selected items from source -> destination (preserve order)
+        private void MoveItem()
+        {
+            if (lstAvailableProcedures.SelectedItems.Count == 0)
+                return;
+
+            var items = lstAvailableProcedures.SelectedItems
+                            .Cast<TestProcedure>()
+                            .ToList();
+
+            foreach (var item in items)
+            {
+                _selectedProcedures.Add(item);
+                _availableProcedures.Remove(item);
+            }
+
+            lblDisplayParaTotalSelected.Text =
+                $"Total Selected:\n          {_selectedProcedures.Count}";
+        }
+
+        private void MoveBack()
+        {
+            if (lstDisplatAutoSelected.SelectedItems.Count == 0)
+                return;
+
+            var items = lstDisplatAutoSelected.SelectedItems
+                            .Cast<TestProcedure>()
+                            .ToList();
+
+            foreach (var item in items)
+            {
+                _availableProcedures.Add(item);
+                _selectedProcedures.Remove(item);
+            }
+
+            lblDisplayParaTotalSelected.Text =
+                $"Total Selected:\n          {_selectedProcedures.Count}";
+        }
+
+        private void MoveBackAll()
+        {
+            var items = _selectedProcedures.ToList();
+
+            foreach (var item in items)
+            {
+                _availableProcedures.Add(item);
+                _selectedProcedures.Remove(item);
+            }
+
+            lblDisplayParaTotalSelected.Text =
+                $"Total Selected:\n          {_selectedProcedures.Count}";
+        }
+
+
+        // Move selected items up one position within the same list
+        private void MoveSelectedUp()
+        {
+            var list = (BindingList<TestProcedure>)lstDisplatAutoSelected.DataSource;
+            if (list == null || lstDisplatAutoSelected.SelectedIndices.Count == 0)
+                return;
+
+            var indices = lstDisplatAutoSelected.SelectedIndices
+                                                .Cast<int>()
+                                                .OrderBy(i => i)
+                                                .ToList();
+
+            // Already at top
+            if (indices.First() == 0)
+                return;
+
+            foreach (int index in indices)
+            {
+                var item = list[index];
+                list.RemoveAt(index);
+                list.Insert(index - 1, item);
+            }
+
+            lstDisplatAutoSelected.ClearSelected();
+
+            foreach (int index in indices)
+            {
+                lstDisplatAutoSelected.SetSelected(index - 1, true);
+            }
+        }
+
+        // Move selected items down one position within the same list
+        private void MoveSelectedDown()
+        {
+            var list = (BindingList<TestProcedure>)lstDisplatAutoSelected.DataSource;
+            if (list == null || lstDisplatAutoSelected.SelectedIndices.Count == 0)
+                return;
+
+            var indices = lstDisplatAutoSelected.SelectedIndices
+                                                .Cast<int>()
+                                                .OrderByDescending(i => i)
+                                                .ToList();
+
+            // Already at bottom
+            if (indices.First() == list.Count - 1)
+                return;
+
+            foreach (int index in indices)
+            {
+                var item = list[index];
+                list.RemoveAt(index);
+                list.Insert(index + 1, item);
+            }
+
+            lstDisplatAutoSelected.ClearSelected();
+
+            foreach (int index in indices)
+            {
+                lstDisplatAutoSelected.SetSelected(index + 1, true);
+            }
+        }
+
+
+        private void ResetProcedures()
+        {
+            _availableProcedures.Clear();
+            _selectedProcedures.Clear();
+
+            foreach (var procedure in _originalProcedures)
+            {
+                _availableProcedures.Add(procedure);
+            }
+
+            lstAvailableProcedures.ClearSelected();
+            lstDisplatAutoSelected.ClearSelected();
+
+            lblDisplayParaTotalSelected.Text =
+                $"Total Selected:\n          {_selectedProcedures.Count}";
+        }
+
+        //--------------------
+
         // Sequence of Procedures tab methods
-        private async void btnSeqAdd_Click(object sender, EventArgs e)
-        {
-            if (lstAvailableProcedures.SelectedItem is TestProcedure proc)
-            {
-                try
-                {
-                    var fullProc = await _procedureRepository.GetByIdAsync(proc.ProcedureID);
-                    if (fullProc != null && fullProc.Steps.Count > 0)
-                    {
-                        foreach (var step in fullProc.Steps)
-                        {
-                            short nextStepNo = (short)(_sequenceList.Count + 1);
-                            _sequenceList.Add(new RStepRow
-                            {
-                                Select = true,
-                                StepNo = nextStepNo,
-                                Name = $"{proc.Name} - {step.Name}",
-                                UA = step.UA,
-                                IA = step.IA,
-                                PHI = step.PHI,
-                                FREQ = step.FREQ,
-                                Timeout = step.Timeout,
-                                ACMDS = step.ACMDS,
-                                BCMDS = step.BCMDS,
-                                CCMDS = step.CCMDS
-                            });
-                        }
+        //private async void btnSeqAdd_Click(object sender, EventArgs e)
+        //{
+        //    if (lstAvailableProcedures.SelectedItem is TestProcedure proc)
+        //    {
+        //        try
+        //        {
+        //            var fullProc = await _procedureRepository.GetByIdAsync(proc.ProcedureID);
+        //            if (fullProc != null && fullProc.Steps.Count > 0)
+        //            {
+        //                foreach (var step in fullProc.Steps)
+        //                {
+        //                    short nextStepNo = (short)(_sequenceList.Count + 1);
+        //                    _sequenceList.Add(new RStepRow
+        //                    {
+        //                        Select = true,
+        //                        StepNo = nextStepNo,
+        //                        Name = $"{proc.Name} - {step.Name}",
+        //                        UA = step.UA,
+        //                        IA = step.IA,
+        //                        PHI = step.PHI,
+        //                        FREQ = step.FREQ,
+        //                        Timeout = step.Timeout,
+        //                        ACMDS = step.ACMDS,
+        //                        BCMDS = step.BCMDS,
+        //                        CCMDS = step.CCMDS
+        //                    });
+        //                }
 
-                        // Rebind grids and execute tab options
-                        dgvSequence.DataSource = null;
-                        dgvSequence.DataSource = _sequenceList;
+        //                // Rebind grids and execute tab options
 
-                        dgvExecuteSteps.DataSource = null;
-                        dgvExecuteSteps.DataSource = _sequenceList;
+        //                dgvExecuteSteps.DataSource = null;
+        //                dgvExecuteSteps.DataSource = _sequenceList;
 
-                        cmbSingleStep.Items.Clear();
-                        foreach (var s in _sequenceList)
-                        {
-                            cmbSingleStep.Items.Add($"{s.StepNo}: {s.Name}");
-                        }
-                        if (cmbSingleStep.Items.Count > 0) cmbSingleStep.SelectedIndex = 0;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Failed to add procedure steps: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
+        //                cmbStep.Items.Clear();
+        //                foreach (var s in _sequenceList)
+        //                {
+        //                    cmbStep.Items.Add($"{s.StepNo}: {s.Name}");
+        //                }
+        //                if (cmbStep.Items.Count > 0) cmbStep.SelectedIndex = 0;
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            MessageBox.Show($"Failed to add procedure steps: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //        }
+        //    }
+        //}
 
-        private void btnSeqDel_Click(object sender, EventArgs e)
-        {
-            if (dgvSequence.SelectedRows.Count > 0)
-            {
-                List<RStepRow> toRemove = new List<RStepRow>();
-                foreach (DataGridViewRow row in dgvSequence.SelectedRows)
-                {
-                    if (row.DataBoundItem is RStepRow step)
-                    {
-                        toRemove.Add(step);
-                    }
-                }
+        //private void btnSeqDel_Click(object sender, EventArgs e)
+        //{
+        //    if (dgvSequence.SelectedRows.Count > 0)
+        //    {
+        //        List<RStepRow> toRemove = new List<RStepRow>();
+        //        foreach (DataGridViewRow row in dgvSequence.SelectedRows)
+        //        {
+        //            if (row.DataBoundItem is RStepRow step)
+        //            {
+        //                toRemove.Add(step);
+        //            }
+        //        }
 
-                foreach (var step in toRemove)
-                {
-                    _sequenceList.Remove(step);
-                }
+        //        foreach (var step in toRemove)
+        //        {
+        //            _sequenceList.Remove(step);
+        //        }
 
-                // Re-index remaining sequence steps
-                for (short i = 0; i < _sequenceList.Count; i++)
-                {
-                    _sequenceList[i].StepNo = (short)(i + 1);
-                }
+        //        // Re-index remaining sequence steps
+        //        for (short i = 0; i < _sequenceList.Count; i++)
+        //        {
+        //            _sequenceList[i].StepNo = (short)(i + 1);
+        //        }
 
-                dgvSequence.Refresh();
-                dgvExecuteSteps.Refresh();
+        //        dgvSequence.Refresh();
+        //        dgvExecuteSteps.Refresh();
 
-                cmbSingleStep.Items.Clear();
-                foreach (var s in _sequenceList)
-                {
-                    cmbSingleStep.Items.Add($"{s.StepNo}: {s.Name}");
-                }
-                if (cmbSingleStep.Items.Count > 0) cmbSingleStep.SelectedIndex = 0;
-            }
-        }
+        //        cmbStep.Items.Clear();
+        //        foreach (var s in _sequenceList)
+        //        {
+        //            cmbStep.Items.Add($"{s.StepNo}: {s.Name}");
+        //        }
+        //        if (cmbStep.Items.Count > 0) cmbStep.SelectedIndex = 0;
+        //    }
+        //}
 
         // Thread-safe dispatch logging and monitoring helpers
         private void Log(string message)
@@ -567,34 +776,6 @@ namespace CabconPMP.UI
                 lblRangeLimits.Text = limitStr;
             }
         }
-
-        //private void UpdateLiveTelemetry(Actuals act)
-        //{
-        //    if (InvokeRequired)
-        //    {
-        //        Invoke(new Action(() => UpdateLiveTelemetry(act)));
-        //    }
-        //    else
-        //    {
-        //        txtMonUA.Text = act.UA.ToString("F1");
-        //        txtMonUB.Text = act.UB.ToString("F1");
-        //        txtMonUC.Text = act.UC.ToString("F1");
-
-        //        txtMonIA.Text = act.IA.ToString("F3");
-        //        txtMonIB.Text = act.IB.ToString("F3");
-        //        txtMonIC.Text = act.IC.ToString("F3");
-
-        //        txtMonPhiA.Text = act.PhiA.ToString("F1");
-        //        txtMonPhiB.Text = act.PhiB.ToString("F1");
-        //        txtMonPhiC.Text = act.PhiC.ToString("F1");
-
-        //        txtMonFreq.Text = act.Freq.ToString("F2");
-
-        //        txtTotalP.Text = act.TotalP.ToString("F2");
-        //        txtTotalQ.Text = act.TotalQ.ToString("F2");
-        //        txtTotalS.Text = act.TotalS.ToString("F2");
-        //    }
-        //}
 
         private void HighlightActiveStep(short stepNo)
         {
@@ -686,25 +867,13 @@ namespace CabconPMP.UI
                 int sioPort = _bench?.SioPortNo ?? 1;
                 string sioFmt = _bench?.SioFormat ?? "19200,n,8,2";
 
-                //using (var board = new YcBoardController(sioPort, sioFmt))
-                //    var serial = new SerialPortService();
-
-                // SZ-03A-K6 Reference Standard Meter parser
-                //var refStd = new CSZ_03A_K6(serial) { Port = sioPort };
-
                 Log("Initializing board connection...");
-                // Open standard boards (BoxType = 1 matches MFC app)
-                //bool boxOk = board.OpenBoxAsync(1).GetAwaiter().GetResult();
-                //if (!boxOk)
-                //{
-                //    Log("Warning: Board OpenBox returned error status. Simulating outputs...");
-                //}
 
                 // Initialise base values (nominal Ub, Ib from the first allocated meter)
                 double nominalUb = 220.0;
                 double nominalIb = 5.0;
                 double nominalIm = 60.0;
-                var firstMtr = _metersList.FirstOrDefault(m => m.Enabled && !string.IsNullOrEmpty(m.MeterType));
+                var firstMtr = _metersList.FirstOrDefault(m => m.Status && !string.IsNullOrEmpty(m.MeterType));
                 if (firstMtr != null)
                 {
                     var mtrSpec = _meterTypes.FirstOrDefault(m => m.Name == firstMtr.MeterType);
@@ -724,7 +893,6 @@ namespace CabconPMP.UI
                     Log($"Executing: {step.Name}");
                     HighlightActiveStep(step.StepNo);
 
-                    // Parse voltage percentages and active power frequency
                     double.TryParse(step.UA, out var uaPct);
                     double.TryParse(step.IA, out var iaPct);
                     double.TryParse(step.FREQ, out var freq);
@@ -735,15 +903,11 @@ namespace CabconPMP.UI
 
                     UpdateBaseValues(targetUb, targetIb, freq, nominalIm);
 
-                    // Send output commands to the source board via COM integration
-                    // (Translating C++ VoltageOut and CurrentOut calls)
                     Log($"Setting Voltage Out = {targetUb} V, Current Out = {targetIb} A");
 
-                    // Simulate error monitoring loop
                     int timeLimitSeconds = 30;
                     if (int.TryParse(step.Timeout, out var tLimit)) timeLimitSeconds = tLimit;
 
-                    // Parse limit indicators
                     string limitDisplay = "-0.50% to 0.50%";
                     UpdateRangeLimits(limitDisplay);
 
@@ -752,26 +916,10 @@ namespace CabconPMP.UI
                         token.ThrowIfCancellationRequested();
                         _pauseEvent.Wait(token);
 
-                        // Read telemetry values from the reference standard meter
-                        //var act = refStd.GetActuals();
-                        //if (!act.IsValid)
-                        //{
-                        //    // Telemetry simulation values if physical standard is not connected
-                        //    act.IsValid = true;
-                        //    act.UA = targetUb; act.UB = targetUb; act.UC = targetUb;
-                        //    act.IA = targetIb; act.IB = targetIb; act.IC = targetIb;
-                        //    act.Freq = freq;
-                        //    act.TotalP = targetUb * targetIb * 3.0;
-                        //    act.TotalQ = 0;
-                        //    act.TotalS = act.TotalP;
-                        //}
-                        //UpdateLiveTelemetry(act);
-
-                        // Random error generation simulation for positions
                         for (int pos = 1; pos <= _metersList.Count; pos++)
                         {
                             var mtr = _metersList[pos - 1];
-                            if (mtr.Enabled && !string.IsNullOrEmpty(mtr.MeterType))
+                            if (mtr.Status && !string.IsNullOrEmpty(mtr.MeterType))
                             {
                                 double simErr = (new Random().NextDouble() * 0.4) - 0.2; // -0.20% to +0.20%
                                 UpdateOverviewError(pos, simErr.ToString("F2"));
@@ -808,7 +956,7 @@ namespace CabconPMP.UI
 
 
 
-private void SaveRunAndResults()
+        private void SaveRunAndResults()
         {
             // Build Run object from UI fields
             var run = new Run
@@ -845,7 +993,7 @@ private void SaveRunAndResults()
             var meters = _metersList.Select(m => new RMeter
             {
                 PositionNo = (short)m.PositionNo,
-                Status = (short)(m.Enabled ? 1 : 0),
+                Status = (short)(m.Status ? 1 : 0),
                 MeterName = m.MeterType,
                 OwnerNo = m.OwnerNo,
                 MSN = m.MSN,
@@ -894,12 +1042,16 @@ private void SaveRunAndResults()
             }
         }
 
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            ResetProcedures();
+        }
     }
 
     public class MeterAllocationRow
     {
         public short PositionNo { get; set; }
-        public bool Enabled { get; set; } = true;
+        public bool Status { get; set; } = true;
         public string MeterType { get; set; } = string.Empty;
         public string MSN { get; set; } = string.Empty;
         public string OwnerNo { get; set; } = string.Empty;
@@ -925,4 +1077,3 @@ private void SaveRunAndResults()
         public string CCMDS { get; set; } = string.Empty;
     }
 }
-
