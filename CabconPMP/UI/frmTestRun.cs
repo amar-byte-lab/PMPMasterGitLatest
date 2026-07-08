@@ -766,12 +766,40 @@ namespace CabconPMP.UI
                 return;
             }
 
-            var stepsToRun = _sequenceList.Where(s => s.Select).ToList();
+            var stepsToRun = new List<RStepRow>();
+
             if (stepsToRun.Count == 0)
+            {
+                MessageBox.Show("Please Add at least one step in the sequence list to execute.", "No Steps Added", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var executionType = (ExecutionMode)cmbStep.SelectedItem;
+
+            if (executionType == ExecutionMode.SingleStep && dgvExecuteSteps.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Please select at least one step in the sequence list to execute.", "No Steps Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
+
+            switch (executionType)
+            {
+                case ExecutionMode.AllSteps:
+                    stepsToRun = _sequenceList.Where(s => s.Select).ToList();
+                    break;
+                case ExecutionMode.SingleStep:
+                    stepsToRun = dgvExecuteSteps.SelectedRows
+                        .Cast<DataGridViewRow>()
+                        .Select(r => r.DataBoundItem as RStepRow)
+                        .Where(s => s != null)
+                        .ToList();
+                    break;
+                default:
+                    MessageBox.Show("Unknown execution mode selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+            }
+
 
             _isRunning = true;
             _isPaused = false;
@@ -1099,6 +1127,22 @@ namespace CabconPMP.UI
             // Rebind grid
             dgvExecuteSteps.DataSource = null;
             dgvExecuteSteps.DataSource = _sequenceList;
+        }
+
+        private void cmbStep_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var mode = (ExecutionMode)cmbStep.SelectedItem;
+
+            if (mode == ExecutionMode.AllSteps)
+            {
+                dgvExecuteSteps.ClearSelection();
+                dgvExecuteSteps.Enabled = false;
+            }
+            else
+            {
+                dgvExecuteSteps.Rows[0].Selected = true;
+                dgvExecuteSteps.Enabled = true;
+            }
         }
     }
 
