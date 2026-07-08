@@ -18,6 +18,7 @@ namespace CabconPMP.UI
         private void InitializeComponent()
         {
             this.dgvMeterTypes = new System.Windows.Forms.DataGridView();
+            this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControlMtr = new System.Windows.Forms.TabControl();
             this.tabGeneral = new System.Windows.Forms.TabPage();
             this.grpAccuracy = new System.Windows.Forms.GroupBox();
@@ -90,12 +91,13 @@ namespace CabconPMP.UI
             this.dgvMeterTypes.AllowUserToAddRows = false;
             this.dgvMeterTypes.AllowUserToDeleteRows = false;
             this.dgvMeterTypes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvMeterTypes.Columns.Add(new System.Windows.Forms.DataGridViewTextBoxColumn {
-                DataPropertyName = "Name",
-                HeaderText = "Name",
-                Name = "colName",
-                Width = 240
-            });
+            // create and configure colName (avoid inline object initializer - keep as field for designer parser)
+            this.colName.DataPropertyName = "Name";
+            this.colName.HeaderText = "Name";
+            this.colName.Name = "colName";
+            this.colName.Width = 240;
+            this.dgvMeterTypes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colName});
             this.dgvMeterTypes.Location = new System.Drawing.Point(12, 12);
             this.dgvMeterTypes.MultiSelect = false;
             this.dgvMeterTypes.Name = "dgvMeterTypes";
@@ -744,6 +746,7 @@ namespace CabconPMP.UI
         #endregion
 
         private System.Windows.Forms.DataGridView dgvMeterTypes;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colName;
         private System.Windows.Forms.TabControl tabControlMtr;
         private System.Windows.Forms.TabPage tabGeneral;
         private System.Windows.Forms.TabPage tabElectrical;
