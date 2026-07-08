@@ -767,21 +767,7 @@ namespace CabconPMP.UI
             }
 
             var stepsToRun = new List<RStepRow>();
-
-            if (stepsToRun.Count == 0)
-            {
-                MessageBox.Show("Please Add at least one step in the sequence list to execute.", "No Steps Added", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
             var executionType = (ExecutionMode)cmbStep.SelectedItem;
-
-            if (executionType == ExecutionMode.SingleStep && dgvExecuteSteps.SelectedRows.Count == 0)
-            {
-                MessageBox.Show("Please select at least one step in the sequence list to execute.", "No Steps Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
 
             switch (executionType)
             {
@@ -800,6 +786,18 @@ namespace CabconPMP.UI
                     return;
             }
 
+
+            if (stepsToRun.Count == 0)
+            {
+                MessageBox.Show("Please Add at least one step in the sequence list to execute.", "No Steps Added", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (executionType == ExecutionMode.SingleStep && dgvExecuteSteps.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select at least one step in the sequence list to execute.", "No Steps Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             _isRunning = true;
             _isPaused = false;
@@ -877,10 +875,13 @@ namespace CabconPMP.UI
 
                 foreach (var step in steps)
                 {
+
                     token.ThrowIfCancellationRequested();
                     _pauseEvent.Wait(token);
 
                     Log($"Executing: {step.Name}");
+
+                    //Not working
                     HighlightActiveStep(step.StepNo);
 
                     // Parse voltage percentages and active power frequency
@@ -906,6 +907,9 @@ namespace CabconPMP.UI
                     string limitDisplay = "-0.50% to 0.50%";
                     UpdateRangeLimits(limitDisplay);
 
+
+                    //Change are to be done here
+
                     for (int elapsed = 0; elapsed < timeLimitSeconds; elapsed++)
                     {
                         token.ThrowIfCancellationRequested();
@@ -927,6 +931,9 @@ namespace CabconPMP.UI
                         //UpdateLiveTelemetry(act);
 
                         // Random error generation simulation for positions
+
+                        // _metersList iterate with respect to position, then execute RunCalibrationProcedure in the multithreading. Number of threadpools should be equal to _metersList
+                        // Show the current running step at every available position in lstOverview.
                         for (int pos = 1; pos <= _metersList.Count; pos++)
                         {
                             var mtr = _metersList[pos - 1];
@@ -1132,6 +1139,9 @@ namespace CabconPMP.UI
         private void cmbStep_SelectedIndexChanged(object sender, EventArgs e)
         {
             var mode = (ExecutionMode)cmbStep.SelectedItem;
+
+            if (dgvExecuteSteps.SelectedRows.Count == 0)
+                return;
 
             if (mode == ExecutionMode.AllSteps)
             {
