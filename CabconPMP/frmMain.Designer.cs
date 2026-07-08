@@ -34,6 +34,7 @@
             this.calibrationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.calibrateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addProceduresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ts_configuration = new System.Windows.Forms.ToolStripMenuItem();
             this.tsm_Association = new System.Windows.Forms.ToolStripMenuItem();
             this.tsm_userManagement = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,7 +77,7 @@
             this.cms_CreateProgram = new System.Windows.Forms.ToolStripMenuItem();
             this.lblMainScreenMsg = new System.Windows.Forms.Label();
             this.pcbBackgroundImage = new System.Windows.Forms.PictureBox();
-            this.addProceduresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.meterTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.DLMSStas.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -108,7 +109,8 @@
             this.calibrationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.configurationToolStripMenuItem,
             this.calibrateToolStripMenuItem,
-            this.addProceduresToolStripMenuItem});
+            this.addProceduresToolStripMenuItem,
+            this.meterTypeToolStripMenuItem});
             this.calibrationToolStripMenuItem.Name = "calibrationToolStripMenuItem";
             this.calibrationToolStripMenuItem.Size = new System.Drawing.Size(77, 22);
             this.calibrationToolStripMenuItem.Text = "Calibration";
@@ -127,6 +129,13 @@
             this.calibrateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.calibrateToolStripMenuItem.Text = "Calibrate";
             this.calibrateToolStripMenuItem.Click += new System.EventHandler(this.calibrateToolStripMenuItem_Click);
+            // 
+            // addProceduresToolStripMenuItem
+            // 
+            this.addProceduresToolStripMenuItem.Name = "addProceduresToolStripMenuItem";
+            this.addProceduresToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addProceduresToolStripMenuItem.Text = "Add Procedures";
+            this.addProceduresToolStripMenuItem.Click += new System.EventHandler(this.addProceduresToolStripMenuItem_Click);
             // 
             // ts_configuration
             // 
@@ -481,12 +490,12 @@
             this.pcbBackgroundImage.TabStop = false;
             this.pcbBackgroundImage.Click += new System.EventHandler(this.pcbBackgroundImage_Click);
             // 
-            // addProceduresToolStripMenuItem
+            // meterTypeToolStripMenuItem
             // 
-            this.addProceduresToolStripMenuItem.Name = "addProceduresToolStripMenuItem";
-            this.addProceduresToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.addProceduresToolStripMenuItem.Text = "Add Procedures";
-            this.addProceduresToolStripMenuItem.Click += new System.EventHandler(this.addProceduresToolStripMenuItem_Click);
+            this.meterTypeToolStripMenuItem.Name = "meterTypeToolStripMenuItem";
+            this.meterTypeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.meterTypeToolStripMenuItem.Text = "Meter Type";
+            this.meterTypeToolStripMenuItem.Click += new System.EventHandler(this.meterTypeToolStripMenuItem_Click);
             // 
             // frmMain
             // 
@@ -569,6 +578,7 @@
         private System.Windows.Forms.ToolStripMenuItem configurationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem calibrateToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addProceduresToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem meterTypeToolStripMenuItem;
     }
 }
 

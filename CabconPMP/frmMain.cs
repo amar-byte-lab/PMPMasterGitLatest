@@ -1,8 +1,8 @@
+using CabconPMP.UI;
 using ApplicationInterface;
 using BALLAYER;
 using CabconPMP.Data;
 using CabconPMP.Models;
-using CabconPMP.UI;
 using CabconPMPREJECTIONTOOL;
 using CabconPMPSYNCSERVICE;
 using COMMONENTITY;
@@ -936,6 +936,12 @@ namespace CabconPMP
         private void addProceduresToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var frm = new frmProcedure(_procedureRepository);
+            frm.Show();
+        }
+
+        private void meterTypeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var frm = new frmMeterType(_meterTypeRepository);
             frm.Show();
         }
     }
