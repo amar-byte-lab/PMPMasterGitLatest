@@ -94,7 +94,7 @@ namespace CabconPMP
                     {
 
                         if (MessageBox.Show("Do You Want To open Selected Procedure ?? ", "Cabcon PMP", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No) return;
-                        frmProcedure objfrmpro = new frmProcedure(lstProcedureName.SelectedItem.ToString(), objentyUM);
+                        frmProcedure1 objfrmpro = new frmProcedure1(lstProcedureName.SelectedItem.ToString(), objentyUM);
                         objfrmpro.ShowDialog();
 
                     }

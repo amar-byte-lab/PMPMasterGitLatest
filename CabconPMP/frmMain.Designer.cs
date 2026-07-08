@@ -76,6 +76,7 @@
             this.cms_CreateProgram = new System.Windows.Forms.ToolStripMenuItem();
             this.lblMainScreenMsg = new System.Windows.Forms.Label();
             this.pcbBackgroundImage = new System.Windows.Forms.PictureBox();
+            this.addProceduresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.DLMSStas.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -106,7 +107,8 @@
             // 
             this.calibrationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.configurationToolStripMenuItem,
-            this.calibrateToolStripMenuItem});
+            this.calibrateToolStripMenuItem,
+            this.addProceduresToolStripMenuItem});
             this.calibrationToolStripMenuItem.Name = "calibrationToolStripMenuItem";
             this.calibrationToolStripMenuItem.Size = new System.Drawing.Size(77, 22);
             this.calibrationToolStripMenuItem.Text = "Calibration";
@@ -140,28 +142,28 @@
             // tsm_Association
             // 
             this.tsm_Association.Name = "tsm_Association";
-            this.tsm_Association.Size = new System.Drawing.Size(180, 22);
+            this.tsm_Association.Size = new System.Drawing.Size(171, 22);
             this.tsm_Association.Text = "Association";
             this.tsm_Association.Click += new System.EventHandler(this.tsm_Association_Click);
             // 
             // tsm_userManagement
             // 
             this.tsm_userManagement.Name = "tsm_userManagement";
-            this.tsm_userManagement.Size = new System.Drawing.Size(180, 22);
+            this.tsm_userManagement.Size = new System.Drawing.Size(171, 22);
             this.tsm_userManagement.Text = "User Management";
             this.tsm_userManagement.Click += new System.EventHandler(this.userManagementToolStripMenuItem_Click);
             // 
             // tsm_changePassword
             // 
             this.tsm_changePassword.Name = "tsm_changePassword";
-            this.tsm_changePassword.Size = new System.Drawing.Size(180, 22);
+            this.tsm_changePassword.Size = new System.Drawing.Size(171, 22);
             this.tsm_changePassword.Text = "Change Password";
             this.tsm_changePassword.Click += new System.EventHandler(this.changePasswordToolStripMenuItem_Click);
             // 
             // tsm_ServerSettings
             // 
             this.tsm_ServerSettings.Name = "tsm_ServerSettings";
-            this.tsm_ServerSettings.Size = new System.Drawing.Size(180, 22);
+            this.tsm_ServerSettings.Size = new System.Drawing.Size(171, 22);
             this.tsm_ServerSettings.Text = "Server Settings";
             this.tsm_ServerSettings.Click += new System.EventHandler(this.tsm_ServerSettings_Click);
             // 
@@ -479,6 +481,13 @@
             this.pcbBackgroundImage.TabStop = false;
             this.pcbBackgroundImage.Click += new System.EventHandler(this.pcbBackgroundImage_Click);
             // 
+            // addProceduresToolStripMenuItem
+            // 
+            this.addProceduresToolStripMenuItem.Name = "addProceduresToolStripMenuItem";
+            this.addProceduresToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addProceduresToolStripMenuItem.Text = "Add Procedures";
+            this.addProceduresToolStripMenuItem.Click += new System.EventHandler(this.addProceduresToolStripMenuItem_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -559,6 +568,7 @@
         private System.Windows.Forms.ToolStripMenuItem contentsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem configurationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem calibrateToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addProceduresToolStripMenuItem;
     }
 }
 

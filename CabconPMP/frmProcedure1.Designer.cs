@@ -1,6 +1,6 @@
 namespace CabconPMP
 {
-    partial class frmProcedure
+    partial class frmProcedure1
     {
         /// <summary>
         /// Required designer variable.

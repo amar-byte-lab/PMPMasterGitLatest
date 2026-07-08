@@ -541,8 +541,8 @@ namespace CabconPMP
         private void tsm_createProcedure_Click(object sender, EventArgs e)
         {
 
-            frmProcedure objprcreat = new frmProcedure("", objetyusermgt);
-            objprcreat.UpdateMsg += new frmProcedure.UpdateMainMsgHandler(MainForm_UpdateMsg);
+            frmProcedure1 objprcreat = new frmProcedure1("", objetyusermgt);
+            objprcreat.UpdateMsg += new frmProcedure1.UpdateMainMsgHandler(MainForm_UpdateMsg);
             objprcreat.ShowDialog();
         }
 
@@ -618,8 +618,8 @@ namespace CabconPMP
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            frmProcedure objprcreat = new frmProcedure("", objetyusermgt);
-            objprcreat.UpdateMsg += new frmProcedure.UpdateMainMsgHandler(MainForm_UpdateMsg);
+            frmProcedure1 objprcreat = new frmProcedure1("", objetyusermgt);
+            objprcreat.UpdateMsg += new frmProcedure1.UpdateMainMsgHandler(MainForm_UpdateMsg);
             objprcreat.ShowDialog();
         }
 
@@ -930,6 +930,12 @@ namespace CabconPMP
                 _benchRepository,
                 _currentUser
             );
+            frm.Show();
+        }
+
+        private void addProceduresToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var frm = new frmProcedure(_procedureRepository);
             frm.Show();
         }
     }

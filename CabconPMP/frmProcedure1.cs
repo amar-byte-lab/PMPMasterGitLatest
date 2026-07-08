@@ -17,7 +17,7 @@ using SystemSecurityLibrary;
 namespace CabconPMP
 {
 
-    public partial class frmProcedure : Form
+    public partial class frmProcedure1 : Form
     {
         public delegate void UpdateMainMsgHandler(object sender, UpdateEventArgs e);
         public event UpdateMainMsgHandler UpdateMsg;
@@ -32,7 +32,7 @@ namespace CabconPMP
         int procedureRindex = -1;
         decimal objdec;
         string procedureName;
-         public frmProcedure(string pName, EntityUserManagement objetyusermgtref)
+         public frmProcedure1(string pName, EntityUserManagement objetyusermgtref)
          {
              InitializeComponent(); 
              COMMONENTITY.FormStyleHelper.Apply(this);

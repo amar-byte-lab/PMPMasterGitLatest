@@ -277,22 +277,7 @@ namespace CabconPMP.UI
         {
             int positions = _bench?.NumPosition ?? 48;
             _metersList.Clear();
-            //for (int i = 1; i <= positions; i++)
-            //{
-            //    _metersList.Add(new MeterAllocationRow
-            //    {
-            //        PositionNo = (short)i,
-            //        Status = true,
-            //        MeterType = "",
-            //        MSN = "",
-            //        OwnerNo = "",
-            //        YearOfManufacture = DateTime.Now.Year.ToString(),
-            //        LastApproval = "None",
-            //        ContractNo = "",
-            //        ClientName = "",
-            //        ClientNo = ""
-            //    });
-            //}
+            // do not pre-populate; rows will be added when user clicks Add
             dgvMeters.DataSource = _metersList;
         }
 
@@ -345,7 +330,7 @@ namespace CabconPMP.UI
             else if (int.TryParse(posStr, out var p))
             {
                 from = Math.Max(p, 1);
-                from = Math.Min(from, maxPositions);
+                from = Math.Min(p, maxPositions);
                 to = from;
             }
             else
@@ -380,59 +365,121 @@ namespace CabconPMP.UI
             string client = cmbClient.Text;
             string clientNo = cmbClientNo.Text;
 
+            var duplicatePositions = new List<int>();
+
             for (int k = from; k <= to; k++)
             {
-                var row = _metersList.FirstOrDefault(r => r.PositionNo == k);
-                if (row != null)
+                var existing = _metersList.FirstOrDefault(r => r.PositionNo == k);
+                bool isOccupied = false;
+
+                if (existing != null)
                 {
-                    row.MeterType = mtrType;
-                    row.YearOfManufacture = year;
-                    row.LastApproval = approval;
-                    row.ContractNo = contract;
-                    row.ClientName = client;
-                    row.ClientNo = clientNo;
+                    // Consider a row occupied if it already has identifying data
+                    if (!string.IsNullOrWhiteSpace(existing.MSN) ||
+                        !string.IsNullOrWhiteSpace(existing.MeterType) ||
+                        !string.IsNullOrWhiteSpace(existing.OwnerNo) ||
+                        !string.IsNullOrWhiteSpace(existing.ContractNo) ||
+                        !string.IsNullOrWhiteSpace(existing.ClientName) ||
+                        !string.IsNullOrWhiteSpace(existing.ClientNo))
+                    {
+                        isOccupied = true;
+                    }
+                }
 
-                    if (hasMsn)
-                    {
-                        row.MSN = FormatIncremented(msnPrefix, msnVal, rawMsn.Length);
-                        msnVal += (ulong)stepMsn;
-                    }
-                    else
-                    {
-                        row.MSN = rawMsn;
-                    }
+                if (isOccupied)
+                {
+                    duplicatePositions.Add(k);
+                    continue;
+                }
 
-                    if (hasOwner)
+                MeterAllocationRow row;
+                if (existing != null)
+                {
+                    // reuse and populate existing (it was empty)
+                    row = existing;
+                }
+                else
+                {
+                    row = new MeterAllocationRow
                     {
-                        row.OwnerNo = FormatIncremented(ownerPrefix, ownerVal, rawOwner.Length);
-                        ownerVal += (ulong)stepOwner;
-                    }
-                    else
-                    {
-                        row.OwnerNo = rawOwner;
-                    }
+                        PositionNo = (short)k,
+                        Status = true
+                    };
+                    _metersList.Add(row);
+                }
+
+                row.MeterType = mtrType;
+                row.YearOfManufacture = year;
+                row.LastApproval = approval;
+                row.ContractNo = contract;
+                row.ClientName = client;
+                row.ClientNo = clientNo;
+
+                if (hasMsn)
+                {
+                    row.MSN = FormatIncremented(msnPrefix, msnVal, rawMsn.Length);
+                    msnVal += (ulong)stepMsn;
+                }
+                else
+                {
+                    row.MSN = rawMsn;
+                }
+
+                if (hasOwner)
+                {
+                    row.OwnerNo = FormatIncremented(ownerPrefix, ownerVal, rawOwner.Length);
+                    ownerVal += (ulong)stepOwner;
+                }
+                else
+                {
+                    row.OwnerNo = rawOwner;
                 }
             }
 
+            if (duplicatePositions.Any())
+            {
+                MessageBox.Show($"The following positions are already occupied and were skipped: {string.Join(", ", duplicatePositions)}", "Duplicate Positions", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+            // ensure UI updates
             dgvMeters.Refresh();
+            dgvMeters.DataSource = null;
+            dgvMeters.DataSource = _metersList;
         }
 
         private void btnDeleteDevice_Click(object sender, EventArgs e)
         {
-            if (dgvMeters.SelectedRows.Count > 0)
+            if (dgvMeters.SelectedRows.Count == 0)
             {
-                foreach (DataGridViewRow row in dgvMeters.SelectedRows)
-                {
-                    if (row.DataBoundItem is MeterAllocationRow mtr)
-                    {
-                        mtr.MSN = "";
-                        mtr.OwnerNo = "";
-                        mtr.MeterType = "";
-                        mtr.LastApproval = "None";
-                    }
-                }
-                dgvMeters.Refresh();
+                MessageBox.Show("Please select at least one row to delete.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
             }
+
+            var toRemove = new List<MeterAllocationRow>();
+
+            foreach (DataGridViewRow row in dgvMeters.SelectedRows)
+            {
+                if (row.DataBoundItem is MeterAllocationRow mtr)
+                {
+                    toRemove.Add(mtr);
+                }
+            }
+
+            if (toRemove.Count == 0)
+            {
+                MessageBox.Show("No removable rows selected.", "Delete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            foreach (var item in toRemove)
+            {
+                _metersList.Remove(item);
+            }
+
+            // refresh grid
+            dgvMeters.Refresh();
+            dgvMeters.DataSource = null;
+            dgvMeters.DataSource = _metersList;
         }
 
         //--------------------
@@ -767,10 +814,22 @@ namespace CabconPMP.UI
             try
             {
                 // Connect to board controller and serial port standard meter
-                int sioPort = _bench?.SioPortNo ?? 1;
-                string sioFmt = _bench?.SioFormat ?? "19200,n,8,2";
+                //int sioPort = _bench?.SioPortNo ?? 1;
+                //string sioFmt = _bench?.SioFormat ?? "19200,n,8,2";
 
-                Log("Initializing board connection...");
+                //using var board = new YcBoardController(sioPort, sioFmt);
+                //var serial = new SerialPortService();
+
+                //// SZ-03A-K6 Reference Standard Meter parser
+                //var refStd = new CSZ_03A_K6(serial) { Port = sioPort };
+
+                //Log("Initializing board connection...");
+                //// Open standard boards (BoxType = 1 matches MFC app)
+                //bool boxOk = board.OpenBoxAsync(1).GetAwaiter().GetResult();
+                //if (!boxOk)
+                //{
+                //    Log("Warning: Board OpenBox returned error status. Simulating outputs...");
+                //}
 
                 // Initialise base values (nominal Ub, Ib from the first allocated meter)
                 double nominalUb = 220.0;
@@ -796,6 +855,7 @@ namespace CabconPMP.UI
                     Log($"Executing: {step.Name}");
                     HighlightActiveStep(step.StepNo);
 
+                    // Parse voltage percentages and active power frequency
                     double.TryParse(step.UA, out var uaPct);
                     double.TryParse(step.IA, out var iaPct);
                     double.TryParse(step.FREQ, out var freq);
@@ -806,11 +866,15 @@ namespace CabconPMP.UI
 
                     UpdateBaseValues(targetUb, targetIb, freq, nominalIm);
 
+                    // Send output commands to the source board via COM integration
+                    // (Translating C++ VoltageOut and CurrentOut calls)
                     Log($"Setting Voltage Out = {targetUb} V, Current Out = {targetIb} A");
 
+                    // Simulate error monitoring loop
                     int timeLimitSeconds = 30;
                     if (int.TryParse(step.Timeout, out var tLimit)) timeLimitSeconds = tLimit;
 
+                    // Parse limit indicators
                     string limitDisplay = "-0.50% to 0.50%";
                     UpdateRangeLimits(limitDisplay);
 
@@ -819,6 +883,22 @@ namespace CabconPMP.UI
                         token.ThrowIfCancellationRequested();
                         _pauseEvent.Wait(token);
 
+                        // Read telemetry values from the reference standard meter
+                        //var act = refStd.GetActuals();
+                        //if (!act.IsValid)
+                        //{
+                        //    // Telemetry simulation values if physical standard is not connected
+                        //    act.IsValid = true;
+                        //    act.UA = targetUb; act.UB = targetUb; act.UC = targetUb;
+                        //    act.IA = targetIb; act.IB = targetIb; act.IC = targetIb;
+                        //    act.Freq = freq;
+                        //    act.TotalP = targetUb * targetIb * 3.0;
+                        //    act.TotalQ = 0;
+                        //    act.TotalS = act.TotalP;
+                        //}
+                        //UpdateLiveTelemetry(act);
+
+                        // Random error generation simulation for positions
                         for (int pos = 1; pos <= _metersList.Count; pos++)
                         {
                             var mtr = _metersList[pos - 1];
