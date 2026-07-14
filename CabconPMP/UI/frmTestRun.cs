@@ -12,6 +12,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utilities;
+using SmartCalibration.Constants;
+using ApplicationInterface;
+using SmartCalibration.Actions;
+using SmartCalibration.DataLayer;
 
 //using CabconPMP.Sequencer;
 using static CabconPMP.Data.MeterTypeRepository;
@@ -810,7 +814,7 @@ namespace CabconPMP.UI
             Log("Starting calibration sequence...");
 
             // Run calibration sequence in background thread
-            await Task.Run(() => RunCalibrationProcedure(stepsToRun, _cts.Token));
+            await Task.Run(() => RunCalibrationProcedure2(stepsToRun, _cts.Token));
         }
 
         private void btnPause_Click(object sender, EventArgs e)
@@ -839,6 +843,34 @@ namespace CabconPMP.UI
         {
             try
             {
+                // Initialize the results grid dynamically based on the current steps and active positions
+                InitializeResultsGridForRun(steps);
+
+                // Auto-detect connected meters and populate GlobalConstants.MeterPortMap
+                Log("Scanning and mapping COM ports to positions...");
+                string[] availablePorts = System.IO.Ports.SerialPort.GetPortNames();
+                var collector = new ConnectedMeterCollector(availablePorts);
+                var connected = collector.CollectConnectedMeters();
+                Log($"Scan complete. Found {connected.Count} active optical probes/meters mapped.");
+                foreach (var pair in GlobalConstants.MeterPortMap)
+                {
+                    Log($"Position {pair.Key} mapped to {pair.Value}");
+                }
+
+                if (GlobalConstants.MeterPortMap.Count == 0)
+                {
+                    Log("No physical meters detected. Initializing fallback simulation mapping for active positions:");
+                    for (int pos = 1; pos <= _metersList.Count; pos++)
+                    {
+                        var mtr = _metersList[pos - 1];
+                        if (mtr.Status && !string.IsNullOrEmpty(mtr.MeterType))
+                        {
+                            GlobalConstants.MeterPortMap[pos] = $"COM{pos}";
+                            Log($"Position {pos} mapped to COM{pos} (Simulated)");
+                        }
+                    }
+                }
+
                 // Connect to board controller and serial port standard meter
                 //int sioPort = _bench?.SioPortNo ?? 1;
                 //string sioFmt = _bench?.SioFormat ?? "19200,n,8,2";
@@ -875,13 +907,11 @@ namespace CabconPMP.UI
 
                 foreach (var step in steps)
                 {
-
                     token.ThrowIfCancellationRequested();
                     _pauseEvent.Wait(token);
 
                     Log($"Executing: {step.Name}");
 
-                    //Not working
                     HighlightActiveStep(step.StepNo);
 
                     // Parse voltage percentages and active power frequency
@@ -896,10 +926,9 @@ namespace CabconPMP.UI
                     UpdateBaseValues(targetUb, targetIb, freq, nominalIm);
 
                     // Send output commands to the source board via COM integration
-                    // (Translating C++ VoltageOut and CurrentOut calls)
                     Log($"Setting Voltage Out = {targetUb} V, Current Out = {targetIb} A");
 
-                    // Simulate error monitoring loop
+                    // Determine timeout/duration for this step
                     int timeLimitSeconds = 30;
                     if (int.TryParse(step.Timeout, out var tLimit)) timeLimitSeconds = tLimit;
 
@@ -907,44 +936,192 @@ namespace CabconPMP.UI
                     string limitDisplay = "-0.50% to 0.50%";
                     UpdateRangeLimits(limitDisplay);
 
+                    // Multi-threaded execution for each position slot
+                    var positionTasks = new List<Task>();
+                    var positionCancellationSources = new List<CancellationTokenSource>();
 
-                    //Change are to be done here
+                    // Initialize SemaphoreSlim to throttle position tasks concurrency (e.g., max 12 concurrent positions)
+                    int maxConcurrentPositions = 12;
+                    var semaphore = new SemaphoreSlim(maxConcurrentPositions);
 
-                    for (int elapsed = 0; elapsed < timeLimitSeconds; elapsed++)
+                    for (int pos = 1; pos <= _metersList.Count; pos++)
+                    {
+                        int currentPos = pos;
+                        var mtr = _metersList[currentPos - 1];
+
+                        if (mtr.Status && !string.IsNullOrEmpty(mtr.MeterType))
+                        {
+                            var posCts = CancellationTokenSource.CreateLinkedTokenSource(token);
+                            positionCancellationSources.Add(posCts);
+
+                            positionTasks.Add(Task.Run(async () =>
+                            {
+                                await semaphore.WaitAsync(posCts.Token);
+                                try
+                                {
+                                    // 1. Identify COM port from position number using GlobalConstants.MeterPortMap
+                                    string portName = string.Empty;
+                                    if (GlobalConstants.MeterPortMap != null && GlobalConstants.MeterPortMap.ContainsKey(currentPos))
+                                    {
+                                        portName = GlobalConstants.MeterPortMap[currentPos];
+                                    }
+
+                                    // 2. Call the layer interface to establish connection and run methods
+                                    var layerInterface = new ApplicationInterface.LayerInterface();
+                                    bool isConnected = false;
+
+                                    try
+                                    {
+                                        if (!string.IsNullOrEmpty(portName))
+                                        {
+                                            // Dynamically connect using the identified COM port
+                                            isConnected = layerInterface.ConnectToMeter(portName);
+                                            if (isConnected)
+                                            {
+                                                // Successfully connected, can execute specific layer methods if necessary
+                                                // e.g. layerInterface.ValidMeterTypeInfo()
+                                            }
+                                        }
+
+                                        // ACMDS (Start Test / Pre-step): Execute before measurement starts
+                                        if (isConnected && !string.IsNullOrEmpty(step.ACMDS))
+                                        {
+                                            layerInterface.ExecuteCommand(step.ACMDS, portName);
+                                        }
+
+                                        // BCMDS (During Test / Parallel): Spawn parallel task to execute concurrently during measurement
+                                        Task bcmdTask = null;
+                                        var bcmdCts = CancellationTokenSource.CreateLinkedTokenSource(posCts.Token);
+                                        if (isConnected && !string.IsNullOrEmpty(step.BCMDS))
+                                        {
+                                            bcmdTask = Task.Run(() =>
+                                            {
+                                                try
+                                                {
+                                                    while (!bcmdCts.Token.IsCancellationRequested)
+                                                    {
+                                                        layerInterface.ExecuteCommand(step.BCMDS, portName);
+                                                        Thread.Sleep(1000); // Prevent CPU hogging
+                                                    }
+                                                }
+                                                catch { }
+                                            }, bcmdCts.Token);
+                                        }
+
+                                        var rand = new Random(currentPos ^ (int)DateTime.Now.Ticks);
+                                        double simErr = 0.0;
+
+                                        for (int elapsed = 0; elapsed < timeLimitSeconds; elapsed++)
+                                        {
+                                            posCts.Token.ThrowIfCancellationRequested();
+                                            _pauseEvent.Wait(posCts.Token);
+
+                                            // Display status according to procedure step requirements
+                                            string displayStatus;
+                                            string modeSuffix = string.IsNullOrEmpty(portName) ? " (Sim)" : "";
+                                            if (step.Name.ToLower().Contains("creep"))
+                                            {
+                                                displayStatus = elapsed > timeLimitSeconds / 2 ? $"No Pulse (Pass){modeSuffix}" : "Monitoring...";
+                                            }
+                                            else if (step.Name.ToLower().Contains("starting"))
+                                            {
+                                                displayStatus = elapsed > 5 ? $"Pulse OK (Pass){modeSuffix}" : "Waiting Pulse...";
+                                            }
+                                            else
+                                            {
+                                                // Accuracy Test: Stable simulated error
+                                                simErr = (rand.NextDouble() * 0.4) - 0.2; // -0.20% to +0.20%
+                                                displayStatus = $"{simErr:F2}%{modeSuffix}";
+                                            }
+
+                                            // Update the UI showing current running step name and status/error at this position in lstOverview
+                                            UpdatePositionOverview(currentPos, step.Name, displayStatus);
+
+                                            Thread.Sleep(1000);
+                                        }
+
+                                        // Stop parallel BCMDS task
+                                        if (bcmdTask != null)
+                                        {
+                                            bcmdCts.Cancel();
+                                            try { bcmdTask.Wait(); } catch { }
+                                            bcmdCts.Dispose();
+                                        }
+
+                                        // CCMDS (End Test / Post-step): Execute after measurement loop finishes
+                                        if (isConnected && !string.IsNullOrEmpty(step.CCMDS))
+                                        {
+                                            layerInterface.ExecuteCommand(step.CCMDS, portName);
+                                        }
+
+                                        // Update results in UI Grid (dgvResults) for this position and step
+                                        UpdateGridResult(currentPos, step.StepNo, simErr.ToString("F2"));
+                                    }
+                                    catch (OperationCanceledException)
+                                    {
+                                        throw;
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        // Handle communication error gracefully
+                                        UpdatePositionOverview(currentPos, step.Name, "Comm Error");
+                                    }
+                                    finally
+                                    {
+                                        // 3. Cleanly disconnect association using layer interface
+                                        if (isConnected)
+                                        {
+                                            try
+                                            {
+                                                layerInterface.AssociationDisconnect();
+                                            }
+                                            catch
+                                            {
+                                                // Suppress disconnect errors during cleanup
+                                            }
+                                        }
+                                    }
+                                }
+                                finally
+                                {
+                                    // Release the semaphore to allow another position task to run
+                                    semaphore.Release();
+                                }
+                            }, posCts.Token));
+                        }
+                        else
+                        {
+                            UpdatePositionOverview(currentPos, "Inactive", "-");
+                        }
+                    }
+
+                    // Main execution thread polls telemetry until all tasks complete
+                    while (positionTasks.Any(t => !t.IsCompleted))
                     {
                         token.ThrowIfCancellationRequested();
                         _pauseEvent.Wait(token);
 
-                        // Read telemetry values from the reference standard meter
-                        //var act = refStd.GetActuals();
-                        //if (!act.IsValid)
-                        //{
-                        //    // Telemetry simulation values if physical standard is not connected
-                        //    act.IsValid = true;
-                        //    act.UA = targetUb; act.UB = targetUb; act.UC = targetUb;
-                        //    act.IA = targetIb; act.IB = targetIb; act.IC = targetIb;
-                        //    act.Freq = freq;
-                        //    act.TotalP = targetUb * targetIb * 3.0;
-                        //    act.TotalQ = 0;
-                        //    act.TotalS = act.TotalP;
-                        //}
-                        //UpdateLiveTelemetry(act);
-
-                        // Random error generation simulation for positions
-
-                        // _metersList iterate with respect to position, then execute RunCalibrationProcedure in the multithreading. Number of threadpools should be equal to _metersList
-                        // Show the current running step at every available position in lstOverview.
-                        for (int pos = 1; pos <= _metersList.Count; pos++)
+                        // Telemetry simulation values (or read physically if connected)
+                        var act = new Actuals
                         {
-                            var mtr = _metersList[pos - 1];
-                            if (mtr.Status && !string.IsNullOrEmpty(mtr.MeterType))
-                            {
-                                double simErr = (new Random().NextDouble() * 0.4) - 0.2; // -0.20% to +0.20%
-                                UpdateOverviewError(pos, simErr.ToString("F2"));
-                            }
-                        }
+                            IsValid = true,
+                            UA = targetUb, UB = targetUb, UC = targetUb,
+                            IA = targetIb, IB = targetIb, IC = targetIb,
+                            Freq = freq,
+                            TotalP = targetUb * targetIb * 3.0,
+                            TotalQ = 0,
+                            TotalS = targetUb * targetIb * 3.0
+                        };
+                        UpdateLiveTelemetry(act);
 
                         Thread.Sleep(1000);
+                    }
+
+                    // Wait for all position tasks to finish cleanly
+                    Task.WhenAll(positionTasks).GetAwaiter().GetResult();
+                    foreach (var cts in positionCancellationSources)
+                    {
+                        cts.Dispose();
                     }
                 }
 
@@ -971,6 +1148,354 @@ namespace CabconPMP.UI
                 }));
             }
         }
+
+        private void RunCalibrationProcedure2(List<RStepRow> steps, CancellationToken token)
+        {
+            try
+            {
+                // Initialize the results grid dynamically based on the current steps and active positions
+                InitializeResultsGridForRun(steps);
+
+                // Auto-detect connected meters and populate GlobalConstants.MeterPortMap
+                Log("[Auto-Calib] Scanning and mapping COM ports to positions...");
+                string[] availablePorts = System.IO.Ports.SerialPort.GetPortNames();
+                var collector = new ConnectedMeterCollector(availablePorts);
+                var connected = collector.CollectConnectedMeters();
+                Log($"[Auto-Calib] Scan complete. Found {connected.Count} active optical probes/meters mapped.");
+                foreach (var pair in GlobalConstants.MeterPortMap)
+                {
+                    Log($"[Auto-Calib] Position {pair.Key} mapped to {pair.Value}");
+                }
+
+                if (GlobalConstants.MeterPortMap.Count == 0)
+                {
+                    Log("[Auto-Calib] No physical meters detected. Initializing fallback simulation mapping for active positions:");
+                    for (int pos = 1; pos <= _metersList.Count; pos++)
+                    {
+                        var mtr = _metersList[pos - 1];
+                        if (mtr.Status && !string.IsNullOrEmpty(mtr.MeterType))
+                        {
+                            GlobalConstants.MeterPortMap[pos] = $"COM{pos}";
+                            Log($"[Auto-Calib] Position {pos} mapped to COM{pos} (Simulated)");
+                        }
+                    }
+                }
+
+                Log("[Auto-Calib] Starting Electronic Auto-Calibration Procedure...");
+
+                foreach (var step in steps)
+                {
+                    token.ThrowIfCancellationRequested();
+                    _pauseEvent.Wait(token);
+
+                    HighlightActiveStep(step.StepNo);
+                    Log($"[Auto-Calib] Running Step {step.StepNo}: {step.Name}");
+
+                    // Determine parameters
+                    double targetUb = 240.0;
+                    double targetIb = 10.0;
+                    double freq = 50.0;
+                    int timeLimitSeconds = 30;
+
+                    if (int.TryParse(step.Timeout, out var tLimit))
+                    {
+                        timeLimitSeconds = tLimit;
+                    }
+
+                    if (!string.IsNullOrEmpty(step.UA))
+                    {
+                        string cleanVolt = step.UA.Replace("%", "").Trim();
+                        if (double.TryParse(cleanVolt, out double voltPercent))
+                        {
+                            targetUb = 240.0 * (voltPercent / 100.0);
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(step.IA))
+                    {
+                        string cleanCurr = step.IA.Replace("%", "").Replace("A", "").Trim();
+                        if (double.TryParse(cleanCurr, out double currPercent))
+                        {
+                            targetIb = 10.0 * (currPercent / 100.0);
+                        }
+                    }
+
+                    Log($"[Auto-Calib] Bench output settings applied: Voltage={targetUb} V, Current={targetIb} A");
+
+                    // Multi-threaded execution for each position slot using SemaphoreSlim
+                    var positionTasks = new List<Task>();
+                    var positionCancellationSources = new List<CancellationTokenSource>();
+
+                    // Initialize SemaphoreSlim to throttle position tasks concurrency (e.g., max 12 concurrent positions)
+                    int maxConcurrentPositions = 12;
+                    var semaphore = new SemaphoreSlim(maxConcurrentPositions);
+
+                    for (int pos = 1; pos <= _metersList.Count; pos++)
+                    {
+                        int currentPos = pos;
+                        var mtr = _metersList[currentPos - 1];
+
+                        if (mtr.Status && !string.IsNullOrEmpty(mtr.MeterType))
+                        {
+                            var posCts = CancellationTokenSource.CreateLinkedTokenSource(token);
+                            positionCancellationSources.Add(posCts);
+
+                            positionTasks.Add(Task.Run(async () =>
+                            {
+                                await semaphore.WaitAsync(posCts.Token);
+                                try
+                                {
+                                    // 1. Identify COM port from position number using GlobalConstants.MeterPortMap
+                                    string portName = string.Empty;
+                                    if (GlobalConstants.MeterPortMap != null && GlobalConstants.MeterPortMap.ContainsKey(currentPos))
+                                    {
+                                        portName = GlobalConstants.MeterPortMap[currentPos];
+                                    }
+
+                                    // 2. Call the layer interface to establish connection
+                                    var layerInterface = new ApplicationInterface.LayerInterface();
+                                    bool isConnected = false;
+
+                                    if (!string.IsNullOrEmpty(portName))
+                                    {
+                                        isConnected = layerInterface.ConnectToMeter(portName);
+                                    }
+
+                                    // 3. Resolve the appropriate GenericAction subclass dynamically for this meter type
+                                    GenericAction action = null;
+                                    if (GlobalConstants.GlobalMeterTypeMapper.ContainsKey(mtr.MeterType))
+                                    {
+                                        var mtrType = GlobalConstants.GlobalMeterTypeMapper[mtr.MeterType];
+                                        if (GlobalConstants.GlobalActionMapper.ContainsKey(mtrType))
+                                        {
+                                            action = GlobalConstants.GlobalActionMapper[mtrType];
+                                        }
+                                    }
+
+                                    try
+                                    {
+                                        // ACMDS (Start Test / Pre-step): Execute pre-step setup if defined
+                                        if (isConnected && !string.IsNullOrEmpty(step.ACMDS))
+                                        {
+                                            layerInterface.ExecuteCommand(step.ACMDS, portName);
+                                        }
+
+                                        // 4. Run Auto Calibration Steps
+                                        double errorVal = 0.0;
+                                        if (action != null)
+                                        {
+                                            // Reset Calibration Registers before starting
+                                            action.CALIBRESET(currentPos, 0);
+                                            Thread.Sleep(1000);
+
+                                            // Perform calibration actions dynamically based on the step configuration
+                                            if (step.Name.ToLower().Contains("creep") || step.Name.ToLower().Contains("starting"))
+                                            {
+                                                // Verify step using CALIBVERIFY
+                                                action.CALIBVERIFY(currentPos, 0);
+                                            }
+                                            else if (step.Name.ToLower().Contains("accuracy") || step.Name.ToLower().Contains("active"))
+                                            {
+                                                // Execute active calibration
+                                                action.CALIBACTIVE(currentPos, 0);
+                                            }
+                                            else if (step.Name.ToLower().Contains("current") || step.Name.ToLower().Contains("ib"))
+                                            {
+                                                // Execute current calibration
+                                                action.CALIBCURRENT(currentPos, 0);
+                                            }
+                                            else
+                                            {
+                                                // Calibration of Voltage/Current (FVI)
+                                                action.CALIBFVI(currentPos, 0);
+                                            }
+
+                                            // Retrieve the real error value from the action class
+                                            errorVal = action.mresulterror;
+                                        }
+
+                                        // Step verification delay
+                                        for (int elapsed = 0; elapsed < timeLimitSeconds; elapsed++)
+                                        {
+                                            posCts.Token.ThrowIfCancellationRequested();
+                                            _pauseEvent.Wait(posCts.Token);
+
+                                            string displayStatus = $"{errorVal:F2}%";
+                                            UpdatePositionOverview(currentPos, step.Name, displayStatus);
+                                            Thread.Sleep(1000);
+                                        }
+
+                                        // CCMDS (End Test / Post-step): Execute final save/cleanup if defined
+                                        if (isConnected && !string.IsNullOrEmpty(step.CCMDS))
+                                        {
+                                            layerInterface.ExecuteCommand(step.CCMDS, portName);
+                                        }
+
+                                        // Update results in UI Grid (dgvResults) for this position and step
+                                        UpdateGridResult(currentPos, step.StepNo, errorVal.ToString("F2"));
+                                    }
+                                    catch (OperationCanceledException)
+                                    {
+                                        throw;
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        UpdatePositionOverview(currentPos, step.Name, "Auto-Cal Error");
+                                    }
+                                    finally
+                                    {
+                                        if (isConnected)
+                                        {
+                                            try
+                                            {
+                                                layerInterface.AssociationDisconnect();
+                                            }
+                                            catch { }
+                                        }
+                                    }
+                                }
+                                finally
+                                {
+                                    semaphore.Release();
+                                }
+                            }, posCts.Token));
+                        }
+                        else
+                        {
+                            UpdatePositionOverview(currentPos, "Inactive", "-");
+                        }
+                    }
+
+                    // Main execution thread polls telemetry until all tasks complete
+                    while (positionTasks.Any(t => !t.IsCompleted))
+                    {
+                        token.ThrowIfCancellationRequested();
+                        _pauseEvent.Wait(token);
+
+                        // Telemetry update values
+                        var act = new Actuals
+                        {
+                            IsValid = true,
+                            UA = targetUb, UB = targetUb, UC = targetUb,
+                            IA = targetIb, IB = targetIb, IC = targetIb,
+                            Freq = freq,
+                            TotalP = targetUb * targetIb * 3.0,
+                            TotalQ = 0,
+                            TotalS = targetUb * targetIb * 3.0
+                        };
+                        UpdateLiveTelemetry(act);
+
+                        Thread.Sleep(1000);
+                    }
+
+                    // Wait for all position tasks to finish cleanly
+                    Task.WhenAll(positionTasks).GetAwaiter().GetResult();
+                    foreach (var cts in positionCancellationSources)
+                    {
+                        cts.Dispose();
+                    }
+                }
+
+                Log("[Auto-Calib] Auto-Calibration completed successfully!");
+                SaveRunAndResults();
+            }
+            catch (OperationCanceledException)
+            {
+                Log("[Auto-Calib] Calibration sequence canceled.");
+            }
+            catch (Exception ex)
+            {
+                Log($"[Auto-Calib] Execution Error: {ex.Message}");
+            }
+            finally
+            {
+                _isRunning = false;
+                _isPaused = false;
+                Invoke(new Action(() =>
+                {
+                    btnStart.Enabled = true;
+                    btnPause.Enabled = false;
+                    btnStop.Enabled = false;
+                }));
+            }
+        }
+
+        private void InitializeResultsGridForRun(List<RStepRow> steps)
+        {
+            if (dgvResults.InvokeRequired)
+            {
+                dgvResults.Invoke(new Action(() => InitializeResultsGridForRun(steps)));
+            }
+            else
+            {
+                dgvResults.Columns.Clear();
+                dgvResults.Columns.Add("colPos", "Pos");
+                dgvResults.Columns.Add("colMSN", "Meter MSN");
+
+                foreach (var step in steps)
+                {
+                    string colName = $"colStep_{step.StepNo}";
+                    dgvResults.Columns.Add(colName, step.Name);
+                }
+
+                foreach (var mtr in _metersList)
+                {
+                    if (mtr.Status && !string.IsNullOrEmpty(mtr.MeterType))
+                    {
+                        int rowIndex = dgvResults.Rows.Add();
+                        var row = dgvResults.Rows[rowIndex];
+                        row.Cells[0].Value = mtr.PositionNo;
+                        row.Cells[1].Value = mtr.MSN;
+
+                        for (int col = 2; col < dgvResults.Columns.Count; col++)
+                        {
+                            row.Cells[col].Value = "-";
+                        }
+                    }
+                }
+                dgvResults.ReadOnly = true;
+            }
+        }
+
+        private void UpdateGridResult(int positionNo, int stepNo, string value)
+        {
+            if (dgvResults.InvokeRequired)
+            {
+                dgvResults.Invoke(new Action(() => UpdateGridResult(positionNo, stepNo, value)));
+            }
+            else
+            {
+                foreach (DataGridViewRow row in dgvResults.Rows)
+                {
+                    if (row.Cells[0].Value != null && Convert.ToInt32(row.Cells[0].Value) == positionNo)
+                    {
+                        string colName = $"colStep_{stepNo}";
+                        if (dgvResults.Columns.Contains(colName))
+                        {
+                            row.Cells[colName].Value = value;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void UpdatePositionOverview(int positionNo, string stepName, string errorText)
+        {
+            if (lstOverview.InvokeRequired)
+            {
+                lstOverview.Invoke(new Action(() => UpdatePositionOverview(positionNo, stepName, errorText)));
+            }
+            else
+            {
+                if (positionNo >= 1 && positionNo <= lstOverview.Items.Count)
+                {
+                    string pct = (errorText == "-" || errorText.Contains("Pulse") || errorText.Contains("Monitoring")) ? "" : "%";
+                    lstOverview.Items[positionNo - 1] = $"{positionNo:D2}: [{stepName}] {errorText}{pct}";
+                }
+            }
+        }
+
 
 
 
@@ -1057,6 +1582,34 @@ namespace CabconPMP.UI
             if (results.Any())
             {
                 _runRepository.SaveResultsAsync(runId, results).GetAwaiter().GetResult();
+            }
+        }
+
+        private void UpdateLiveTelemetry(Actuals act)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => UpdateLiveTelemetry(act)));
+            }
+            else
+            {
+                txtMonUA.Text = act.UA.ToString("F1");
+                txtMonUB.Text = act.UB.ToString("F1");
+                txtMonUC.Text = act.UC.ToString("F1");
+
+                txtMonIA.Text = act.IA.ToString("F3");
+                txtMonIB.Text = act.IB.ToString("F3");
+                txtMonIC.Text = act.IC.ToString("F3");
+
+                txtMonPhiA.Text = act.PhiA.ToString("F1");
+                txtMonPhiB.Text = act.PhiB.ToString("F1");
+                txtMonPhiC.Text = act.PhiC.ToString("F1");
+
+                // txtMonFreq.Text = act.Freq.ToString("F2");
+
+                txtTotalP.Text = act.TotalP.ToString("F2");
+                txtTotalQ.Text = act.TotalQ.ToString("F2");
+                txtTotalS.Text = act.TotalS.ToString("F2");
             }
         }
 
@@ -1183,5 +1736,23 @@ namespace CabconPMP.UI
         public string ACMDS { get; set; } = string.Empty;
         public string BCMDS { get; set; } = string.Empty;
         public string CCMDS { get; set; } = string.Empty;
+    }
+
+    public class Actuals
+    {
+        public bool IsValid { get; set; }
+        public double UA { get; set; }
+        public double UB { get; set; }
+        public double UC { get; set; }
+        public double IA { get; set; }
+        public double IB { get; set; }
+        public double IC { get; set; }
+        public double PhiA { get; set; }
+        public double PhiB { get; set; }
+        public double PhiC { get; set; }
+        public double Freq { get; set; }
+        public double TotalP { get; set; }
+        public double TotalQ { get; set; }
+        public double TotalS { get; set; }
     }
 }
