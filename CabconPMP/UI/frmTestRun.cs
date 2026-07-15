@@ -2,6 +2,7 @@ using ApplicationInterface;
 using CabconPMP.Data;
 //using CabconPMP.Hardware;
 using CabconPMP.Models;
+using COMMONENTITY;
 using SmartCalibration.Actions;
 using SmartCalibration.Constants;
 using SmartCalibration.DataLayer;
@@ -1107,8 +1108,12 @@ namespace CabconPMP.UI
                         var act = new Actuals
                         {
                             IsValid = true,
-                            UA = targetUb, UB = targetUb, UC = targetUb,
-                            IA = targetIb, IB = targetIb, IC = targetIb,
+                            UA = targetUb,
+                            UB = targetUb,
+                            UC = targetUb,
+                            IA = targetIb,
+                            IB = targetIb,
+                            IC = targetIb,
                             Freq = freq,
                             TotalP = targetUb * targetIb * 3.0,
                             TotalQ = 0,
@@ -1133,7 +1138,7 @@ namespace CabconPMP.UI
                         // Popup verification dialog for operator
                         this.Invoke(new Action(() =>
                         {
-                            MessageBox.Show("Step completed under 'Wait' control. Please verify the display and connections. Press OK to resume.", 
+                            MessageBox.Show("Step completed under 'Wait' control. Please verify the display and connections. Press OK to resume.",
                                             "Operator Intervention Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }));
                         Log("[Control Function] Resuming sequence after operator verification.");
@@ -1331,7 +1336,7 @@ namespace CabconPMP.UI
                                         string acmdResult = "Success";
                                         if (isConnected && !string.IsNullOrEmpty(step.ACMDS))
                                         {
-                                             acmdResult = ExecuteCommonCommandMethod(ccm, step.ACMDS, portName, currentPos, step);
+                                            acmdResult = ExecuteCommonCommandMethod(ccm, step.ACMDS, portName, currentPos, step);
                                         }
 
                                         // BCMDS (During Test / Parallel): Spawn parallel task to execute concurrently during measurement
@@ -1389,7 +1394,7 @@ namespace CabconPMP.UI
                                         string ccmdResult = "Success";
                                         if (isConnected && !string.IsNullOrEmpty(step.CCMDS))
                                         {
-                                             ccmdResult = ExecuteCommonCommandMethod(ccm, step.CCMDS, portName, currentPos, step);
+                                            ccmdResult = ExecuteCommonCommandMethod(ccm, step.CCMDS, portName, currentPos, step);
                                         }
 
                                         // Determine final result value to save and display in the grid
@@ -1743,8 +1748,12 @@ namespace CabconPMP.UI
                         var act = new Actuals
                         {
                             IsValid = true,
-                            UA = targetUb, UB = targetUb, UC = targetUb,
-                            IA = targetIb, IB = targetIb, IC = targetIb,
+                            UA = targetUb,
+                            UB = targetUb,
+                            UC = targetUb,
+                            IA = targetIb,
+                            IB = targetIb,
+                            IC = targetIb,
                             Freq = freq,
                             TotalP = targetUb * targetIb * 3.0,
                             TotalQ = 0,
@@ -2085,60 +2094,56 @@ namespace CabconPMP.UI
 
             string cmdLower = command.ToLower().Trim();
 
-
+            var layer = new ApplicationInterface.LayerInterface();
 
             try
             {
                 string result = "Success";
- 
+                SetMeterPcbaId(layer);
+
+                //string rrr = ReadMeterPcbaId(layer);
+                string tt  = ReadPCBAId(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
+                string ttt = ReadMeterRtc(layer);
+
 
                 // Log execution parameters
-                Log($"[CCM Info] Position {currentPos} executing under TestTypeID = {step.TestTypeID}");
+                //Log($"[CCM Info] Position {currentPos} executing under TestTypeID = {step.TestTypeID}");
 
-                //if (cmdLower.Contains("pcba") || cmdLower.Contains("step1m1"))
-                //{
-                //    result = ccm.ReadPCBAID();
-                //}
-                //else if (cmdLower.Contains("calibdata") || cmdLower.Contains("step2methodp1"))
-                //{
-                //    result = ccm.TestCalibrationData();
-                //}
-                //else if (cmdLower.Contains("verify") || cmdLower.Contains("step3methodw1"))
-                //{
-                //    result = ccm.VerifyCalibrationData();
-                //}
-                //else if (cmdLower.Contains("lock") || cmdLower.Contains("step4methodm1"))
-                //{
-                //    result = ccm.LockingMeter(0x00);
-                //}
-                //else if (cmdLower.Contains("comm") || cmdLower.Contains("test"))
-                //{
-                //    result = ccm.CommunicationTest(portName);
-                //}
-                //else if (cmdLower.Contains("drift"))
-                //{
-                //    result = ccm.TestRTCDrift("0", "0", "1");
-                //}
-                //else
-                //{
-                    // Switch case logic for different TestTypeIDs (1 = Basic Error, 2 = Creep, 3 = Starting, 4 = No Test)
-                    switch (step.TestTypeID)
-                    {
-                        case 1: // Basic Error Test
-                            result = ccm.TestCalibrationData();
-                            break;
-                        case 2: // Creep Test
-                            result = ccm.VerifyCalibrationData();
-                            break;
-                        case 3: // Starting Test
-                            result = ccm.CommunicationTest(portName);
-                            break;
-                        default:
-                            // Fallback to raw execution via extension method
-                            var layer = new ApplicationInterface.LayerInterface();
-                            layer.ExecuteCommand(command, portName);
-                            return "Success";
-                    }
+                if (cmdLower.Contains("pcba") || cmdLower.Contains("step1m1"))
+                {
+                    result = ccm.ReadPCBAID();
+                }
+                else if(cmdLower.Contains("rtc") || cmdLower.Contains("step1m2"))
+                {
+                    result = ReadMeterRtc(layer);
+                }
+                else if (cmdLower.Contains("calibdata") || cmdLower.Contains("step2methodp1"))
+                {
+                    result = ccm.TestCalibrationData();
+                }
+                else if (cmdLower.Contains("verify") || cmdLower.Contains("step3methodw1"))
+                {
+                    result = ccm.VerifyCalibrationData();
+                }
+                else if (cmdLower.Contains("lock") || cmdLower.Contains("step4methodm1"))
+                {
+                    result = ccm.LockingMeter(0x00);
+                }
+                else if (cmdLower.Contains("comm") || cmdLower.Contains("test"))
+                {
+                    result = ccm.CommunicationTest(portName);
+                }
+                else if (cmdLower.Contains("drift"))
+                {
+                    result = ccm.TestRTCDrift("0", "0", "1");
+                }
+                else
+                {
+                    // Fallback to raw execution via extension method
+                    //var layer = new ApplicationInterface.LayerInterface();
+                    layer.ExecuteCommand(command, portName);
+                    return "Success";
+                }
                 Log($"[CCM] Position {currentPos} command '{command}' response: {result}");
                 //}
 
@@ -2151,37 +2156,6 @@ namespace CabconPMP.UI
                 return "Error: " + ex.Message;
             }
         }
-        // Set the active serial port in global configurations before executing ccm methods
-        //if (!string.IsNullOrEmpty(portName))
-        //{
-        //    try
-        //    {
-        //        var settingsType = typeof(ApplicationInterface.LayerInterface).Assembly.GetType("ApplicationInterface.SerialPortSettings");
-        //        if (settingsType != null)
-        //        {
-        //            var defaultProp = settingsType.GetProperty("Default", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
-        //            if (defaultProp != null)
-        //            {
-        //                var defaultInstance = defaultProp.GetValue(null, null);
-        //                var serialPortProp = settingsType.GetProperty("SerialPort");
-        //                if (serialPortProp != null)
-        //                {
-        //                    serialPortProp.SetValue(defaultInstance, portName, null);
-        //                    var saveMethod = settingsType.GetMethod("Save");
-        //                    if (saveMethod != null)
-        //                    {
-        //                        saveMethod.Invoke(defaultInstance, null);
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Log($"[Settings Error] Failed to update port via reflection: {ex.Message}");
-        //    }
-        //}
-
 
         // Switch case logic for different Control Functions / Durations (0 = Manual, 1 = Program, 2 = Wait)
         //switch (step.Duration)
@@ -2231,6 +2205,83 @@ namespace CabconPMP.UI
                 return string.Empty;
             }
         }
+        public string ReadMeterPcbaId(LayerInterface layerInterface)
+        {
+            try
+            {
+                byte[] pcbaObis = DLMSDataStracture.PCBAIDDataStracture.PCBAIDOBIS;
+                byte classCode = DLMSDataStracture.PCBAIDDataStracture.PCBAIDClassID;
+                byte attributeId = DLMSDataStracture.PCBAIDDataStracture.PCBAIDValueAttribute;
+
+                int readResponse = layerInterface.ReadDataCommand(pcbaObis, classCode, attributeId);
+                if (readResponse != (int)LayerInterface.ProgrammingCode.Success)
+                {
+                    return string.Empty;
+                }
+
+                string[] pcbaData = DLMSDataStracture.DLMSDataFormator(
+                    GlobalObjects.objSerialComm.ReceiveBuffer,
+                    18,
+                    false);
+
+                if (pcbaData != null && pcbaData.Length > 0 && !string.IsNullOrWhiteSpace(pcbaData[0]))
+                {
+                    return pcbaData[0];
+                }
+
+                return BitConverter.ToString(GlobalObjects.objSerialComm.ReceiveBuffer).Replace("-", string.Empty);
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+        public async Task<positionResponse<string>> ReadPCBAId(CancellationToken ct, LayerInterface layer, CommonCommandMethods ccm)
+        {
+
+            string rtc = ccm.ReadPCBAID();
+            var testExecutionStatus = (int)StaticVariables.ExecutionReurnStatus.Fail;
+            if (rtc.IndexOf(StaticVariables.ERRORPreFix) < 0) { testExecutionStatus = (int)StaticVariables.ExecutionReurnStatus.Pass; }
+            else testExecutionStatus = (int)StaticVariables.ExecutionReurnStatus.Fail;
+            ct.ThrowIfCancellationRequested();
+
+            return new positionResponse<string>()
+            {
+                Payload = rtc,
+                Status = testExecutionStatus == (int)StaticVariables.ExecutionReurnStatus.Pass ? "Pass" : "Fail"
+            };
+        }
+
+        public string SetMeterPcbaId(LayerInterface layerInterface)
+        {
+            try
+            {
+
+                if (!layerInterface.WriteDataToMeter(DLMSDataStracture.PCBAIDDataStracture.PCBAIDValueAttribute, DLMSDataStracture.PCBAIDDataStracture.PCBAIDOBIS, DLMSDataStracture.PCBAIDDataStracture.PCBAIDClassID, DLMSDataStracture.PCBAIDDataStracture.PCBAIDDataType, DLMSDataStracture.PCBAIDDataStracture.PCBAIDDataLength_E150DLMS, GetMeterIDByte("123456789", DLMSDataStracture.PCBAIDDataStracture.PCBAIDDataLength_E150DLMS), DLMSDataStracture.DataStractureRequest.SetRequest_Normal)) { return StaticVariables.ERRORPreFix + "COMM Failed."; }
+                return "";
+
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+        public List<byte> GetMeterIDByte(string meterID, int charLen)
+        {
+            List<byte> MeterID = new List<byte>();
+            byte len = Convert.ToByte(meterID.Length);
+            foreach (char ch in meterID)
+            {
+                MeterID.Add(Convert.ToByte(ch));
+            }
+            while (MeterID.Count < charLen) MeterID.Add(Convert.ToByte(' '));
+            return MeterID;
+        }
+
+
+
     }
 
     public class MeterAllocationRow
