@@ -871,24 +871,6 @@ namespace CabconPMP.UI
                     }
                 }
 
-                // Connect to board controller and serial port standard meter
-                //int sioPort = _bench?.SioPortNo ?? 1;
-                //string sioFmt = _bench?.SioFormat ?? "19200,n,8,2";
-
-                //using var board = new YcBoardController(sioPort, sioFmt);
-                //var serial = new SerialPortService();
-
-                //// SZ-03A-K6 Reference Standard Meter parser
-                //var refStd = new CSZ_03A_K6(serial) { Port = sioPort };
-
-                //Log("Initializing board connection...");
-                //// Open standard boards (BoxType = 1 matches MFC app)
-                //bool boxOk = board.OpenBoxAsync(1).GetAwaiter().GetResult();
-                //if (!boxOk)
-                //{
-                //    Log("Warning: Board OpenBox returned error status. Simulating outputs...");
-                //}
-
                 // Initialise base values (nominal Ub, Ib from the first allocated meter)
                 double nominalUb = 220.0;
                 double nominalIb = 5.0;
@@ -971,16 +953,16 @@ namespace CabconPMP.UI
 
                                     try
                                     {
-                                        if (!string.IsNullOrEmpty(portName))
-                                        {
-                                            // Dynamically connect using the identified COM port
-                                            isConnected = layerInterface.ConnectToMeter(portName);
-                                            if (isConnected)
-                                            {
-                                                // Successfully connected, can execute specific layer methods if necessary
-                                                // e.g. layerInterface.ValidMeterTypeInfo()
-                                            }
-                                        }
+                                        //if (!string.IsNullOrEmpty(portName))
+                                        //{
+                                        //    // Dynamically connect using the identified COM port
+                                        //    isConnected = layerInterface.ConnectToMeter(portName);
+                                        //    if (isConnected)
+                                        //    {
+                                        //        // Successfully connected, can execute specific layer methods if necessary
+                                        //        // e.g. layerInterface.ValidMeterTypeInfo()
+                                        //    }
+                                        //}
 
                                         // Instantiate CommonCommandMethods for this position
                                         var ccm = new COMMONENTITY.CommonCommandMethods();
@@ -2104,71 +2086,40 @@ namespace CabconPMP.UI
 
             string cmdLower = command.ToLower().Trim();
 
-            // Set the active serial port in global configurations before executing ccm methods
-            if (!string.IsNullOrEmpty(portName))
-            {
-                try
-                {
-                    var settingsType = typeof(ApplicationInterface.LayerInterface).Assembly.GetType("ApplicationInterface.SerialPortSettings");
-                    if (settingsType != null)
-                    {
-                        var defaultProp = settingsType.GetProperty("Default", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
-                        if (defaultProp != null)
-                        {
-                            var defaultInstance = defaultProp.GetValue(null, null);
-                            var serialPortProp = settingsType.GetProperty("SerialPort");
-                            if (serialPortProp != null)
-                            {
-                                serialPortProp.SetValue(defaultInstance, portName, null);
-                                var saveMethod = settingsType.GetMethod("Save");
-                                if (saveMethod != null)
-                                {
-                                    saveMethod.Invoke(defaultInstance, null);
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Log($"[Settings Error] Failed to update port via reflection: {ex.Message}");
-                }
-            }
-
             try
             {
                 string result = "Success";
 
                 // Log execution parameters
-                Log($"[CCM Info] Position {currentPos} executing under TestTypeID = {step.TestTypeID}, Control Function (Duration) = {step.Duration}");
+                Log($"[CCM Info] Position {currentPos} executing under TestTypeID = {step.TestTypeID}");
 
-                if (cmdLower.Contains("pcba") || cmdLower.Contains("step1m1"))
-                {
-                    result = ccm.ReadPCBAID();
-                }
-                else if (cmdLower.Contains("calibdata") || cmdLower.Contains("step2methodp1"))
-                {
-                    result = ccm.TestCalibrationData();
-                }
-                else if (cmdLower.Contains("verify") || cmdLower.Contains("step3methodw1"))
-                {
-                    result = ccm.VerifyCalibrationData();
-                }
-                else if (cmdLower.Contains("lock") || cmdLower.Contains("step4methodm1"))
-                {
-                    result = ccm.LockingMeter(0x00);
-                }
-                else if (cmdLower.Contains("comm") || cmdLower.Contains("test"))
-                {
-                    result = ccm.CommunicationTest(portName);
-                }
-                else if (cmdLower.Contains("drift"))
-                {
-                    result = ccm.TestRTCDrift("0", "0", "1");
-                }
-                else
-                {
-                    // Switch case logic for different TestTypeIDs (1 = Basic Error, 2 = Creep, 3 = Starting)
+                //if (cmdLower.Contains("pcba") || cmdLower.Contains("step1m1"))
+                //{
+                //    result = ccm.ReadPCBAID();
+                //}
+                //else if (cmdLower.Contains("calibdata") || cmdLower.Contains("step2methodp1"))
+                //{
+                //    result = ccm.TestCalibrationData();
+                //}
+                //else if (cmdLower.Contains("verify") || cmdLower.Contains("step3methodw1"))
+                //{
+                //    result = ccm.VerifyCalibrationData();
+                //}
+                //else if (cmdLower.Contains("lock") || cmdLower.Contains("step4methodm1"))
+                //{
+                //    result = ccm.LockingMeter(0x00);
+                //}
+                //else if (cmdLower.Contains("comm") || cmdLower.Contains("test"))
+                //{
+                //    result = ccm.CommunicationTest(portName);
+                //}
+                //else if (cmdLower.Contains("drift"))
+                //{
+                //    result = ccm.TestRTCDrift("0", "0", "1");
+                //}
+                //else
+                //{
+                    // Switch case logic for different TestTypeIDs (1 = Basic Error, 2 = Creep, 3 = Starting, 4 = No Test)
                     switch (step.TestTypeID)
                     {
                         case 1: // Basic Error Test
@@ -2186,25 +2137,10 @@ namespace CabconPMP.UI
                             layer.ExecuteCommand(command, portName);
                             return "Success";
                     }
-                }
-
-                // Switch case logic for different Control Functions / Durations (0 = Manual, 1 = Program, 2 = Wait)
-                //switch (step.Duration)
-                //{
-                //    case 1: // Program
-                //        Log($"[CCM Program Mode] Custom automation scripting trigger simulation for '{command}'");
-                //        break;
-                //    case 2: // Wait
-                //        Log($"[CCM Wait Mode] Execution paused for slot {currentPos} verification.");
-                //        break;
-                //    case 0: // Manual
-                //    default:
-                //        // Normal automatic flow
-                //        break;
+                Log($"[CCM] Position {currentPos} command '{command}' response: {result}");
                 //}
 
-                // Log the real result returned by CommonCommandMethods
-                Log($"[CCM] Position {currentPos} command '{command}' response: {result}");
+
                 return result;
             }
             catch (Exception ex)
@@ -2213,6 +2149,54 @@ namespace CabconPMP.UI
                 return "Error: " + ex.Message;
             }
         }
+        // Set the active serial port in global configurations before executing ccm methods
+        //if (!string.IsNullOrEmpty(portName))
+        //{
+        //    try
+        //    {
+        //        var settingsType = typeof(ApplicationInterface.LayerInterface).Assembly.GetType("ApplicationInterface.SerialPortSettings");
+        //        if (settingsType != null)
+        //        {
+        //            var defaultProp = settingsType.GetProperty("Default", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+        //            if (defaultProp != null)
+        //            {
+        //                var defaultInstance = defaultProp.GetValue(null, null);
+        //                var serialPortProp = settingsType.GetProperty("SerialPort");
+        //                if (serialPortProp != null)
+        //                {
+        //                    serialPortProp.SetValue(defaultInstance, portName, null);
+        //                    var saveMethod = settingsType.GetMethod("Save");
+        //                    if (saveMethod != null)
+        //                    {
+        //                        saveMethod.Invoke(defaultInstance, null);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Log($"[Settings Error] Failed to update port via reflection: {ex.Message}");
+        //    }
+        //}
+
+
+        // Switch case logic for different Control Functions / Durations (0 = Manual, 1 = Program, 2 = Wait)
+        //switch (step.Duration)
+        //{
+        //    case 1: // Program
+        //        Log($"[CCM Program Mode] Custom automation scripting trigger simulation for '{command}'");
+        //        break;
+        //    case 2: // Wait
+        //        Log($"[CCM Wait Mode] Execution paused for slot {currentPos} verification.");
+        //        break;
+        //    case 0: // Manual
+        //    default:
+        //        // Normal automatic flow
+        //        break;
+        //}
+
+        // Log the real result returned by CommonCommandMethods
     }
 
     public class MeterAllocationRow
