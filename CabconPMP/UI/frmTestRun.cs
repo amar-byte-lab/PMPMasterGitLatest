@@ -1,6 +1,10 @@
+using ApplicationInterface;
 using CabconPMP.Data;
 //using CabconPMP.Hardware;
 using CabconPMP.Models;
+using SmartCalibration.Actions;
+using SmartCalibration.Constants;
+using SmartCalibration.DataLayer;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,11 +16,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utilities;
-using SmartCalibration.Constants;
-using ApplicationInterface;
-using SmartCalibration.Actions;
-using SmartCalibration.DataLayer;
-
 //using CabconPMP.Sequencer;
 using static CabconPMP.Data.MeterTypeRepository;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
@@ -953,16 +952,16 @@ namespace CabconPMP.UI
 
                                     try
                                     {
-                                        //if (!string.IsNullOrEmpty(portName))
-                                        //{
-                                        //    // Dynamically connect using the identified COM port
-                                        //    isConnected = layerInterface.ConnectToMeter(portName);
-                                        //    if (isConnected)
-                                        //    {
-                                        //        // Successfully connected, can execute specific layer methods if necessary
-                                        //        // e.g. layerInterface.ValidMeterTypeInfo()
-                                        //    }
-                                        //}
+                                        if (!string.IsNullOrEmpty(portName))
+                                        {
+                                            // Dynamically connect using the identified COM port
+                                            isConnected = layerInterface.ConnectToMeter(portName);
+                                            if (isConnected)
+                                            {
+                                                // Successfully connected, can execute specific layer methods if necessary
+                                                // e.g. layerInterface.ValidMeterTypeInfo()
+                                            }
+                                        }
 
                                         // Instantiate CommonCommandMethods for this position
                                         var ccm = new COMMONENTITY.CommonCommandMethods();
@@ -2086,9 +2085,12 @@ namespace CabconPMP.UI
 
             string cmdLower = command.ToLower().Trim();
 
+
+
             try
             {
                 string result = "Success";
+ 
 
                 // Log execution parameters
                 Log($"[CCM Info] Position {currentPos} executing under TestTypeID = {step.TestTypeID}");
@@ -2197,6 +2199,38 @@ namespace CabconPMP.UI
         //}
 
         // Log the real result returned by CommonCommandMethods
+
+        private static string ReadMeterRtc(LayerInterface layerInterface)
+        {
+            try
+            {
+                byte[] meterRtcObis = DLMSDataStracture.MeterRTCDataStracture.MeterRTCOBIS;
+                byte classCode = DLMSDataStracture.MeterRTCDataStracture.MeterRTCClassID;
+                byte attributeId = DLMSDataStracture.MeterRTCDataStracture.MeterRTCValueAttribute;
+
+                int readResponse = layerInterface.ReadDataCommand(meterRtcObis, classCode, attributeId);
+                if (readResponse != (int)LayerInterface.ProgrammingCode.Success)
+                {
+                    return string.Empty;
+                }
+
+                string[] rtcData = DLMSDataStracture.DLMSDataFormator(
+                    GlobalObjects.objSerialComm.ReceiveBuffer,
+                    18,
+                    false);
+
+                if (rtcData != null && rtcData.Length > 0 && !string.IsNullOrWhiteSpace(rtcData[0]))
+                {
+                    return rtcData[0];
+                }
+
+                return BitConverter.ToString(GlobalObjects.objSerialComm.ReceiveBuffer).Replace("-", string.Empty);
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
     }
 
     public class MeterAllocationRow

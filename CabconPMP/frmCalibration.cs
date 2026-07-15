@@ -1,4 +1,4 @@
-﻿using ApplicationInterface;
+using ApplicationInterface;
 using CabconPMP.BenchSimulator;
 using CabconPMP.datalayer;
 using COMMONENTITY;
@@ -299,7 +299,7 @@ namespace CabconPMP
             }
 
             // Choose a sensible concurrency level for IO-bound meter communications.
-            int maxConcurrency = Math.Min(ports.Count, Math.Max(1, Environment.ProcessorCount * 2));
+            int maxConcurrency = Math.Max(1, Math.Min(ports.Count, Math.Max(1, Environment.ProcessorCount * 2)));
             var semaphore = new SemaphoreSlim(maxConcurrency, maxConcurrency);
 
             foreach (PortInfo port in ports)
