@@ -48,6 +48,7 @@ namespace CabconPMP.UI
         private ManualResetEventSlim _pauseEvent = new ManualResetEventSlim(true);
         private bool _isRunning = false;
         private bool _isPaused = false;
+        private readonly SmartCalibration.DataLayer.MeterCalibrator _meterCalibrator = new SmartCalibration.DataLayer.MeterCalibrator();
 
         public frmTestRun(
             IDbConnectionFactory dbConnectionFactory,
@@ -2105,13 +2106,70 @@ namespace CabconPMP.UI
                 string tt  = ReadPCBAId(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
                 string ttt = ReadMeterRtc(layer);
 
+                // Resolve nominal/base values from meter types list dynamically
+                double nominalUb = 220.0;
+                double nominalIb = 5.0;
+                double nominalIm = 60.0;
+
+                var currentMtr = _metersList.FirstOrDefault(m => m.PositionNo == currentPos);
+                if (currentMtr != null)
+                {
+                    var mtrSpec = _meterTypes.FirstOrDefault(m => m.Name == currentMtr.MeterType);
+                    if (mtrSpec != null)
+                    {
+                        nominalUb = mtrSpec.Ub;
+                        nominalIb = mtrSpec.Ib;
+                        nominalIm = mtrSpec.Imax;
+                    }
+                }
+
+                // Resolve active target values based on step configuration
+                double.TryParse(step.UA, out var uaPct);
+                double.TryParse(step.IA, out var iaPct);
+                double.TryParse(step.PHI, out var phiVal);
+
+                if (uaPct <= 0) uaPct = 100.0;
+                if (iaPct <= 0) iaPct = 100.0;
+
+                double targetUb = nominalUb * (uaPct / 100.0);
+                double targetIb = nominalIb * (iaPct / 100.0);
 
                 // Log execution parameters
                 //Log($"[CCM Info] Position {currentPos} executing under TestTypeID = {step.TestTypeID}");
 
+                string ibStrSeq = ((int)nominalIb).ToString();
+                string imaxStrSeq = ((int)nominalIm).ToString();
+                string voltStrSeq = ((int)targetUb).ToString();
+                //byte paramLenSeq = 10;
+                //string calibSeqResult = PerformFullCalibrationSequence(
+                //    new CancellationToken(), 
+                //    layer, 
+                //    ccm, 
+                //    currentPos, 
+                //    step.Name, 
+                //    ibStrSeq, 
+                //    imaxStrSeq, 
+                //    paramLenSeq, 
+                //    voltStrSeq, 
+                //    targetUb, 
+                //    targetIb, 
+                //    phiVal).GetAwaiter().GetResult().Payload;
+
+                var result1 = ReadEnergy(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
+                var result2 = ReadPCBAId(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
+                var result3 = ReadMeterRtc(layer);
+                var result4 = CalibrateVoltage(new CancellationToken(), layer, ccm, "220").GetAwaiter().GetResult().Payload;
+                var result5 = CalibratePhaseCurrent(new CancellationToken(), layer, ccm, targetIb.ToString("F2")).GetAwaiter().GetResult().Payload;
+                var result6 = CalibrateNeutralCurrent(new CancellationToken(), layer, ccm, targetIb.ToString("F2")).GetAwaiter().GetResult().Payload;
+                var result7 = CalibratePhaseAngle(new CancellationToken(), layer, ccm, "70").GetAwaiter().GetResult().Payload;
+                var result8 = ReadEnergy(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
+                var result9 = MeterReset(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
+
+
+
                 if (cmdLower.Contains("pcba") || cmdLower.Contains("step1m1"))
                 {
-                    result = ccm.ReadPCBAID();
+                    result = ReadPCBAId(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
                 }
                 else if(cmdLower.Contains("rtc") || cmdLower.Contains("step1m2"))
                 {
@@ -2136,6 +2194,85 @@ namespace CabconPMP.UI
                 else if (cmdLower.Contains("drift"))
                 {
                     result = ccm.TestRTCDrift("0", "0", "1");
+                }
+                else if (cmdLower.Contains("readenergy"))
+                {
+                    result = ReadEnergy(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
+                }
+                else if (cmdLower.Contains("calibraterealerror"))
+                {
+                    string ibStr = ((int)nominalIb).ToString();
+                    string imaxStr = ((int)nominalIm).ToString();
+                    string voltStr = ((int)targetUb).ToString();
+                    byte paramLen = 10;
+                    result = CalibrateRealError(new CancellationToken(), layer, ccm, currentPos, step.Name, ibStr, imaxStr, paramLen, voltStr).GetAwaiter().GetResult().Payload;
+                }
+                else if (cmdLower.Contains("fullcalibration") || cmdLower.Contains("calibratefull"))
+                {
+                    string ibStr = ((int)nominalIb).ToString();
+                    string imaxStr = ((int)nominalIm).ToString();
+                    string voltStr = ((int)targetUb).ToString();
+                    byte paramLen = 10;
+                    result = PerformFullCalibrationSequence(
+                        new CancellationToken(), 
+                        layer, 
+                        ccm, 
+                        currentPos, 
+                        step.Name, 
+                        ibStr, 
+                        imaxStr, 
+                        paramLen, 
+                        voltStr, 
+                        targetUb, 
+                        targetIb, 
+                        phiVal).GetAwaiter().GetResult().Payload;
+                }
+                else if (cmdLower.Contains("energyerror") || cmdLower.Contains("calibrateenergyerror"))
+                {
+                    string ibStr = ((int)nominalIb).ToString();
+                    string imaxStr = ((int)nominalIm).ToString();
+                    string voltStr = ((int)targetUb).ToString();
+                    byte paramLen = 10;
+                    double powerFactor = 1.0;
+                    if (phiVal > 0) powerFactor = Math.Cos(phiVal * Math.PI / 180.0);
+                    int durationSeconds = step.Duration > 0 ? step.Duration : 5; // Default to 5 seconds if not specified
+                    result = CalibrateEnergyError(new CancellationToken(), layer, ccm, ibStr, imaxStr, paramLen, voltStr, powerFactor, durationSeconds).GetAwaiter().GetResult().Payload;
+                }
+                else if (cmdLower.Contains("calibratevoltage"))
+                {
+                    result = CalibrateVoltage(new CancellationToken(), layer, ccm, targetUb.ToString("F2")).GetAwaiter().GetResult().Payload;
+                }
+                else if (cmdLower.Contains("calibratephasecurrent") || cmdLower.Contains("calibratecurrent"))
+                {
+                    result = CalibratePhaseCurrent(new CancellationToken(), layer, ccm, targetIb.ToString("F2")).GetAwaiter().GetResult().Payload;
+                }
+                else if (cmdLower.Contains("calibrateneutralcurrent") || cmdLower.Contains("calibrateneutral"))
+                {
+                    result = CalibrateNeutralCurrent(new CancellationToken(), layer, ccm, targetIb.ToString("F2")).GetAwaiter().GetResult().Payload;
+                }
+                else if (cmdLower.Contains("calibratephaseangle") || cmdLower.Contains("calibrateangle"))
+                {
+                    result = CalibratePhaseAngle(new CancellationToken(), layer, ccm, phiVal.ToString("F2")).GetAwaiter().GetResult().Payload;
+                }
+                else if (cmdLower.Contains("calibratetemperature") || cmdLower.Contains("calibratetemp"))
+                {
+                    result = CalibrateTemperature(new CancellationToken(), layer, ccm, "+00.00").GetAwaiter().GetResult().Payload;
+                }
+                else if (cmdLower.Contains("calibratemagnetthreshold"))
+                {
+                    result = CalibrateMagnetThreshold(new CancellationToken(), layer, ccm, "+00.00").GetAwaiter().GetResult().Payload;
+                }
+                else if (cmdLower.Contains("calibratemagnet"))
+                {
+                    result = CalibrateMagnet(new CancellationToken(), layer, ccm, "+00.00").GetAwaiter().GetResult().Payload;
+                }
+                else if (cmdLower.Contains("calibrate"))
+                {
+                    result = Calibrate(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
+                }
+                else if (cmdLower.Contains("meterreset") || cmdLower.Contains("reset"))
+                {
+                    result = MeterReset(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
                 }
                 else
                 {
@@ -2239,18 +2376,7 @@ namespace CabconPMP.UI
 
         public async Task<positionResponse<string>> ReadPCBAId(CancellationToken ct, LayerInterface layer, CommonCommandMethods ccm)
         {
-
-            string rtc = ccm.ReadPCBAID();
-            var testExecutionStatus = (int)StaticVariables.ExecutionReurnStatus.Fail;
-            if (rtc.IndexOf(StaticVariables.ERRORPreFix) < 0) { testExecutionStatus = (int)StaticVariables.ExecutionReurnStatus.Pass; }
-            else testExecutionStatus = (int)StaticVariables.ExecutionReurnStatus.Fail;
-            ct.ThrowIfCancellationRequested();
-
-            return new positionResponse<string>()
-            {
-                Payload = rtc,
-                Status = testExecutionStatus == (int)StaticVariables.ExecutionReurnStatus.Pass ? "Pass" : "Fail"
-            };
+            return await _meterCalibrator.ReadPCBAId(ct, layer, ccm);
         }
 
         public string SetMeterPcbaId(LayerInterface layerInterface)
@@ -2278,6 +2404,103 @@ namespace CabconPMP.UI
             }
             while (MeterID.Count < charLen) MeterID.Add(Convert.ToByte(' '));
             return MeterID;
+        }
+        public async Task<positionResponse<string>> ReadEnergy(CancellationToken ct, LayerInterface layer, CommonCommandMethods ccm)
+        {
+            return await _meterCalibrator.ReadEnergy(ct, layer, ccm);
+        }
+
+        public async Task<positionResponse<string>> Calibrate(CancellationToken ct, LayerInterface layer, CommonCommandMethods ccm)
+        {
+            return await _meterCalibrator.Calibrate(ct, layer, ccm);
+        }
+
+        public async Task<positionResponse<string>> CalibrateRealError(CancellationToken ct, LayerInterface layer, CommonCommandMethods ccm, int currentPos, string stepName, string currentIb, string currentImax, byte currentParamLength, string voltageValue)
+        {
+            GenericAction action = null;
+            var mtr = _metersList.FirstOrDefault(x => x.PositionNo == currentPos);
+            if (mtr != null && !string.IsNullOrEmpty(mtr.MeterType))
+            {
+                if (GlobalConstants.GlobalMeterTypeMapper.TryGetValue(mtr.MeterType, out var mtrType))
+                {
+                    if (GlobalConstants.GlobalActionMapper.ContainsKey(mtrType))
+                    {
+                        action = GlobalConstants.GlobalActionMapper[mtrType];
+                    }
+                }
+            }
+            return await _meterCalibrator.CalibrateRealError(ct, layer, ccm, currentPos, stepName, currentIb, currentImax, currentParamLength, voltageValue, action);
+        }
+
+        public async Task<positionResponse<string>> CalibrateEnergyError(
+            CancellationToken ct, 
+            LayerInterface layer, 
+            CommonCommandMethods ccm, 
+            string currentIb, 
+            string currentImax, 
+            byte currentParamLength, 
+            string voltageValue, 
+            double powerFactor, 
+            int durationSeconds)
+        {
+            return await _meterCalibrator.CalibrateEnergyError(ct, layer, ccm, currentIb, currentImax, currentParamLength, voltageValue, powerFactor, durationSeconds);
+        }
+
+        public async Task<positionResponse<string>> PerformFullCalibrationSequence(
+            CancellationToken ct, 
+            LayerInterface layer, 
+            CommonCommandMethods ccm, 
+            int currentPos, 
+            string stepName,
+            string currentIb, 
+            string currentImax, 
+            byte currentParamLength, 
+            string voltageValue, 
+            double targetVoltage, 
+            double targetCurrent, 
+            double targetPhi)
+        {
+            return await _meterCalibrator.PerformFullCalibrationSequence(ct, layer, ccm, currentPos, stepName, currentIb, currentImax, currentParamLength, voltageValue, targetVoltage, targetCurrent, targetPhi);
+        }
+
+        public async Task<positionResponse<string>> CalibrateVoltage(CancellationToken ct, LayerInterface layer, CommonCommandMethods ccm, string value = "+00.00")
+        {
+            return await _meterCalibrator.CalibrateVoltage(ct, layer, ccm, value);
+        }
+
+        public async Task<positionResponse<string>> CalibratePhaseCurrent(CancellationToken ct, LayerInterface layer, CommonCommandMethods ccm, string value = "+00.00")
+        {
+            return await _meterCalibrator.CalibratePhaseCurrent(ct, layer, ccm, value);
+        }
+
+        public async Task<positionResponse<string>> CalibrateNeutralCurrent(CancellationToken ct, LayerInterface layer, CommonCommandMethods ccm, string value = "+00.00")
+        {
+            return await _meterCalibrator.CalibrateNeutralCurrent(ct, layer, ccm, value);
+        }
+
+        public async Task<positionResponse<string>> CalibratePhaseAngle(CancellationToken ct, LayerInterface layer, CommonCommandMethods ccm, string value = "+00.00")
+        {
+            return await _meterCalibrator.CalibratePhaseAngle(ct, layer, ccm, value);
+        }
+
+        public async Task<positionResponse<string>> CalibrateTemperature(CancellationToken ct, LayerInterface layer, CommonCommandMethods ccm, string value = "+00.00")
+        {
+            return await _meterCalibrator.CalibrateTemperature(ct, layer, ccm, value);
+        }
+
+        public async Task<positionResponse<string>> CalibrateMagnet(CancellationToken ct, LayerInterface layer, CommonCommandMethods ccm, string value = "+00.00")
+        {
+            return await _meterCalibrator.CalibrateMagnet(ct, layer, ccm, value);
+        }
+
+        public async Task<positionResponse<string>> CalibrateMagnetThreshold(CancellationToken ct, LayerInterface layer, CommonCommandMethods ccm, string value = "+00.00")
+        {
+            return await _meterCalibrator.CalibrateMagnetThreshold(ct, layer, ccm, value);
+        }
+
+        public async Task<positionResponse<string>> MeterReset(CancellationToken ct, LayerInterface layer, CommonCommandMethods ccm)
+        {
+            return await _meterCalibrator.MeterReset(ct, layer, ccm);
         }
 
 
