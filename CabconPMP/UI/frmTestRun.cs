@@ -49,6 +49,7 @@ namespace CabconPMP.UI
         private bool _isRunning = false;
         private bool _isPaused = false;
         private readonly SmartCalibration.DataLayer.MeterCalibrator _meterCalibrator = new SmartCalibration.DataLayer.MeterCalibrator();
+        private System.Collections.Concurrent.ConcurrentBag<CommandResponseInfo> _commandResponses = new System.Collections.Concurrent.ConcurrentBag<CommandResponseInfo>();
 
         public frmTestRun(
             IDbConnectionFactory dbConnectionFactory,
@@ -844,6 +845,8 @@ namespace CabconPMP.UI
         {
             try
             {
+                _commandResponses = new System.Collections.Concurrent.ConcurrentBag<CommandResponseInfo>();
+
                 // Initialize the results grid dynamically based on the current steps and active positions
                 InitializeResultsGridForRun(steps);
 
@@ -973,6 +976,14 @@ namespace CabconPMP.UI
                                         if (isConnected && !string.IsNullOrEmpty(step.ACMDS))
                                         {
                                             acmdResult = ExecuteCommonCommandMethod(ccm, step.ACMDS, portName, currentPos, step);
+                                            _commandResponses.Add(new CommandResponseInfo
+                                            {
+                                                Step = step,
+                                                MeterData = mtr,
+                                                ThreadIndex = currentPos,
+                                                ThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId,
+                                                MethodResponse = acmdResult
+                                            });
                                         }
 
                                         // BCMDS (During Test / Parallel): Spawn parallel task to execute concurrently during measurement
@@ -986,7 +997,15 @@ namespace CabconPMP.UI
                                                 {
                                                     while (!bcmdCts.Token.IsCancellationRequested)
                                                     {
-                                                        ExecuteCommonCommandMethod(ccm, step.BCMDS, portName, currentPos, step);
+                                                        string bcmdResult = ExecuteCommonCommandMethod(ccm, step.BCMDS, portName, currentPos, step);
+                                                        _commandResponses.Add(new CommandResponseInfo
+                                                        {
+                                                            Step = step,
+                                                            MeterData = mtr,
+                                                            ThreadIndex = currentPos,
+                                                            ThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId,
+                                                            MethodResponse = bcmdResult
+                                                        });
                                                         Thread.Sleep(1000); // Prevent CPU hogging
                                                     }
                                                 }
@@ -1031,6 +1050,14 @@ namespace CabconPMP.UI
                                         if (isConnected && !string.IsNullOrEmpty(step.CCMDS))
                                         {
                                             ccmdResult = ExecuteCommonCommandMethod(ccm, step.CCMDS, portName, currentPos, step);
+                                            _commandResponses.Add(new CommandResponseInfo
+                                            {
+                                                Step = step,
+                                                MeterData = mtr,
+                                                ThreadIndex = currentPos,
+                                                ThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId,
+                                                MethodResponse = ccmdResult
+                                            });
                                         }
 
                                         // Determine final result value to save and display in the grid
@@ -2556,5 +2583,14 @@ namespace CabconPMP.UI
         public double TotalP { get; set; }
         public double TotalQ { get; set; }
         public double TotalS { get; set; }
+    }
+
+    public class CommandResponseInfo
+    {
+        public RStepRow Step { get; set; }
+        public MeterAllocationRow MeterData { get; set; }
+        public int ThreadIndex { get; set; }
+        public int ThreadId { get; set; }
+        public string MethodResponse { get; set; }
     }
 }
