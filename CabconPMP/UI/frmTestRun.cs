@@ -1,4 +1,4 @@
-using ApplicationInterface;
+﻿using ApplicationInterface;
 using CabconPMP.Data;
 //using CabconPMP.Hardware;
 using CabconPMP.Models;
@@ -49,7 +49,7 @@ namespace CabconPMP.UI
         private bool _isRunning = false;
         private bool _isPaused = false;
         private readonly SmartCalibration.DataLayer.MeterCalibrator _meterCalibrator = new SmartCalibration.DataLayer.MeterCalibrator();
-        private System.Collections.Concurrent.ConcurrentBag<CommandResponseInfo> _commandResponses = new System.Collections.Concurrent.ConcurrentBag<CommandResponseInfo>();
+
         private System.Collections.Concurrent.ConcurrentBag<PositionResult> _positionResults = new System.Collections.Concurrent.ConcurrentBag<PositionResult>();
         private System.Collections.Concurrent.ConcurrentDictionary<int, (ApplicationInterface.LayerInterface Layer, COMMONENTITY.CommonCommandMethods Ccm, MeterAllocationRow Meter)> _activeMetersMap = new System.Collections.Concurrent.ConcurrentDictionary<int, (ApplicationInterface.LayerInterface Layer, COMMONENTITY.CommonCommandMethods Ccm, MeterAllocationRow Meter)>();
         private ExecutionMode _currentExecutionMode;
@@ -894,7 +894,7 @@ namespace CabconPMP.UI
 
             try
             {
-                _commandResponses = new System.Collections.Concurrent.ConcurrentBag<CommandResponseInfo>();
+
                 
                 // Initialize _positionResults if not yet created (e.g. first run of SingleStep)
                 if (_positionResults == null || _currentExecutionMode == ExecutionMode.AllSteps)
@@ -1055,14 +1055,18 @@ namespace CabconPMP.UI
                                         if (!string.IsNullOrEmpty(step.ACMDS))
                                         {
                                             acmdResult = ExecuteCommonCommandMethod(ccm, step.ACMDS, portName, currentPos, step, layerInterface);
-                                            _commandResponses.Add(new CommandResponseInfo
+                                            if (activePosResult != null)
                                             {
-                                                Step = step,
-                                                MeterData = mtrCopy,
-                                                ThreadIndex = currentPos,
-                                                ThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId,
-                                                MethodResponse = acmdResult
-                                            });
+                                                lock (activePosResult.method)
+                                                {
+                                                    activePosResult.method.Add(new MethodResultInfo
+                                                    {
+                                                        Name = step.Name + " - ACMDS",
+                                                        Response = acmdResult,
+                                                        Status = !acmdResult.Contains("Error")
+                                                    });
+                                                }
+                                            }
                                         }
 
                                         // BCMDS (During Test / Parallel)
@@ -1077,14 +1081,18 @@ namespace CabconPMP.UI
                                                     while (!bcmdCts.Token.IsCancellationRequested)
                                                     {
                                                         string bcmdResult = ExecuteCommonCommandMethod(ccm, step.BCMDS, portName, currentPos, step, layerInterface);
-                                                        _commandResponses.Add(new CommandResponseInfo
+                                                        if (activePosResult != null)
                                                         {
-                                                            Step = step,
-                                                            MeterData = mtrCopy,
-                                                            ThreadIndex = currentPos,
-                                                            ThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId,
-                                                            MethodResponse = bcmdResult
-                                                        });
+                                                            lock (activePosResult.method)
+                                                            {
+                                                                activePosResult.method.Add(new MethodResultInfo
+                                                                {
+                                                                    Name = step.Name + " - BCMDS",
+                                                                    Response = bcmdResult,
+                                                                    Status = !bcmdResult.Contains("Error")
+                                                                });
+                                                            }
+                                                        }
                                                         Thread.Sleep(1000);
                                                     }
                                                 }
@@ -1129,14 +1137,18 @@ namespace CabconPMP.UI
                                         if (!string.IsNullOrEmpty(step.CCMDS))
                                         {
                                             ccmdResult = ExecuteCommonCommandMethod(ccm, step.CCMDS, portName, currentPos, step, layerInterface);
-                                            _commandResponses.Add(new CommandResponseInfo
+                                            if (activePosResult != null)
                                             {
-                                                Step = step,
-                                                MeterData = mtrCopy,
-                                                ThreadIndex = currentPos,
-                                                ThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId,
-                                                MethodResponse = ccmdResult
-                                            });
+                                                lock (activePosResult.method)
+                                                {
+                                                    activePosResult.method.Add(new MethodResultInfo
+                                                    {
+                                                        Name = step.Name + " - CCMDS",
+                                                        Response = ccmdResult,
+                                                        Status = !ccmdResult.Contains("Error")
+                                                    });
+                                                }
+                                            }
                                         }
 
                                         // Determine final result value
