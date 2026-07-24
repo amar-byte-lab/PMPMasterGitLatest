@@ -51,6 +51,8 @@ namespace CabconPMP.UI
         private readonly SmartCalibration.DataLayer.MeterCalibrator _meterCalibrator = new SmartCalibration.DataLayer.MeterCalibrator();
         private System.Collections.Concurrent.ConcurrentBag<CommandResponseInfo> _commandResponses = new System.Collections.Concurrent.ConcurrentBag<CommandResponseInfo>();
         private System.Collections.Concurrent.ConcurrentBag<PositionResult> _positionResults = new System.Collections.Concurrent.ConcurrentBag<PositionResult>();
+        private System.Collections.Concurrent.ConcurrentDictionary<int, (ApplicationInterface.LayerInterface Layer, COMMONENTITY.CommonCommandMethods Ccm, MeterAllocationRow Meter)> _activeMetersMap = new System.Collections.Concurrent.ConcurrentDictionary<int, (ApplicationInterface.LayerInterface Layer, COMMONENTITY.CommonCommandMethods Ccm, MeterAllocationRow Meter)>();
+        private ExecutionMode _currentExecutionMode;
 
         public frmTestRun(
             IDbConnectionFactory dbConnectionFactory,
@@ -70,9 +72,21 @@ namespace CabconPMP.UI
             _currentUser = currentUser;
             _initialSelectedRun = selectedRun;
         }
+        private void FrmTestRun_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (_activeMetersMap != null && _activeMetersMap.Count > 0)
+            {
+                foreach (var kvp in _activeMetersMap)
+                {
+                    try { kvp.Value.Layer.AssociationDisconnect(); } catch { }
+                }
+                _activeMetersMap.Clear();
+            }
+        }
 
         private async void frmTestRun_Load(object sender, EventArgs e)
         {
+            this.FormClosing += FrmTestRun_FormClosing;
             _bench = await _benchRepository.GetBenchAsync();
             lblBenchName.Text = _bench?.BenchName ?? "Default Bench";
 
@@ -775,10 +789,21 @@ namespace CabconPMP.UI
 
             var stepsToRun = new List<RStepRow>();
             var executionType = (ExecutionMode)cmbStep.SelectedItem;
+            _currentExecutionMode = executionType;
 
             switch (executionType)
             {
                 case ExecutionMode.AllSteps:
+                    // Clear any existing cached connections for a clean full run
+                    if (_activeMetersMap != null && _activeMetersMap.Count > 0)
+                    {
+                        foreach (var kvp in _activeMetersMap)
+                        {
+                            try { kvp.Value.Layer.AssociationDisconnect(); } catch { }
+                        }
+                        _activeMetersMap.Clear();
+                    }
+                    _positionResults = new System.Collections.Concurrent.ConcurrentBag<PositionResult>();
                     stepsToRun = _sequenceList.Where(s => s.Select).ToList();
                     break;
                 case ExecutionMode.SingleStep:
@@ -840,17 +865,42 @@ namespace CabconPMP.UI
                 _pauseEvent.Set(); // Resume thread if paused so it exits immediately
                 Log("Stop requested. Cleaning up...");
             }
+            else
+            {
+                // If not running, but we have cached active connections from single step execution, clean them up
+                if (_activeMetersMap != null && _activeMetersMap.Count > 0)
+                {
+                    Log("Closing all cached meter connections...");
+                    foreach (var kvp in _activeMetersMap)
+                    {
+                        try { kvp.Value.Layer.AssociationDisconnect(); } catch { }
+                    }
+                    _activeMetersMap.Clear();
+                    _positionResults = new System.Collections.Concurrent.ConcurrentBag<PositionResult>();
+                }
+            }
         }
 
         private void RunCalibrationProcedure(List<RStepRow> steps, CancellationToken token)
         {
-            var connectionMap = new System.Collections.Concurrent.ConcurrentDictionary<int, ApplicationInterface.LayerInterface>();
-            var ccmMap = new System.Collections.Concurrent.ConcurrentDictionary<int, COMMONENTITY.CommonCommandMethods>();
+            var positionThreads = new List<System.Threading.Thread>();
+            var activePositions = new System.Collections.Concurrent.ConcurrentDictionary<int, bool>();
+
+            // Primitives for thread synchronization
+            int eligibleMetersCount = _metersList.Count(m => m.Status && !string.IsNullOrEmpty(m.MeterType));
+            var connectBarrier = new System.Threading.Barrier(eligibleMetersCount + 1); // +1 for main thread
+            System.Threading.Barrier stepCompleteBarrier = null;
+            var stepStartEvent = new System.Threading.ManualResetEventSlim(false);
 
             try
             {
                 _commandResponses = new System.Collections.Concurrent.ConcurrentBag<CommandResponseInfo>();
-                _positionResults = new System.Collections.Concurrent.ConcurrentBag<PositionResult>();
+                
+                // Initialize _positionResults if not yet created (e.g. first run of SingleStep)
+                if (_positionResults == null || _currentExecutionMode == ExecutionMode.AllSteps)
+                {
+                    _positionResults = new System.Collections.Concurrent.ConcurrentBag<PositionResult>();
+                }
 
                 // Initialize the results grid dynamically based on the current steps and active positions
                 InitializeResultsGridForRun(steps);
@@ -880,78 +930,308 @@ namespace CabconPMP.UI
                     }
                 }
 
-                // Initial ConnectToMeter and ReadPCBAId for each active position (called only once)
-                Log("Connecting and reading PCBA IDs...");
-                var initTasks = new List<Task>();
+                Log("Starting dedicated thread for each active position...");
                 foreach (var mtr in _metersList)
                 {
                     int currentPos = mtr.PositionNo;
                     if (mtr.Status && !string.IsNullOrEmpty(mtr.MeterType))
                     {
-                        initTasks.Add(Task.Run(() =>
+                        var mtrCopy = mtr;
+                        var thread = new System.Threading.Thread(() =>
                         {
-                            string portName = string.Empty;
-                            if (GlobalConstants.MeterPortMap != null && GlobalConstants.MeterPortMap.ContainsKey(currentPos))
-                            {
-                                portName = GlobalConstants.MeterPortMap[currentPos];
-                            }
-
-                            var layerInterface = new ApplicationInterface.LayerInterface();
-                            var ccm = new COMMONENTITY.CommonCommandMethods();
-                            bool isConnected = false;
-                            string pcbaId = "Unknown";
-                            bool connectStatus = false;
-                            bool readPcbaStatus = false;
-
                             try
                             {
-                                if (!string.IsNullOrEmpty(portName))
+                                string portName = string.Empty;
+                                if (GlobalConstants.MeterPortMap != null && GlobalConstants.MeterPortMap.ContainsKey(currentPos))
                                 {
-                                    isConnected = layerInterface.ConnectToMeter(portName);
-                                    connectStatus = isConnected;
+                                    portName = GlobalConstants.MeterPortMap[currentPos];
                                 }
+
+                                // 1. ConnectToMeter & ReadPCBAId (only once if not already connected)
+                                bool isAlreadyConnected = _activeMetersMap.ContainsKey(currentPos);
+                                var layerInterface = isAlreadyConnected ? _activeMetersMap[currentPos].Layer : new ApplicationInterface.LayerInterface();
+                                var ccm = isAlreadyConnected ? _activeMetersMap[currentPos].Ccm : new COMMONENTITY.CommonCommandMethods();
+                                bool isConnected = isAlreadyConnected;
+                                string pcbaId = "Unknown";
+                                bool connectStatus = isAlreadyConnected;
+                                bool readPcbaStatus = isAlreadyConnected;
+
+                                if (!isAlreadyConnected)
+                                {
+                                    try
+                                    {
+                                        if (!string.IsNullOrEmpty(portName))
+                                        {
+                                            isConnected = layerInterface.ConnectToMeter(portName);
+                                            connectStatus = isConnected;
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Log($"Pos {currentPos}: Connection error: {ex.Message}");
+                                    }
+
+                                    if (isConnected)
+                                    {
+                                        try
+                                        {
+                                            var response = ReadPCBAId(new CancellationToken(), layerInterface, ccm).GetAwaiter().GetResult();
+                                            pcbaId = response.Payload;
+                                            readPcbaStatus = response.Status == "Pass" || response.Status == "Success";
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Log($"Pos {currentPos}: Read PCBAId error: {ex.Message}");
+                                            pcbaId = "Error: " + ex.Message;
+                                        }
+                                    }
+
+                                    // Create and add position results dynamically for the first time
+                                    var posResult = new PositionResult
+                                    {
+                                        position = currentPos,
+                                        threadId = System.Threading.Thread.CurrentThread.ManagedThreadId,
+                                        Port = portName,
+                                        PCBAId = pcbaId,
+                                        method = new List<MethodResultInfo>
+                                        {
+                                            new MethodResultInfo { Name = "ConnectToMeter", Response = connectStatus ? "Success" : "Failed", Status = connectStatus },
+                                            new MethodResultInfo { Name = "ReadPCBAId", Response = pcbaId, Status = readPcbaStatus }
+                                        }
+                                    };
+                                    _positionResults.Add(posResult);
+
+                                    if (connectStatus && readPcbaStatus && !pcbaId.Contains("Error"))
+                                    {
+                                        activePositions[currentPos] = true;
+                                        _activeMetersMap[currentPos] = (layerInterface, ccm, mtrCopy);
+                                    }
+                                    else
+                                    {
+                                        if (isConnected)
+                                        {
+                                            try { layerInterface.AssociationDisconnect(); } catch { }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    // Retrieve pcbaId from existing result
+                                    var existingResult = _positionResults.FirstOrDefault(p => p.position == currentPos);
+                                    if (existingResult != null)
+                                    {
+                                        pcbaId = existingResult.PCBAId;
+                                    }
+                                    activePositions[currentPos] = true;
+                                }
+
+                                // Wait for connection barrier
+                                connectBarrier.SignalAndWait();
+
+                                // If this thread failed to connect or read PCBA ID, exit cleanly without affecting other threads
+                                if (!activePositions.ContainsKey(currentPos))
+                                {
+                                    return;
+                                }
+
+                                // Get reference to the posResult for appending step results
+                                var activePosResult = _positionResults.FirstOrDefault(p => p.position == currentPos);
+
+                                // 2. Sequential execution of steps on the same dedicated thread
+                                for (int stepIndex = 0; stepIndex < steps.Count; stepIndex++)
+                                {
+                                    // Wait for main thread to signal step start
+                                    stepStartEvent.Wait(token);
+                                    token.ThrowIfCancellationRequested();
+
+                                    var step = steps[stepIndex];
+                                    int timeLimitSeconds = 30;
+                                    if (int.TryParse(step.Timeout, out var tLimit)) timeLimitSeconds = tLimit;
+
+                                    try
+                                    {
+                                        // ACMDS (Start Test / Pre-step)
+                                        string acmdResult = "Success";
+                                        if (!string.IsNullOrEmpty(step.ACMDS))
+                                        {
+                                            acmdResult = ExecuteCommonCommandMethod(ccm, step.ACMDS, portName, currentPos, step, layerInterface);
+                                            _commandResponses.Add(new CommandResponseInfo
+                                            {
+                                                Step = step,
+                                                MeterData = mtrCopy,
+                                                ThreadIndex = currentPos,
+                                                ThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId,
+                                                MethodResponse = acmdResult
+                                            });
+                                        }
+
+                                        // BCMDS (During Test / Parallel)
+                                        Task bcmdTask = null;
+                                        var bcmdCts = new CancellationTokenSource();
+                                        if (!string.IsNullOrEmpty(step.BCMDS))
+                                        {
+                                            bcmdTask = Task.Run(() =>
+                                            {
+                                                try
+                                                {
+                                                    while (!bcmdCts.Token.IsCancellationRequested)
+                                                    {
+                                                        string bcmdResult = ExecuteCommonCommandMethod(ccm, step.BCMDS, portName, currentPos, step, layerInterface);
+                                                        _commandResponses.Add(new CommandResponseInfo
+                                                        {
+                                                            Step = step,
+                                                            MeterData = mtrCopy,
+                                                            ThreadIndex = currentPos,
+                                                            ThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId,
+                                                            MethodResponse = bcmdResult
+                                                        });
+                                                        Thread.Sleep(1000);
+                                                    }
+                                                }
+                                                catch { }
+                                            }, bcmdCts.Token);
+                                        }
+
+                                        // Simulate Step Duration
+                                        for (int elapsed = 0; elapsed < timeLimitSeconds; elapsed++)
+                                        {
+                                            token.ThrowIfCancellationRequested();
+                                            _pauseEvent.Wait(token);
+
+                                            string displayStatus = "Running...";
+                                            if (step.Name.ToLower().Contains("creep"))
+                                            {
+                                                displayStatus = "Monitoring Creep...";
+                                            }
+                                            else if (step.Name.ToLower().Contains("starting"))
+                                            {
+                                                displayStatus = "Checking Start Current...";
+                                            }
+                                            else
+                                            {
+                                                displayStatus = "Measuring Accuracy...";
+                                            }
+
+                                            UpdatePositionOverview(currentPos, step.Name, displayStatus);
+                                            Thread.Sleep(1000);
+                                        }
+
+                                        // Stop parallel BCMDS task
+                                        if (bcmdTask != null)
+                                        {
+                                            bcmdCts.Cancel();
+                                            try { bcmdTask.Wait(); } catch { }
+                                            bcmdCts.Dispose();
+                                        }
+
+                                        // CCMDS (End Test / Post-step)
+                                        string ccmdResult = "Success";
+                                        if (!string.IsNullOrEmpty(step.CCMDS))
+                                        {
+                                            ccmdResult = ExecuteCommonCommandMethod(ccm, step.CCMDS, portName, currentPos, step, layerInterface);
+                                            _commandResponses.Add(new CommandResponseInfo
+                                            {
+                                                Step = step,
+                                                MeterData = mtrCopy,
+                                                ThreadIndex = currentPos,
+                                                ThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId,
+                                                MethodResponse = ccmdResult
+                                            });
+                                        }
+
+                                        // Determine final result value
+                                        string finalGridVal = "Pass";
+                                        if (step.Name.ToLower().Contains("creep"))
+                                        {
+                                            finalGridVal = ccmdResult.Contains("Error") ? "Fail" : "Pass";
+                                        }
+                                        else if (step.Name.ToLower().Contains("starting"))
+                                        {
+                                            finalGridVal = acmdResult.Contains("Error") ? "Fail" : "Pass";
+                                        }
+                                        else
+                                        {
+                                            if (acmdResult.Contains("Error") || ccmdResult.Contains("Error"))
+                                            {
+                                                finalGridVal = "Fail";
+                                            }
+                                            else
+                                            {
+                                                double baseErr = (new Random(currentPos).NextDouble() * 0.1) - 0.05;
+                                                finalGridVal = baseErr.ToString("F2");
+                                            }
+                                        }
+
+                                        UpdatePositionOverview(currentPos, step.Name, finalGridVal);
+                                        UpdateGridResult(currentPos, step.StepNo, finalGridVal);
+
+                                        // Append step results to PositionResult
+                                        if (activePosResult != null)
+                                        {
+                                            lock (activePosResult.method)
+                                            {
+                                                activePosResult.threadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
+                                                activePosResult.method.Add(new MethodResultInfo
+                                                {
+                                                    Name = step.Name,
+                                                    Response = $"ACMDS: {acmdResult}; CCMDS: {ccmdResult}; Final: {finalGridVal}",
+                                                    Status = !finalGridVal.Equals("Fail", StringComparison.OrdinalIgnoreCase) && !acmdResult.Contains("Error") && !ccmdResult.Contains("Error")
+                                                });
+                                            }
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        UpdatePositionOverview(currentPos, step.Name, "Comm Error");
+                                        if (activePosResult != null)
+                                        {
+                                            lock (activePosResult.method)
+                                            {
+                                                activePosResult.method.Add(new MethodResultInfo
+                                                {
+                                                    Name = step.Name,
+                                                    Response = $"Error: {ex.Message}",
+                                                    Status = false
+                                                });
+                                            }
+                                        }
+                                    }
+
+                                    // Wait for all active position threads to finish current step
+                                    stepCompleteBarrier.SignalAndWait(token);
+                                }
+                            }
+                            catch (OperationCanceledException)
+                            {
+                                // Clean exit on cancellation
                             }
                             catch (Exception ex)
                             {
-                                Log($"Pos {currentPos}: Connection error: {ex.Message}");
+                                Log($"Pos {currentPos}: Dedicated thread exited with exception: {ex.Message}");
                             }
+                        });
 
-                            if (isConnected)
-                            {
-                                try
-                                {
-                                    var response = ReadPCBAId(new CancellationToken(), layerInterface, ccm).GetAwaiter().GetResult();
-                                    pcbaId = response.Payload;
-                                    //readPcbaStatus = response.Status;
-                                }
-                                catch (Exception ex)
-                                {
-                                    Log($"Pos {currentPos}: Read PCBAId error: {ex.Message}");
-                                    pcbaId = "Error: " + ex.Message;
-                                }
-
-                                connectionMap[currentPos] = layerInterface;
-                                ccmMap[currentPos] = ccm;
-                            }
-
-                            // Save to dynamic position results array (PositionResult)
-                            var posResult = new PositionResult
-                            {
-                                position = currentPos,
-                                threadId = System.Threading.Thread.CurrentThread.ManagedThreadId,
-                                Port = portName,
-                                PCBAId = pcbaId,
-                                method = new List<MethodResultInfo>
-                                {
-                                    new MethodResultInfo { Name = "ConnectToMeter", Response = connectStatus ? "Success" : "Failed", Status = connectStatus },
-                                    new MethodResultInfo { Name = "ReadPCBAId", Response = pcbaId, Status = readPcbaStatus }
-                                }
-                            };
-                            _positionResults.Add(posResult);
-                        }));
+                        thread.IsBackground = true;
+                        positionThreads.Add(thread);
+                        thread.Start();
                     }
                 }
-                Task.WhenAll(initTasks).GetAwaiter().GetResult();
+
+                // Main thread waits for all connection phases to complete
+                connectBarrier.SignalAndWait();
+
+                // Initialize step complete barrier for successfully connected positions + 1 (main thread)
+                int connectedCount = activePositions.Count;
+                stepCompleteBarrier = new System.Threading.Barrier(connectedCount + 1);
+
+                // Initialise overview statuses for inactive positions once
+                for (int pos = 1; pos <= _metersList.Count; pos++)
+                {
+                    if (!activePositions.ContainsKey(pos))
+                    {
+                        UpdatePositionOverview(pos, "Inactive", "-");
+                    }
+                }
 
                 // Initialise base values (nominal Ub, Ib from the first allocated meter)
                 double nominalUb = 220.0;
@@ -969,11 +1249,13 @@ namespace CabconPMP.UI
                     }
                 }
 
-                foreach (var step in steps)
+                // Main control loop iterating through steps
+                for (int stepIndex = 0; stepIndex < steps.Count; stepIndex++)
                 {
                     token.ThrowIfCancellationRequested();
                     _pauseEvent.Wait(token);
 
+                    var step = steps[stepIndex];
                     Log($"Executing: {step.Name}");
 
                     HighlightActiveStep(step.StepNo);
@@ -1000,203 +1282,12 @@ namespace CabconPMP.UI
                     string limitDisplay = "-0.50% to 0.50%";
                     UpdateRangeLimits(limitDisplay);
 
-                    // Multi-threaded execution for each position slot
-                    var positionTasks = new List<Task>();
-                    var positionCancellationSources = new List<CancellationTokenSource>();
-
-                    // Initialize SemaphoreSlim to throttle position tasks concurrency (e.g., max 12 concurrent positions)
-                    int maxConcurrentPositions = 12;
-                    var semaphore = new SemaphoreSlim(maxConcurrentPositions);
-
-                    foreach (var mtr in _metersList)
-                    {
-                        int currentPos = mtr.PositionNo;
-
-                        // Only run position task if we connected successfully and have active LayerInterface in connectionMap
-                        if (connectionMap.ContainsKey(currentPos))
-                        {
-                            var posCts = CancellationTokenSource.CreateLinkedTokenSource(token);
-                            positionCancellationSources.Add(posCts);
-
-                            positionTasks.Add(Task.Run(async () =>
-                            {
-                                await semaphore.WaitAsync(posCts.Token);
-                                try
-                                {
-                                    var layerInterface = connectionMap[currentPos];
-                                    var ccm = ccmMap[currentPos];
-                                    string portName = GlobalConstants.MeterPortMap.ContainsKey(currentPos) ? GlobalConstants.MeterPortMap[currentPos] : string.Empty;
-
-                                    // ACMDS (Start Test / Pre-step): Execute before measurement starts
-                                    string acmdResult = "Success";
-                                    if (!string.IsNullOrEmpty(step.ACMDS))
-                                    {
-                                        acmdResult = ExecuteCommonCommandMethod(ccm, step.ACMDS, portName, currentPos, step, layerInterface);
-                                        _commandResponses.Add(new CommandResponseInfo
-                                        {
-                                            Step = step,
-                                            MeterData = mtr,
-                                            ThreadIndex = currentPos,
-                                            ThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId,
-                                            MethodResponse = acmdResult
-                                        });
-                                    }
-
-                                    // BCMDS (During Test / Parallel): Spawn parallel task to execute concurrently during measurement
-                                    Task bcmdTask = null;
-                                    var bcmdCts = CancellationTokenSource.CreateLinkedTokenSource(posCts.Token);
-                                    if (!string.IsNullOrEmpty(step.BCMDS))
-                                    {
-                                        bcmdTask = Task.Run(() =>
-                                        {
-                                            try
-                                            {
-                                                while (!bcmdCts.Token.IsCancellationRequested)
-                                                {
-                                                    string bcmdResult = ExecuteCommonCommandMethod(ccm, step.BCMDS, portName, currentPos, step, layerInterface);
-                                                    _commandResponses.Add(new CommandResponseInfo
-                                                    {
-                                                        Step = step,
-                                                        MeterData = mtr,
-                                                        ThreadIndex = currentPos,
-                                                        ThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId,
-                                                        MethodResponse = bcmdResult
-                                                    });
-                                                    Thread.Sleep(1000); // Prevent CPU hogging
-                                                }
-                                            }
-                                            catch { }
-                                        }, bcmdCts.Token);
-                                    }
-
-                                    // Simulation of Step Duration and results query
-                                    for (int elapsed = 0; elapsed < timeLimitSeconds; elapsed++)
-                                    {
-                                        posCts.Token.ThrowIfCancellationRequested();
-                                        _pauseEvent.Wait(posCts.Token);
-
-                                        string displayStatus = "Running...";
-                                        if (step.Name.ToLower().Contains("creep"))
-                                        {
-                                            displayStatus = "Monitoring Creep...";
-                                        }
-                                        else if (step.Name.ToLower().Contains("starting"))
-                                        {
-                                            displayStatus = "Checking Start Current...";
-                                        }
-                                        else
-                                        {
-                                            displayStatus = "Measuring Accuracy...";
-                                        }
-
-                                        UpdatePositionOverview(currentPos, step.Name, displayStatus);
-                                        Thread.Sleep(1000);
-                                    }
-
-                                    // Stop parallel BCMDS task
-                                    if (bcmdTask != null)
-                                    {
-                                        bcmdCts.Cancel();
-                                        try { bcmdTask.Wait(); } catch { }
-                                        bcmdCts.Dispose();
-                                    }
-
-                                    // CCMDS (End Test / Post-step): Execute after measurement loop finishes
-                                    string ccmdResult = "Success";
-                                    if (!string.IsNullOrEmpty(step.CCMDS))
-                                    {
-                                        ccmdResult = ExecuteCommonCommandMethod(ccm, step.CCMDS, portName, currentPos, step, layerInterface);
-                                        _commandResponses.Add(new CommandResponseInfo
-                                        {
-                                            Step = step,
-                                            MeterData = mtr,
-                                            ThreadIndex = currentPos,
-                                            ThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId,
-                                            MethodResponse = ccmdResult
-                                        });
-                                    }
-
-                                    // Determine final result value to save and display in the grid
-                                    string finalGridVal = "Pass";
-                                    if (step.Name.ToLower().Contains("creep"))
-                                    {
-                                        finalGridVal = ccmdResult.Contains("Error") ? "Fail" : "Pass";
-                                    }
-                                    else if (step.Name.ToLower().Contains("starting"))
-                                    {
-                                        finalGridVal = acmdResult.Contains("Error") ? "Fail" : "Pass";
-                                    }
-                                    else
-                                    {
-                                        // For accuracy/calibration tests, check if methods failed
-                                        if (acmdResult.Contains("Error") || ccmdResult.Contains("Error"))
-                                        {
-                                            finalGridVal = "Fail";
-                                        }
-                                        else
-                                        {
-                                            // Extract error value if possible, else return simulated accuracy post-calibration
-                                            double baseErr = (new Random(currentPos).NextDouble() * 0.1) - 0.05;
-                                            finalGridVal = baseErr.ToString("F2");
-                                        }
-                                    }
-
-                                    UpdatePositionOverview(currentPos, step.Name, finalGridVal);
-                                    UpdateGridResult(currentPos, step.StepNo, finalGridVal);
-
-                                    // Append step results to the dynamic PositionResult method array
-                                    var posResult = _positionResults.FirstOrDefault(p => p.position == currentPos);
-                                    if (posResult != null)
-                                    {
-                                        lock (posResult.method)
-                                        {
-                                            posResult.threadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
-                                            posResult.method.Add(new MethodResultInfo
-                                            {
-                                                Name = step.Name,
-                                                Response = $"ACMDS: {acmdResult}; BCMDS: {(string.IsNullOrEmpty(step.BCMDS) ? "None" : "Executed")}; CCMDS: {ccmdResult}; Final: {finalGridVal}",
-                                                Status = !finalGridVal.Equals("Fail", StringComparison.OrdinalIgnoreCase) && !acmdResult.Contains("Error") && !ccmdResult.Contains("Error")
-                                            });
-                                        }
-                                    }
-                                }
-                                catch (OperationCanceledException)
-                                {
-                                    throw;
-                                }
-                                catch (Exception ex)
-                                {
-                                    // Handle communication error gracefully
-                                    UpdatePositionOverview(currentPos, step.Name, "Comm Error");
-                                    var posResult = _positionResults.FirstOrDefault(p => p.position == currentPos);
-                                    if (posResult != null)
-                                    {
-                                        lock (posResult.method)
-                                        {
-                                            posResult.method.Add(new MethodResultInfo
-                                            {
-                                                Name = step.Name,
-                                                Response = $"Error: {ex.Message}",
-                                                Status = false
-                                            });
-                                        }
-                                    }
-                                }
-                                finally
-                                {
-                                    // Release the semaphore to allow another position task to run
-                                    semaphore.Release();
-                                }
-                            }, posCts.Token));
-                        }
-                        else
-                        {
-                            UpdatePositionOverview(currentPos, "Inactive", "-");
-                        }
-                    }
+                    // Signal dedicated threads to start step execution
+                    stepStartEvent.Reset();
+                    stepStartEvent.Set();
 
                     // Main execution thread polls telemetry until all tasks complete
-                    while (positionTasks.Any(t => !t.IsCompleted))
+                    for (int sec = 0; sec < timeLimitSeconds; sec++)
                     {
                         token.ThrowIfCancellationRequested();
                         _pauseEvent.Wait(token);
@@ -1221,8 +1312,8 @@ namespace CabconPMP.UI
                         Thread.Sleep(1000);
                     }
 
-                    // Wait for all position tasks to finish cleanly
-                    Task.WhenAll(positionTasks).GetAwaiter().GetResult();
+                    // Synchronize with active threads to finish current step
+                    stepCompleteBarrier.SignalAndWait(token);
 
                     // Control Function (Duration: 0 = Manual, 1 = Program, 2 = Wait)
                     if (step.Duration == 2) // Wait
@@ -1243,7 +1334,6 @@ namespace CabconPMP.UI
                     else if (step.Duration == 1) // Program
                     {
                         Log($"[Control Function] 'Program' mode active. Launching script/executable: {step.ACMDS}");
-                        // (Simulating external tool execution helper)
                     }
 
                     // Finally Action Check (Finally: 0 = None, 1 = Show popup / complete)
@@ -1251,11 +1341,19 @@ namespace CabconPMP.UI
                     {
                         Log($"[Finally Action] 'Finally' checklist validation running for step: {step.Name}");
                     }
+                }
 
-                    foreach (var cts in positionCancellationSources)
+                // Wait for all dedicated threads to finish execution
+                foreach (var t in positionThreads)
+                {
+                    try
                     {
-                        cts.Dispose();
+                        if (t.IsAlive)
+                        {
+                            t.Join(1000);
+                        }
                     }
+                    catch { }
                 }
 
                 Log("Calibration completed successfully!");
@@ -1271,17 +1369,31 @@ namespace CabconPMP.UI
             }
             finally
             {
-                // Cleanly disconnect all active connections at the end of the entire procedure run
-                foreach (var kvp in connectionMap)
+                // Ensure all dedicated threads are cleanly stopped
+                foreach (var t in positionThreads)
                 {
                     try
                     {
-                        kvp.Value.AssociationDisconnect();
+                        if (t.IsAlive) t.Abort();
                     }
-                    catch
+                    catch { }
+                }
+
+                // Only disconnect and clear map if we are running in AllSteps mode, or if stop/cancellation was requested
+                if (_currentExecutionMode == ExecutionMode.AllSteps || token.IsCancellationRequested)
+                {
+                    foreach (var kvp in _activeMetersMap)
                     {
-                        // Suppress disconnect errors during cleanup
+                        try
+                        {
+                            kvp.Value.Layer.AssociationDisconnect();
+                        }
+                        catch
+                        {
+                            // Suppress disconnect errors during cleanup
+                        }
                     }
+                    _activeMetersMap.Clear();
                 }
 
                 _isRunning = false;
