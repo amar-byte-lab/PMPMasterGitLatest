@@ -45,7 +45,7 @@ namespace SmartCalibration.DataLayer
             }
         }
 
-        public List<Meter> CollectConnectedMeters()
+        public List<Meter> CollectConnectedMeters(bool keepConnectionsOpen = false)
         {
             List<Meter> connectedMeters = new List<Meter>();
 
@@ -53,7 +53,7 @@ namespace SmartCalibration.DataLayer
 
             foreach (string portName in _candidatePorts)
             {
-                Meter meter = TryConnectMeter(portName);
+                Meter meter = TryConnectMeter(portName, keepConnectionsOpen);
                 if (meter == null || meter.IsConnected == false)
                 {
                     continue;
@@ -68,7 +68,7 @@ namespace SmartCalibration.DataLayer
             return connectedMeters;
         }
 
-        private Meter TryConnectMeter(string portName)
+        private Meter TryConnectMeter(string portName, bool keepConnectionsOpen)
         {
             LayerInterface layerInterface = new LayerInterface();
 
@@ -84,17 +84,17 @@ namespace SmartCalibration.DataLayer
                     };
                 }
 
-                string rtcValue = ReadMeterRtc(layerInterface);
-                string pcbaId = ReadMeterPcbaId(layerInterface);
-                layerInterface.AssociationDisconnect();
+                if (!keepConnectionsOpen)
+                {
+                    layerInterface.AssociationDisconnect();
+                }
 
                 return new Meter
                 {
                     PortName = portName,
                     IsConnected = true,
                     mstatus = true,
-                    RTCValue = rtcValue,
-                    PCBAId = pcbaId
+                    Layer = keepConnectionsOpen ? layerInterface : null
                 };
             }
             catch

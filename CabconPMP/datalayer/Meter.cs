@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +15,7 @@ namespace DataLayer
         public bool IsConnected { get; set; }
         public string RTCValue { get; set; }
         public string PCBAId { get; set; }
+        public object Layer { get; set; }
         public bool mstatus;
         public double Result_Error
         { get; set; }

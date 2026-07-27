@@ -14,15 +14,15 @@ namespace SmartCalibration.DataLayer
     {
         public async Task<positionResponse<string>> ReadPCBAId(CancellationToken ct, LayerInterface layer, CommonCommandMethods ccm)
         {
-            string rtc = ccm.ReadPCBAID();
+            string PCBAID = ccm.ReadPCBAID();
             var testExecutionStatus = (int)StaticVariables.ExecutionReurnStatus.Fail;
-            if (rtc.IndexOf(StaticVariables.ERRORPreFix) < 0) { testExecutionStatus = (int)StaticVariables.ExecutionReurnStatus.Pass; }
+            if (PCBAID.IndexOf(StaticVariables.ERRORPreFix) < 0) { testExecutionStatus = (int)StaticVariables.ExecutionReurnStatus.Pass; }
             else testExecutionStatus = (int)StaticVariables.ExecutionReurnStatus.Fail;
             ct.ThrowIfCancellationRequested();
 
             return new positionResponse<string>()
             {
-                Payload = rtc,
+                Payload = PCBAID,
                 Status = testExecutionStatus == (int)StaticVariables.ExecutionReurnStatus.Pass ? "Pass" : "Fail"
             };
         }

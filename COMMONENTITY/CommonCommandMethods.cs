@@ -15,7 +15,7 @@ namespace COMMONENTITY
     {
        enum SmartMeter1PCalibrationIndex { Voltage = 0, PhaseCurrent = 1, NeutralCurrent = 2, PhaseActivePower = 3, NeutralActivePower = 4, PhaseReactivePower = 5, NeutralReactivePower = 6, PhaseDelay = 7, NeutralDelay = 8 };
 
-        LayerInterface objLI = new LayerInterface();
+        public LayerInterface objLI = new LayerInterface();
        AppSettings objappSettings = new AppSettings();
        TextBox[] txtboxobject = new TextBox[] { };
        CommonMethods objcomnMethod = new CommonMethods();     
