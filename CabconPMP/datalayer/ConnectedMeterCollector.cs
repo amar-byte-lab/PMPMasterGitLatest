@@ -49,8 +49,6 @@ namespace SmartCalibration.DataLayer
         {
             List<Meter> connectedMeters = new List<Meter>();
 
-            GlobalConstants.MeterPortMap.Clear();
-
             foreach (string portName in _candidatePorts)
             {
                 Meter meter = TryConnectMeter(portName, keepConnectionsOpen);
@@ -60,9 +58,25 @@ namespace SmartCalibration.DataLayer
                 }
 
                 meter.ID = connectedMeters.Count + 1;
-                meter.mpos = ParsePortPosition(portName, connectedMeters.Count);
+
+                int matchedPos = 0;
+                foreach (var pair in GlobalConstants.MeterPortMap)
+                {
+                    if (string.Equals(pair.Value, portName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        matchedPos = pair.Key;
+                        break;
+                    }
+                }
+
+                if (matchedPos == 0)
+                {
+                    int portIndex = _candidatePorts.IndexOf(portName);
+                    matchedPos = (portIndex >= 0) ? (portIndex + 1) : (connectedMeters.Count + 1);
+                }
+
+                meter.mpos = matchedPos;
                 connectedMeters.Add(meter);
-                GlobalConstants.MeterPortMap[meter.mpos] = portName;
             }
 
             return connectedMeters;

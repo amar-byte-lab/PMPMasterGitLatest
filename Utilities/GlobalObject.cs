@@ -1,4 +1,4 @@
-﻿
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,16 +20,53 @@ namespace Utilities
 
     public partial class GlobalObjects
     {
-       public  static SerialComm objSerialComm = new SerialComm();
-        public static IECSerialComm objIECSerialComm = new IECSerialComm();
-        public static IECMeterSerialCommunication objIECMeterSerialComm = new IECMeterSerialCommunication();
-        public static HDLCLIB objHDLCLIB = new HDLCLIB();
-        public static COSEMLIB objCOSEMLIB = new COSEMLIB();
-        public static GlobalFunctions objGlobalFunctions = new GlobalFunctions();
-       
-    
- 
-         
+        [ThreadStatic]
+        private static SerialComm _objSerialComm;
+        public static SerialComm objSerialComm
+        {
+            get { return _objSerialComm ?? (_objSerialComm = new SerialComm()); }
+            set { _objSerialComm = value; }
+        }
+
+        [ThreadStatic]
+        private static IECSerialComm _objIECSerialComm;
+        public static IECSerialComm objIECSerialComm
+        {
+            get { return _objIECSerialComm ?? (_objIECSerialComm = new IECSerialComm()); }
+            set { _objIECSerialComm = value; }
+        }
+
+        [ThreadStatic]
+        private static IECMeterSerialCommunication _objIECMeterSerialComm;
+        public static IECMeterSerialCommunication objIECMeterSerialComm
+        {
+            get { return _objIECMeterSerialComm ?? (_objIECMeterSerialComm = new IECMeterSerialCommunication()); }
+            set { _objIECMeterSerialComm = value; }
+        }
+
+        [ThreadStatic]
+        private static HDLCLIB _objHDLCLIB;
+        public static HDLCLIB objHDLCLIB
+        {
+            get { return _objHDLCLIB ?? (_objHDLCLIB = new HDLCLIB()); }
+            set { _objHDLCLIB = value; }
+        }
+
+        [ThreadStatic]
+        private static COSEMLIB _objCOSEMLIB;
+        public static COSEMLIB objCOSEMLIB
+        {
+            get { return _objCOSEMLIB ?? (_objCOSEMLIB = new COSEMLIB()); }
+            set { _objCOSEMLIB = value; }
+        }
+
+        [ThreadStatic]
+        private static GlobalFunctions _objGlobalFunctions;
+        public static GlobalFunctions objGlobalFunctions
+        {
+            get { return _objGlobalFunctions ?? (_objGlobalFunctions = new GlobalFunctions()); }
+            set { _objGlobalFunctions = value; }
+        }
     }
 
     public class GlobalFunctions

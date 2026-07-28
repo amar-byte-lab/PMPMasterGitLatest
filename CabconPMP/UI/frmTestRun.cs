@@ -909,6 +909,13 @@ namespace CabconPMP.UI
 
                 var availablePorts = new LayerInterface().GetAssociatedPortList().ToArray();
 
+                // Pre-populate GlobalConstants.MeterPortMap with the original login page port selection
+                GlobalConstants.MeterPortMap.Clear();
+                for (int i = 0; i < availablePorts.Length; i++)
+                {
+                    GlobalConstants.MeterPortMap[Convert.ToInt32(availablePorts[i].Substring(3))] = availablePorts[i];
+                };
+
                 Log("Scanning and mapping COM ports to positions...");
                 var collector = new ConnectedMeterCollector(availablePorts);
                 var connected = collector.CollectConnectedMeters(keepConnectionsOpen: true);
@@ -920,7 +927,18 @@ namespace CabconPMP.UI
 
                 foreach (var mtr in connected)
                 {
-                    var mtrAlloc = _metersList.FirstOrDefault(m => m.PositionNo == mtr.mpos);
+                    // Find the actual position number corresponding to this port name in GlobalConstants.MeterPortMap
+                    int matchedPos = GlobalConstants.MeterPortMap.FirstOrDefault(x => string.Equals(x.Value, mtr.PortName, StringComparison.OrdinalIgnoreCase)).Key;
+                    if (matchedPos == 0)
+                    {
+                        matchedPos = mtr.mpos;
+                    }
+                    else
+                    {
+                        mtr.mpos = matchedPos;
+                    }
+
+                    var mtrAlloc = _metersList.FirstOrDefault(m => m.PositionNo == matchedPos);
                     if (mtrAlloc != null && mtrAlloc.Status && !string.IsNullOrEmpty(mtrAlloc.MeterType))
                     {
                         var layerInterface = mtr.Layer as ApplicationInterface.LayerInterface;
@@ -936,19 +954,19 @@ namespace CabconPMP.UI
                                 var response = ReadPCBAId(new CancellationToken(), layerInterface, ccm).GetAwaiter().GetResult();
                                 pcbaId = response.Payload;
                                 readPcbaStatus = response.Status == "Pass" || response.Status == "Success";
-                                Log($"Pos {mtr.mpos}: Read PCBAId {pcbaId}");
+                                Log($"Pos {matchedPos}: Read PCBAId {pcbaId}");
                             }
                             catch (Exception ex)
                             {
-                                Log($"Pos {mtr.mpos}: Read PCBAId error: {ex.Message}");
+                                Log($"Pos {matchedPos}: Read PCBAId error: {ex.Message}");
                                 pcbaId = "Error: " + ex.Message;
                             }
 
                             mtr.PCBAId = pcbaId;
-                            _activeMetersMap[mtr.mpos] = (layerInterface, ccm, mtrAlloc);
+                            _activeMetersMap[matchedPos] = (layerInterface, ccm, mtrAlloc);
                             var posResult = new PositionResult
                             {
-                                position = mtr.mpos,
+                                position = matchedPos,
                                 threadId = 0,
                                 Port = mtr.PortName,
                                 PCBAId = pcbaId,
@@ -968,19 +986,19 @@ namespace CabconPMP.UI
                     }
                 }
 
-                if (GlobalConstants.MeterPortMap.Count == 0)
-                {
-                    Log("No physical meters detected. Initializing fallback simulation mapping for active positions:");
-                    for (int pos = 1; pos <= _metersList.Count; pos++)
-                    {
-                        var mtr = _metersList[pos - 1];
-                        if (mtr.Status && !string.IsNullOrEmpty(mtr.MeterType))
-                        {
-                            GlobalConstants.MeterPortMap[pos] = $"COM{pos}";
-                            Log($"Position {pos} mapped to COM{pos} (Simulated)");
-                        }
-                    }
-                }
+                //if (GlobalConstants.MeterPortMap.Count == 0)
+                //{
+                //    Log("No physical meters detected. Initializing fallback simulation mapping for active positions:");
+                //    for (int pos = 1; pos <= _metersList.Count; pos++)
+                //    {
+                //        var mtr = _metersList[pos - 1];
+                //        if (mtr.Status && !string.IsNullOrEmpty(mtr.MeterType))
+                //        {
+                //            GlobalConstants.MeterPortMap[mtr.PositionNo] = $"COM{mtr.PositionNo}";
+                //            Log($"Position {mtr.PositionNo} mapped to COM{mtr.PositionNo} (Simulated)");
+                //        }
+                //    }
+                //}
 
                 Log("Starting dedicated thread for each active position...");
                 foreach (var mtr in _metersList)

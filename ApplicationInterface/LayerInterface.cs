@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +17,15 @@ namespace ApplicationInterface
    
   public  class LayerInterface
     {
+        private string _portName = string.Empty;
+        private string ActiveSerialPortName
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(_portName) ? _portName : SerialPortSettings.Default.SerialPort;
+            }
+        }
+
         int HDLCIndex = 0;
         public delegate void UpdateHandler(object sender, UpdateEventArgs e);
         public event UpdateHandler UpdatedLed;
@@ -210,7 +219,7 @@ namespace ApplicationInterface
               }
         public bool ConnectToMeter(string serialPortName)
         {
-            SerialPortSettings.Default.SerialPort = serialPortName;
+            _portName = serialPortName;
             return ConnectToMeter();
         }
         public bool ReadAssociationForInvocationCounter()
@@ -335,7 +344,7 @@ namespace ApplicationInterface
             {
                
                // GlobalObjects.objSerialComm.SetSerialPortSettings(SerialPortSettings.Default.SerialPort, SerialPortSettings.Default.CommandBaudRate, SerialPortSettings.Default.Parity, SerialPortSettings.Default.DataBits, SerialPortSettings.Default.StopBits, SerialPortSettings.Default.CommandTimeOut, SerialPortSettings.Default.IntercharacterDelay);
-                GlobalObjects.objSerialComm.SetSerialPortSettings(SerialPortSettings.Default.SerialPort, SerialPortSettings.Default.CommandBaudRate, "None", "8", "1", SerialPortSettings.Default.CommandTimeOut, SerialPortSettings.Default.IntercharacterDelay);
+                GlobalObjects.objSerialComm.SetSerialPortSettings(ActiveSerialPortName, SerialPortSettings.Default.CommandBaudRate, "None", "8", "1", SerialPortSettings.Default.CommandTimeOut, SerialPortSettings.Default.IntercharacterDelay);
                 if (GlobalObjects.objSerialComm.OpenPort()) return true;
                 else return false;
                  
