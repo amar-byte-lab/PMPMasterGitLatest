@@ -1,4 +1,4 @@
-﻿///****************************************************************************
+///****************************************************************************
 //'*
 //'*  Projet       : Falcon
 //'*
@@ -56,6 +56,8 @@ namespace SerialCommunication
         public long timeout;
         public int pktCount = 0;
         public DateTime TimeStamp;
+
+        public string LastErrorMessage = string.Empty;
 
         public int NoOfBytesToBeReceive3PHDLMSCalibCoeff = 0;
        
@@ -170,11 +172,13 @@ namespace SerialCommunication
             comPort.DtrEnable = true;
             try
             {
+                LastErrorMessage = string.Empty;
                 comPort.Open();
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                LastErrorMessage = ex.Message;
                 return false;
             }
         }

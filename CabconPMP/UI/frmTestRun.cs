@@ -918,87 +918,12 @@ namespace CabconPMP.UI
 
                 Log("Scanning and mapping COM ports to positions...");
                 var collector = new ConnectedMeterCollector(availablePorts);
-                var connected = collector.CollectConnectedMeters(keepConnectionsOpen: true);
-                Log($"Scan complete. Found {connected.Count} active optical probes/meters mapped.");
+                //var connected = collector.CollectConnectedMeters(keepConnectionsOpen: false);
+                //Log($"Scan complete. Found {connected.Count} active optical probes/meters mapped.");
                 foreach (var pair in GlobalConstants.MeterPortMap)
                 {
                     Log($"Position {pair.Key} mapped to {pair.Value}");
                 }
-
-                foreach (var mtr in connected)
-                {
-                    // Find the actual position number corresponding to this port name in GlobalConstants.MeterPortMap
-                    int matchedPos = GlobalConstants.MeterPortMap.FirstOrDefault(x => string.Equals(x.Value, mtr.PortName, StringComparison.OrdinalIgnoreCase)).Key;
-                    if (matchedPos == 0)
-                    {
-                        matchedPos = mtr.mpos;
-                    }
-                    else
-                    {
-                        mtr.mpos = matchedPos;
-                    }
-
-                    var mtrAlloc = _metersList.FirstOrDefault(m => m.PositionNo == matchedPos);
-                    if (mtrAlloc != null && mtrAlloc.Status && !string.IsNullOrEmpty(mtrAlloc.MeterType))
-                    {
-                        var layerInterface = mtr.Layer as ApplicationInterface.LayerInterface;
-                        if (layerInterface != null)
-                        {
-                            var ccm = new COMMONENTITY.CommonCommandMethods();
-                            ccm.objLI = layerInterface;
-
-                            string pcbaId = "Unknown";
-                            bool readPcbaStatus = false;
-                            try
-                            {
-                                var response = ReadPCBAId(new CancellationToken(), layerInterface, ccm).GetAwaiter().GetResult();
-                                pcbaId = response.Payload;
-                                readPcbaStatus = response.Status == "Pass" || response.Status == "Success";
-                                Log($"Pos {matchedPos}: Read PCBAId {pcbaId}");
-                            }
-                            catch (Exception ex)
-                            {
-                                Log($"Pos {matchedPos}: Read PCBAId error: {ex.Message}");
-                                pcbaId = "Error: " + ex.Message;
-                            }
-
-                            mtr.PCBAId = pcbaId;
-                            _activeMetersMap[matchedPos] = (layerInterface, ccm, mtrAlloc);
-                            var posResult = new PositionResult
-                            {
-                                position = matchedPos,
-                                threadId = 0,
-                                Port = mtr.PortName,
-                                PCBAId = pcbaId,
-                                method = new List<MethodResultInfo>
-                                {
-                                    new MethodResultInfo { Name = "ConnectToMeter", Response = "Success", Status = true },
-                                    new MethodResultInfo { Name = "ReadPCBAId", Response = pcbaId, Status = readPcbaStatus }
-                                }
-                            };
-                            _positionResults.Add(posResult);
-                        }
-                    }
-                    else
-                    {
-                        var layerInterface = mtr.Layer as ApplicationInterface.LayerInterface;
-                        try { layerInterface?.AssociationDisconnect(); } catch { }
-                    }
-                }
-
-                //if (GlobalConstants.MeterPortMap.Count == 0)
-                //{
-                //    Log("No physical meters detected. Initializing fallback simulation mapping for active positions:");
-                //    for (int pos = 1; pos <= _metersList.Count; pos++)
-                //    {
-                //        var mtr = _metersList[pos - 1];
-                //        if (mtr.Status && !string.IsNullOrEmpty(mtr.MeterType))
-                //        {
-                //            GlobalConstants.MeterPortMap[mtr.PositionNo] = $"COM{mtr.PositionNo}";
-                //            Log($"Position {mtr.PositionNo} mapped to COM{mtr.PositionNo} (Simulated)");
-                //        }
-                //    }
-                //}
 
                 Log("Starting dedicated thread for each active position...");
                 foreach (var mtr in _metersList)
@@ -1009,6 +934,9 @@ namespace CabconPMP.UI
                         var mtrCopy = mtr;
                         var thread = new System.Threading.Thread(() =>
                         {
+                            int threadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
+                            Log($"[Pos {currentPos}][Thread {threadId}] Dedicated thread started.");
+
                             try
                             {
                                 string portName = string.Empty;
@@ -1033,13 +961,26 @@ namespace CabconPMP.UI
                                          if (!string.IsNullOrEmpty(portName))
                                          {
                                              isConnected = layerInterface.ConnectToMeter(portName);
-                                             Log($"Pos {currentPos}: Connection {(isConnected ? "successful" : "failed")}");
+                                             if (isConnected)
+                                             {
+                                                 Log($"Pos {currentPos}: Connection successful on port {portName}");
+                                             }
+                                             else
+                                             {
+                                                 string lastErr = string.Empty;
+                                                 try { lastErr = GlobalObjects.objSerialComm.LastErrorMessage; } catch { }
+                                                 Log($"Pos {currentPos}: Connection failed on port {portName}. Serial Error: {lastErr}");
+                                             }
                                              connectStatus = isConnected;
+                                         }
+                                         else
+                                         {
+                                             Log($"Pos {currentPos}: Connection skipped because portName is empty.");
                                          }
                                      }
                                      catch (Exception ex)
                                      {
-                                         Log($"Pos {currentPos}: Connection error: {ex.Message}");
+                                         Log($"Pos {currentPos}: Connection exception on port {portName}: {ex.Message}");
                                      }
 
                                      ccm.objLI = layerInterface;
@@ -1048,20 +989,28 @@ namespace CabconPMP.UI
                                      {
                                          try
                                          {
+                                             Log($"Pos {currentPos}: Attempting to read PCBA ID on port {portName}...");
                                              var response = ReadPCBAId(new CancellationToken(), layerInterface, ccm).GetAwaiter().GetResult();
                                              pcbaId = response.Payload;
                                              readPcbaStatus = response.Status == "Pass" || response.Status == "Success";
-                                             Log($"Pos {currentPos}: Read PCBAId {pcbaId}");
+                                             if (readPcbaStatus)
+                                             {
+                                                 Log($"Pos {currentPos}: Read PCBAId successfully. Value: {pcbaId}");
+                                             }
+                                             else
+                                             {
+                                                 Log($"Pos {currentPos}: Read PCBAId returned non-success. Status: {response.Status}, Payload: {pcbaId}");
+                                             }
                                          }
                                          catch (Exception ex)
                                          {
-                                             Log($"Pos {currentPos}: Read PCBAId error: {ex.Message}");
+                                             Log($"Pos {currentPos}: Read PCBAId exception on port {portName}: {ex.Message}");
                                              pcbaId = "Error: " + ex.Message;
                                          }
                                      }
 
-                                     // Create and add position results dynamically for the first time
-                                     var posResult = new PositionResult
+                                    // Create and add position results dynamically for the first time
+                                    var posResult = new PositionResult
                                      {
                                          position = currentPos,
                                          threadId = System.Threading.Thread.CurrentThread.ManagedThreadId,
