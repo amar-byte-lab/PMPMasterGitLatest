@@ -2527,7 +2527,6 @@ namespace CabconPMP.UI
 
                 // Wait for connection barrier
                 connectBarrier.SignalAndWait();
-
                 // If this thread failed to connect or read PCBA ID, exit cleanly without affecting other threads
                 if (!activePositions.ContainsKey(currentPos))
                 {
@@ -2536,6 +2535,13 @@ namespace CabconPMP.UI
 
                 // Get reference to the posResult for appending step results
                 var activePosResult = _positionResults.FirstOrDefault(p => p.position == currentPos);
+
+                // Disconnect initial optical probe connection so subsequent steps start with a clean state
+                if (layerInterface != null)
+                {
+                    try { layerInterface.AssociationDisconnect(); } catch { }
+                }
+                _activeMetersMap.TryRemove(currentPos, out _);
 
                 // 2. Sequential execution of steps on the same dedicated thread
                 for (int stepIndex = 0; stepIndex < steps.Count; stepIndex++)
@@ -2548,14 +2554,20 @@ namespace CabconPMP.UI
                     int timeLimitSeconds = 30;
                     if (int.TryParse(step.Timeout, out var tLimit)) timeLimitSeconds = tLimit;
 
+                    // Connect and establish DLMS association fresh for this step
+                    var stepConnection = ConnectAndIdentifyMeter(currentPos, portName, mtrCopy, activePositions);
+                    layerInterface = stepConnection.Layer;
+                    ccm = stepConnection.Ccm;
+
                     try
                     {
+                        try
+                        {
+                            Log("Amar1");
+                            // ACMDS (Start Test / Pre-step)
+                            string stepResult = "Success";
 
-                        Log("Amar1");
-                        // ACMDS (Start Test / Pre-step)
-                        string stepResult = "Success";
-
-                        stepResult = ExecuteCommonCommandMethod(ccm, portName, currentPos, step, layerInterface, token);
+                            stepResult = ExecuteCommonCommandMethod(ccm, portName, currentPos, step, layerInterface, token);
                             if (activePosResult != null)
                             {
                                 lock (activePosResult.method)
@@ -2568,11 +2580,11 @@ namespace CabconPMP.UI
                                     });
                                 }
                             }
-                        Log("Amar2");
+                            Log("Amar2");
 
-                        Log($"[Pos {currentPos}][Thread {threadId}] [Step {step.Name}][Result {stepResult}]");
-                        // Determine final result value
-                        string finalGridVal = "Pass";
+                            Log($"[Pos {currentPos}][Thread {threadId}] [Step {step.Name}][Result {stepResult}]");
+                            // Determine final result value
+                            string finalGridVal = "Pass";
 
                             if (stepResult.Contains("Error"))
                             {
@@ -2584,28 +2596,42 @@ namespace CabconPMP.UI
                                 finalGridVal = baseErr.ToString("F2");
                             }
 
-                        UpdatePositionOverview(currentPos, step.Name, finalGridVal);
-                        UpdateGridResult(currentPos, step.StepNo, finalGridVal);
-
-                    }
-                    catch (Exception ex)
-                    {
-                        UpdatePositionOverview(currentPos, step.Name, "Comm Error");
-                        if (activePosResult != null)
+                            UpdatePositionOverview(currentPos, step.Name, finalGridVal);
+                            UpdateGridResult(currentPos, step.StepNo, finalGridVal);
+                        }
+                        catch (Exception ex)
                         {
-                            lock (activePosResult.method)
+                            UpdatePositionOverview(currentPos, step.Name, "Comm Error");
+                            if (activePosResult != null)
                             {
-                                activePosResult.method.Add(new MethodResultInfo
+                                lock (activePosResult.method)
                                 {
-                                    Name = step.Name,
-                                    Response = $"Error: {ex.Message}",
-                                    Status = false
-                                });
+                                    activePosResult.method.Add(new MethodResultInfo
+                                    {
+                                        Name = step.Name,
+                                        Response = $"Error: {ex.Message}",
+                                        Status = false
+                                    });
+                                }
                             }
                         }
                     }
+                    finally
+                    {
+                        // Cleanly release connection after executing this step's commands
+                        try
+                        {
+                            if (layerInterface != null)
+                            {
+                                layerInterface.AssociationDisconnect();
+                            }
+                        }
+                        catch { }
+                        _activeMetersMap.TryRemove(currentPos, out _);
+                    }
 
-                    // Wait for all active position threads to finish current step
+                    // Reset start event and signal step complete
+                    stepStartEvent.Reset();
                     var stepCompleteBarrier = getStepCompleteBarrier();
                     stepCompleteBarrier?.SignalAndWait(token);
                 }
@@ -2924,6 +2950,9 @@ namespace CabconPMP.UI
 
                 Thread.Sleep(1000);
             }
+
+            // Reset the step start event before releasing threads so they block on the next step
+            stepStartEvent.Reset();
 
             // Synchronize with active threads to finish current step
             stepCompleteBarrier.SignalAndWait(token);
