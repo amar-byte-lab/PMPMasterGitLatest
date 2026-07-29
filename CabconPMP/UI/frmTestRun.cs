@@ -50,8 +50,16 @@ namespace CabconPMP.UI
         private bool _isPaused = false;
         private readonly SmartCalibration.DataLayer.MeterCalibrator _meterCalibrator = new SmartCalibration.DataLayer.MeterCalibrator();
 
+        public class ThreadStaticContext
+        {
+            public SerialCommunication.SerialComm SerialComm { get; set; }
+            public DLMSLIB.HDLCLIB HdlcLib { get; set; }
+            public DLMSLIB.COSEMLIB CosemLib { get; set; }
+            public Utilities.GlobalFunctions GlobalFunctions { get; set; }
+        }
+
         private System.Collections.Concurrent.ConcurrentBag<PositionResult> _positionResults = new System.Collections.Concurrent.ConcurrentBag<PositionResult>();
-        private System.Collections.Concurrent.ConcurrentDictionary<int, (ApplicationInterface.LayerInterface Layer, COMMONENTITY.CommonCommandMethods Ccm, MeterAllocationRow Meter)> _activeMetersMap = new System.Collections.Concurrent.ConcurrentDictionary<int, (ApplicationInterface.LayerInterface Layer, COMMONENTITY.CommonCommandMethods Ccm, MeterAllocationRow Meter)>();
+        private System.Collections.Concurrent.ConcurrentDictionary<int, (ApplicationInterface.LayerInterface Layer, COMMONENTITY.CommonCommandMethods Ccm, MeterAllocationRow Meter, ThreadStaticContext Context)> _activeMetersMap = new System.Collections.Concurrent.ConcurrentDictionary<int, (ApplicationInterface.LayerInterface Layer, COMMONENTITY.CommonCommandMethods Ccm, MeterAllocationRow Meter, ThreadStaticContext Context)>();
         private ExecutionMode _currentExecutionMode;
 
         public frmTestRun(
@@ -954,7 +962,8 @@ namespace CabconPMP.UI
                 stepCompleteBarrier = new System.Threading.Barrier(connectedCount + 1);
 
                 // Initialise overview statuses for inactive positions once
-                for (int pos = 1; pos <= _metersList.Count; pos++)
+                int maxPositions = _bench?.NumPosition ?? 48;
+                for (int pos = 1; pos <= maxPositions; pos++)
                 {
                     if (!activePositions.ContainsKey(pos))
                     {
@@ -962,7 +971,6 @@ namespace CabconPMP.UI
                     }
                 }
 
-                // Initialise base values (nominal Ub, Ib from the first allocated meter)
                 double nominalUb = 220.0;
                 double nominalIb = 5.0;
                 double nominalIm = 60.0;
@@ -978,7 +986,22 @@ namespace CabconPMP.UI
                     }
                 }
 
-                // Main control loop iterating through steps
+                // Initialise base values (nominal Ub, Ib from the first allocated meter)
+                //double nominalUb = 220.0;
+                //double nominalIb = 5.0;
+                //double nominalIm = 60.0;
+                //var firstMtr = _metersList.FirstOrDefault(m => m.Status && !string.IsNullOrEmpty(m.MeterType));
+                //if (firstMtr != null)
+                //{
+                //    var mtrSpec = _meterTypes.FirstOrDefault(m => m.Name == firstMtr.MeterType);
+                //    if (mtrSpec != null)
+                //    {
+                //        nominalUb = mtrSpec.Ub;
+                //        nominalIb = mtrSpec.Ib;
+                //        nominalIm = mtrSpec.Imax;
+                //    }
+                //}
+
                 for (int stepIndex = 0; stepIndex < steps.Count; stepIndex++)
                 {
                     token.ThrowIfCancellationRequested();
@@ -994,18 +1017,46 @@ namespace CabconPMP.UI
                         token);
                 }
 
-                // Wait for all dedicated threads to finish execution
+                // Main control loop iterating through steps
+                //for (int stepIndex = 0; stepIndex < steps.Count; stepIndex++)
+                //{
+                //    token.ThrowIfCancellationRequested();
+                //    _pauseEvent.Wait(token);
+
+                //    ExecuteCalibrationStep(
+                //        steps[stepIndex],
+                //        nominalUb,
+                //        nominalIb,
+                //        nominalIm,
+                //        stepStartEvent,
+                //        stepCompleteBarrier,
+                //        token);
+                //}
+
                 foreach (var t in positionThreads)
                 {
                     try
                     {
                         if (t.IsAlive)
                         {
-                            t.Join(1000);
+                            t.Join(500);
                         }
                     }
                     catch { }
                 }
+
+                // Wait for all dedicated threads to finish execution
+                //foreach (var t in positionThreads)
+                //{
+                //    try
+                //    {
+                //        if (t.IsAlive)
+                //        {
+                //            t.Join(1000);
+                //        }
+                //    }
+                //    catch { }
+                //}
 
                 Log("Calibration completed successfully!");
                 //SaveRunAndResults();
@@ -1025,24 +1076,36 @@ namespace CabconPMP.UI
                 {
                     try
                     {
-                        if (t.IsAlive) t.Abort();
+                        if (t.IsAlive)
+                        {
+                            t.Join(100);
+                            if (t.IsAlive) t.Abort();
+                        }
                     }
                     catch { }
                 }
 
-                // Unconditionally disconnect and clear map when calibration finishes/cancels to release COM ports
-                foreach (var kvp in _activeMetersMap)
+                // Clean up barrier and event synchronization primitives
+                try { connectBarrier?.Dispose(); } catch { }
+                try { stepCompleteBarrier?.Dispose(); } catch { }
+                try { stepStartEvent?.Dispose(); } catch { }
+
+                // Only disconnect and clear map if stop/cancellation was requested
+                if (token.IsCancellationRequested)
                 {
-                    try
+                    foreach (var kvp in _activeMetersMap)
                     {
-                        kvp.Value.Layer.AssociationDisconnect();
+                        try
+                        {
+                            kvp.Value.Layer.AssociationDisconnect();
+                        }
+                        catch
+                        {
+                            // Suppress disconnect errors during cleanup
+                        }
                     }
-                    catch
-                    {
-                        // Suppress disconnect errors during cleanup
-                    }
+                    _activeMetersMap.Clear();
                 }
-                _activeMetersMap.Clear();
 
                 _isRunning = false;
                 _isPaused = false;
@@ -1971,6 +2034,19 @@ namespace CabconPMP.UI
 
                 //string rrr = ReadMeterPcbaId(layer);
                 result = ReadPCBAId(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
+                if (result.Contains("Error") || result.Contains("COMM Failed"))
+                {
+                    Log($"Pos {currentPos}: Association timed out or lost. Re-establishing association on port {portName}...");
+                    if (layer.ConnectToMeter(portName))
+                    {
+                        Log($"Pos {currentPos}: Re-association successful. Retrying command...");
+                        result = ReadPCBAId(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
+                    }
+                    else
+                    {
+                        Log($"Pos {currentPos}: Re-association failed on port {portName}.");
+                    }
+                }
                 //string ttt = ReadMeterRtc(layer);
 
                 //// Resolve nominal/base values from meter types list dynamically
@@ -2370,6 +2446,15 @@ namespace CabconPMP.UI
             bool connectStatus = isAlreadyConnected;
             bool readPcbaStatus = isAlreadyConnected;
 
+            if (isAlreadyConnected)
+            {
+                var cached = _activeMetersMap[currentPos];
+                GlobalObjects.objSerialComm = cached.Context.SerialComm;
+                GlobalObjects.objHDLCLIB = cached.Context.HdlcLib;
+                GlobalObjects.objCOSEMLIB = cached.Context.CosemLib;
+                GlobalObjects.objGlobalFunctions = cached.Context.GlobalFunctions;
+            }
+
             if (!isAlreadyConnected)
             {
                 try
@@ -2475,7 +2560,14 @@ namespace CabconPMP.UI
                 if (connectStatus && readPcbaStatus && !pcbaId.Contains("Error"))
                 {
                     activePositions[currentPos] = true;
-                    _activeMetersMap[currentPos] = (layerInterface, ccm, mtrCopy);
+                    var context = new ThreadStaticContext
+                    {
+                        SerialComm = GlobalObjects.objSerialComm,
+                        HdlcLib = GlobalObjects.objHDLCLIB,
+                        CosemLib = GlobalObjects.objCOSEMLIB,
+                        GlobalFunctions = GlobalObjects.objGlobalFunctions
+                    };
+                    _activeMetersMap[currentPos] = (layerInterface, ccm, mtrCopy, context);
                 }
                 else
                 {
@@ -2536,28 +2628,24 @@ namespace CabconPMP.UI
                 // Get reference to the posResult for appending step results
                 var activePosResult = _positionResults.FirstOrDefault(p => p.position == currentPos);
 
-                // Disconnect initial optical probe connection so subsequent steps start with a clean state
-                if (layerInterface != null)
-                {
-                    try { layerInterface.AssociationDisconnect(); } catch { }
-                }
-                _activeMetersMap.TryRemove(currentPos, out _);
-
                 // 2. Sequential execution of steps on the same dedicated thread
                 for (int stepIndex = 0; stepIndex < steps.Count; stepIndex++)
                 {
-                    // Wait for main thread to signal step start
-                    stepStartEvent.Wait(token);
+                    // Wait for main thread to signal step start, keeping association alive via periodic keep-alives
+                    while (!stepStartEvent.Wait(5000, token))
+                    {
+                        token.ThrowIfCancellationRequested();
+                        try
+                        {
+                            ReadPCBAId(token, layerInterface, ccm).GetAwaiter().GetResult();
+                        }
+                        catch { }
+                    }
                     token.ThrowIfCancellationRequested();
 
                     var step = steps[stepIndex];
                     int timeLimitSeconds = 30;
                     if (int.TryParse(step.Timeout, out var tLimit)) timeLimitSeconds = tLimit;
-
-                    // Connect and establish DLMS association fresh for this step
-                    var stepConnection = ConnectAndIdentifyMeter(currentPos, portName, mtrCopy, activePositions);
-                    layerInterface = stepConnection.Layer;
-                    ccm = stepConnection.Ccm;
 
                     try
                     {
@@ -2619,15 +2707,6 @@ namespace CabconPMP.UI
                     finally
                     {
                         // Cleanly release connection after executing this step's commands
-                        try
-                        {
-                            if (layerInterface != null)
-                            {
-                                layerInterface.AssociationDisconnect();
-                            }
-                        }
-                        catch { }
-                        _activeMetersMap.TryRemove(currentPos, out _);
                     }
 
                     // Reset start event and signal step complete
@@ -2646,16 +2725,19 @@ namespace CabconPMP.UI
             }
             finally
             {
-                try
+                if (token.IsCancellationRequested)
                 {
-                    if (layerInterface != null)
+                    try
                     {
-                        layerInterface.AssociationDisconnect();
+                        if (layerInterface != null)
+                        {
+                            layerInterface.AssociationDisconnect();
+                        }
                     }
-                }
-                catch
-                {
-                    // Suppress disconnect errors during cleanup
+                    catch
+                    {
+                        // Suppress disconnect errors during cleanup
+                    }
                 }
             }
         }
@@ -2925,6 +3007,12 @@ namespace CabconPMP.UI
             stepStartEvent.Reset();
             stepStartEvent.Set();
 
+            // Synchronize with active threads to finish current step's command execution
+            stepCompleteBarrier.SignalAndWait(token);
+
+            // Reset the step start event so threads block and run keep-alives during the idle polling period
+            stepStartEvent.Reset();
+
             // Main execution thread polls telemetry until all tasks complete
             for (int sec = 0; sec < timeLimitSeconds; sec++)
             {
@@ -2950,12 +3038,6 @@ namespace CabconPMP.UI
 
                 Thread.Sleep(1000);
             }
-
-            // Reset the step start event before releasing threads so they block on the next step
-            stepStartEvent.Reset();
-
-            // Synchronize with active threads to finish current step
-            stepCompleteBarrier.SignalAndWait(token);
 
             // Control Function (Duration: 0 = Manual, 1 = Program, 2 = Wait)
             if (step.Duration == 2) // Wait
