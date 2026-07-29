@@ -894,8 +894,6 @@ namespace CabconPMP.UI
 
             try
             {
-
-                
                 // Initialize _positionResults if not yet created (e.g. first run of SingleStep)
                 if (_positionResults == null || _currentExecutionMode == ExecutionMode.AllSteps)
                 {
@@ -906,7 +904,6 @@ namespace CabconPMP.UI
                 InitializeResultsGridForRun(steps);
 
                 // Auto-detect connected meters and populate GlobalConstants.MeterPortMap
-
                 var availablePorts = new LayerInterface().GetAssociatedPortList().ToArray();
 
                 // Pre-populate GlobalConstants.MeterPortMap with the original login page port selection
@@ -914,12 +911,10 @@ namespace CabconPMP.UI
                 for (int i = 0; i < availablePorts.Length; i++)
                 {
                     GlobalConstants.MeterPortMap[Convert.ToInt32(availablePorts[i].Substring(3))] = availablePorts[i];
-                };
+                }
 
                 Log("Scanning and mapping COM ports to positions...");
                 var collector = new ConnectedMeterCollector(availablePorts);
-                //var connected = collector.CollectConnectedMeters(keepConnectionsOpen: false);
-                //Log($"Scan complete. Found {connected.Count} active optical probes/meters mapped.");
                 foreach (var pair in GlobalConstants.MeterPortMap)
                 {
                     Log($"Position {pair.Key} mapped to {pair.Value}");
@@ -934,317 +929,15 @@ namespace CabconPMP.UI
                         var mtrCopy = mtr;
                         var thread = new System.Threading.Thread(() =>
                         {
-                            int threadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
-                            Log($"[Pos {currentPos}][Thread {threadId}] Dedicated thread started.");
-
-                            try
-                            {
-                                string portName = string.Empty;
-                                if (GlobalConstants.MeterPortMap != null && GlobalConstants.MeterPortMap.ContainsKey(currentPos))
-                                {
-                                    portName = GlobalConstants.MeterPortMap[currentPos];
-                                }
-
-                                 // 1. ConnectToMeter & ReadPCBAId (only once if not already connected)
-                                 bool isAlreadyConnected = _activeMetersMap.ContainsKey(currentPos);
-                                 var layerInterface = isAlreadyConnected ? _activeMetersMap[currentPos].Layer : new ApplicationInterface.LayerInterface();
-                                 var ccm = isAlreadyConnected ? _activeMetersMap[currentPos].Ccm : new COMMONENTITY.CommonCommandMethods();
-                                 bool isConnected = isAlreadyConnected;
-                                 string pcbaId = "Unknown";
-                                 bool connectStatus = isAlreadyConnected;
-                                 bool readPcbaStatus = isAlreadyConnected;
-
-                                 if (!isAlreadyConnected)
-                                 {
-                                     try
-                                     {
-                                         if (!string.IsNullOrEmpty(portName))
-                                         {
-                                             isConnected = layerInterface.ConnectToMeter(portName);
-                                             if (isConnected)
-                                             {
-                                                 Log($"Pos {currentPos}: Connection successful on port {portName}");
-                                             }
-                                             else
-                                             {
-                                                 string lastErr = string.Empty;
-                                                 try { lastErr = GlobalObjects.objSerialComm.LastErrorMessage; } catch { }
-                                                 Log($"Pos {currentPos}: Connection failed on port {portName}. Serial Error: {lastErr}");
-                                             }
-                                             connectStatus = isConnected;
-                                         }
-                                         else
-                                         {
-                                             Log($"Pos {currentPos}: Connection skipped because portName is empty.");
-                                         }
-                                     }
-                                     catch (Exception ex)
-                                     {
-                                         Log($"Pos {currentPos}: Connection exception on port {portName}: {ex.Message}");
-                                     }
-
-                                     ccm.objLI = layerInterface;
-
-                                     if (isConnected)
-                                     {
-                                         try
-                                         {
-                                             Log($"Pos {currentPos}: Attempting to read PCBA ID on port {portName}...");
-                                             var response = ReadPCBAId(new CancellationToken(), layerInterface, ccm).GetAwaiter().GetResult();
-                                             pcbaId = response.Payload;
-                                             readPcbaStatus = response.Status == "Pass" || response.Status == "Success";
-                                             if (readPcbaStatus)
-                                             {
-                                                 Log($"Pos {currentPos}: Read PCBAId successfully. Value: {pcbaId}");
-                                             }
-                                             else
-                                             {
-                                                 Log($"Pos {currentPos}: Read PCBAId returned non-success. Status: {response.Status}, Payload: {pcbaId}");
-                                             }
-                                         }
-                                         catch (Exception ex)
-                                         {
-                                             Log($"Pos {currentPos}: Read PCBAId exception on port {portName}: {ex.Message}");
-                                             pcbaId = "Error: " + ex.Message;
-                                         }
-                                     }
-
-                                    // Create and add position results dynamically for the first time
-                                    var posResult = new PositionResult
-                                     {
-                                         position = currentPos,
-                                         threadId = System.Threading.Thread.CurrentThread.ManagedThreadId,
-                                         Port = portName,
-                                         PCBAId = pcbaId,
-                                         method = new List<MethodResultInfo>
-                                         {
-                                             new MethodResultInfo { Name = "ConnectToMeter", Response = connectStatus ? "Success" : "Failed", Status = connectStatus },
-                                             new MethodResultInfo { Name = "ReadPCBAId", Response = pcbaId, Status = readPcbaStatus }
-                                         }
-                                     };
-                                     _positionResults.Add(posResult);
-
-                                     if (connectStatus && readPcbaStatus && !pcbaId.Contains("Error"))
-                                     {
-                                         activePositions[currentPos] = true;
-                                         _activeMetersMap[currentPos] = (layerInterface, ccm, mtrCopy);
-                                     }
-                                     else
-                                     {
-                                         if (isConnected)
-                                         {
-                                             try { layerInterface.AssociationDisconnect(); } catch { }
-                                         }
-                                     }
-                                 }
-                                 else
-                                 {
-                                     // Retrieve pcbaId from existing result
-                                     var existingResult = _positionResults.FirstOrDefault(p => p.position == currentPos);
-                                     if (existingResult != null)
-                                     {
-                                         pcbaId = existingResult.PCBAId;
-                                         existingResult.threadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
-                                     }
-                                     activePositions[currentPos] = true;
-                                 }
-
-                                // Wait for connection barrier
-                                connectBarrier.SignalAndWait();
-
-                                // If this thread failed to connect or read PCBA ID, exit cleanly without affecting other threads
-                                if (!activePositions.ContainsKey(currentPos))
-                                {
-                                    return;
-                                }
-
-                                // Get reference to the posResult for appending step results
-                                var activePosResult = _positionResults.FirstOrDefault(p => p.position == currentPos);
-
-                                // 2. Sequential execution of steps on the same dedicated thread
-                                for (int stepIndex = 0; stepIndex < steps.Count; stepIndex++)
-                                {
-                                    // Wait for main thread to signal step start
-                                    stepStartEvent.Wait(token);
-                                    token.ThrowIfCancellationRequested();
-
-                                    var step = steps[stepIndex];
-                                    int timeLimitSeconds = 30;
-                                    if (int.TryParse(step.Timeout, out var tLimit)) timeLimitSeconds = tLimit;
-
-                                    try
-                                    {
-                                        // ACMDS (Start Test / Pre-step)
-                                        string acmdResult = "Success";
-                                        if (!string.IsNullOrEmpty(step.ACMDS))
-                                        {
-                                            acmdResult = "ffd";//ExecuteCommonCommandMethod(ccm, step.ACMDS, portName, currentPos, step, layerInterface);
-                                            if (activePosResult != null)
-                                            {
-                                                lock (activePosResult.method)
-                                                {
-                                                    activePosResult.method.Add(new MethodResultInfo
-                                                    {
-                                                        Name = step.Name + " - ACMDS",
-                                                        Response = acmdResult,
-                                                        Status = !acmdResult.Contains("Error")
-                                                    });
-                                                }
-                                            }
-                                        }
-
-                                        // BCMDS (During Test / Parallel)
-                                        Task bcmdTask = null;
-                                        var bcmdCts = new CancellationTokenSource();
-                                        if (!string.IsNullOrEmpty(step.BCMDS))
-                                        {
-                                            bcmdTask = Task.Run(() =>
-                                            {
-                                                try
-                                                {
-                                                    while (!bcmdCts.Token.IsCancellationRequested)
-                                                    {
-                                                        string bcmdResult = "jhjkhk";//ExecuteCommonCommandMethod(ccm, step.BCMDS, portName, currentPos, step, layerInterface);
-                                                        if (activePosResult != null)
-                                                        {
-                                                            lock (activePosResult.method)
-                                                            {
-                                                                activePosResult.method.Add(new MethodResultInfo
-                                                                {
-                                                                    Name = step.Name + " - BCMDS",
-                                                                    Response = bcmdResult,
-                                                                    Status = !bcmdResult.Contains("Error")
-                                                                });
-                                                            }
-                                                        }
-                                                        Thread.Sleep(1000);
-                                                    }
-                                                }
-                                                catch { }
-                                            }, bcmdCts.Token);
-                                        }
-
-                                        // Simulate Step Duration
-                                        for (int elapsed = 0; elapsed < timeLimitSeconds; elapsed++)
-                                        {
-                                            token.ThrowIfCancellationRequested();
-                                            _pauseEvent.Wait(token);
-
-                                            string displayStatus = "Running...";
-                                            if (step.Name.ToLower().Contains("creep"))
-                                            {
-                                                displayStatus = "Monitoring Creep...";
-                                            }
-                                            else if (step.Name.ToLower().Contains("starting"))
-                                            {
-                                                displayStatus = "Checking Start Current...";
-                                            }
-                                            else
-                                            {
-                                                displayStatus = "Measuring Accuracy...";
-                                            }
-
-                                            UpdatePositionOverview(currentPos, step.Name, displayStatus);
-                                            Thread.Sleep(1000);
-                                        }
-
-                                        // Stop parallel BCMDS task
-                                        if (bcmdTask != null)
-                                        {
-                                            bcmdCts.Cancel();
-                                            try { bcmdTask.Wait(); } catch { }
-                                            bcmdCts.Dispose();
-                                        }
-
-                                        // CCMDS (End Test / Post-step)
-                                        string ccmdResult = "Success";
-                                        if (!string.IsNullOrEmpty(step.CCMDS))
-                                        {
-                                            ccmdResult = "jghjhgj";//ExecuteCommonCommandMethod(ccm, step.CCMDS, portName, currentPos, step, layerInterface);
-                                            if (activePosResult != null)
-                                            {
-                                                lock (activePosResult.method)
-                                                {
-                                                    activePosResult.method.Add(new MethodResultInfo
-                                                    {
-                                                        Name = step.Name + " - CCMDS",
-                                                        Response = ccmdResult,
-                                                        Status = !ccmdResult.Contains("Error")
-                                                    });
-                                                }
-                                            }
-                                        }
-
-                                        // Determine final result value
-                                        string finalGridVal = "Pass";
-                                        if (step.Name.ToLower().Contains("creep"))
-                                        {
-                                            finalGridVal = ccmdResult.Contains("Error") ? "Fail" : "Pass";
-                                        }
-                                        else if (step.Name.ToLower().Contains("starting"))
-                                        {
-                                            finalGridVal = acmdResult.Contains("Error") ? "Fail" : "Pass";
-                                        }
-                                        else
-                                        {
-                                            if (acmdResult.Contains("Error") || ccmdResult.Contains("Error"))
-                                            {
-                                                finalGridVal = "Fail";
-                                            }
-                                            else
-                                            {
-                                                double baseErr = (new Random(currentPos).NextDouble() * 0.1) - 0.05;
-                                                finalGridVal = baseErr.ToString("F2");
-                                            }
-                                        }
-
-                                        UpdatePositionOverview(currentPos, step.Name, finalGridVal);
-                                        UpdateGridResult(currentPos, step.StepNo, finalGridVal);
-
-                                        // Append step results to PositionResult
-                                        if (activePosResult != null)
-                                        {
-                                            lock (activePosResult.method)
-                                            {
-                                                activePosResult.threadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
-                                                activePosResult.method.Add(new MethodResultInfo
-                                                {
-                                                    Name = step.Name,
-                                                    Response = $"ACMDS: {acmdResult}; CCMDS: {ccmdResult}; Final: {finalGridVal}",
-                                                    Status = !finalGridVal.Equals("Fail", StringComparison.OrdinalIgnoreCase) && !acmdResult.Contains("Error") && !ccmdResult.Contains("Error")
-                                                });
-                                            }
-                                        }
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        UpdatePositionOverview(currentPos, step.Name, "Comm Error");
-                                        if (activePosResult != null)
-                                        {
-                                            lock (activePosResult.method)
-                                            {
-                                                activePosResult.method.Add(new MethodResultInfo
-                                                {
-                                                    Name = step.Name,
-                                                    Response = $"Error: {ex.Message}",
-                                                    Status = false
-                                                });
-                                            }
-                                        }
-                                    }
-
-                                    // Wait for all active position threads to finish current step
-                                    stepCompleteBarrier.SignalAndWait(token);
-                                }
-                            }
-                            catch (OperationCanceledException)
-                            {
-                                // Clean exit on cancellation
-                            }
-                            catch (Exception ex)
-                            {
-                                Log($"Pos {currentPos}: Dedicated thread exited with exception: {ex.Message}");
-                            }
+                            ExecutePositionThread(
+                                currentPos,
+                                mtrCopy,
+                                steps,
+                                connectBarrier,
+                                () => stepCompleteBarrier,
+                                stepStartEvent,
+                                activePositions,
+                                token);
                         });
 
                         thread.IsBackground = true;
@@ -1291,92 +984,14 @@ namespace CabconPMP.UI
                     token.ThrowIfCancellationRequested();
                     _pauseEvent.Wait(token);
 
-                    var step = steps[stepIndex];
-                    Log($"Executing: {step.Name}");
-
-                    HighlightActiveStep(step.StepNo);
-
-                    // Parse voltage percentages and active power frequency
-                    double.TryParse(step.UA, out var uaPct);
-                    double.TryParse(step.IA, out var iaPct);
-                    double.TryParse(step.FREQ, out var freq);
-                    if (freq <= 0) freq = 50.0;
-
-                    double targetUb = nominalUb * (uaPct / 100.0);
-                    double targetIb = nominalIb * (iaPct / 100.0);
-
-                    UpdateBaseValues(targetUb, targetIb, freq, nominalIm);
-
-                    // Send output commands to the source board via COM integration
-                    Log($"Setting Voltage Out = {targetUb} V, Current Out = {targetIb} A");
-
-                    // Determine timeout/duration for this step
-                    int timeLimitSeconds = 30;
-                    if (int.TryParse(step.Timeout, out var tLimit)) timeLimitSeconds = tLimit;
-
-                    // Parse limit indicators
-                    string limitDisplay = "-0.50% to 0.50%";
-                    UpdateRangeLimits(limitDisplay);
-
-                    // Signal dedicated threads to start step execution
-                    stepStartEvent.Reset();
-                    stepStartEvent.Set();
-
-                    // Main execution thread polls telemetry until all tasks complete
-                    for (int sec = 0; sec < timeLimitSeconds; sec++)
-                    {
-                        token.ThrowIfCancellationRequested();
-                        _pauseEvent.Wait(token);
-
-                        // Telemetry simulation values (or read physically if connected)
-                        var act = new Actuals
-                        {
-                            IsValid = true,
-                            UA = targetUb,
-                            UB = targetUb,
-                            UC = targetUb,
-                            IA = targetIb,
-                            IB = targetIb,
-                            IC = targetIb,
-                            Freq = freq,
-                            TotalP = targetUb * targetIb * 3.0,
-                            TotalQ = 0,
-                            TotalS = targetUb * targetIb * 3.0
-                        };
-                        UpdateLiveTelemetry(act);
-
-                        Thread.Sleep(1000);
-                    }
-
-                    // Synchronize with active threads to finish current step
-                    stepCompleteBarrier.SignalAndWait(token);
-
-                    // Control Function (Duration: 0 = Manual, 1 = Program, 2 = Wait)
-                    if (step.Duration == 2) // Wait
-                    {
-                        Log("[Control Function] 'Wait' mode active. Dropping power and prompting operator...");
-                        UpdateBaseValues(0, 0, freq, nominalIm);
-                        var zeroAct = new Actuals { IsValid = true, UA = 0, UB = 0, UC = 0, IA = 0, IB = 0, IC = 0, Freq = 0 };
-                        UpdateLiveTelemetry(zeroAct);
-
-                        // Popup verification dialog for operator
-                        this.Invoke(new Action(() =>
-                        {
-                            MessageBox.Show("Step completed under 'Wait' control. Please verify the display and connections. Press OK to resume.",
-                                            "Operator Intervention Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        }));
-                        Log("[Control Function] Resuming sequence after operator verification.");
-                    }
-                    else if (step.Duration == 1) // Program
-                    {
-                        Log($"[Control Function] 'Program' mode active. Launching script/executable: {step.ACMDS}");
-                    }
-
-                    // Finally Action Check (Finally: 0 = None, 1 = Show popup / complete)
-                    if (step.Finally == 1)
-                    {
-                        Log($"[Finally Action] 'Finally' checklist validation running for step: {step.Name}");
-                    }
+                    ExecuteCalibrationStep(
+                        steps[stepIndex],
+                        nominalUb,
+                        nominalIb,
+                        nominalIm,
+                        stepStartEvent,
+                        stepCompleteBarrier,
+                        token);
                 }
 
                 // Wait for all dedicated threads to finish execution
@@ -2346,205 +1961,191 @@ namespace CabconPMP.UI
             }
         }
 
-        private string ExecuteCommonCommandMethod(COMMONENTITY.CommonCommandMethods ccm, string command, string portName, int currentPos, RStepRow step, LayerInterface layer)
+        private string ExecuteCommonCommandMethod(COMMONENTITY.CommonCommandMethods ccm, string portName, int currentPos, RStepRow step, LayerInterface layer, CancellationToken token)
         {
-            if (string.IsNullOrWhiteSpace(command)) return "Success";
+            //if (string.IsNullOrWhiteSpace(command)) return "Success";
 
-            string cmdLower = command.ToLower().Trim();
+            //string cmdLower = command.ToLower().Trim();
 
             try
             {
                 string result = "Success";
-                SetMeterPcbaId(layer);
+                //SetMeterPcbaId(layer);
 
                 //string rrr = ReadMeterPcbaId(layer);
-                string tt  = ReadPCBAId(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
-                string ttt = ReadMeterRtc(layer);
+                result = ReadPCBAId(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
+                //string ttt = ReadMeterRtc(layer);
 
-                // Resolve nominal/base values from meter types list dynamically
-                double nominalUb = 220.0;
-                double nominalIb = 5.0;
-                double nominalIm = 60.0;
+                //// Resolve nominal/base values from meter types list dynamically
+                //double nominalUb = 220.0;
+                //double nominalIb = 5.0;
+                //double nominalIm = 60.0;
 
-                var currentMtr = _metersList.FirstOrDefault(m => m.PositionNo == currentPos);
-                if (currentMtr != null)
-                {
-                    var mtrSpec = _meterTypes.FirstOrDefault(m => m.Name == currentMtr.MeterType);
-                    if (mtrSpec != null)
-                    {
-                        nominalUb = mtrSpec.Ub;
-                        nominalIb = mtrSpec.Ib;
-                        nominalIm = mtrSpec.Imax;
-                    }
-                }
-
-                // Resolve active target values based on step configuration
-                double.TryParse(step.UA, out var uaPct);
-                double.TryParse(step.IA, out var iaPct);
-                double.TryParse(step.PHI, out var phiVal);
-
-                if (uaPct <= 0) uaPct = 100.0;
-                if (iaPct <= 0) iaPct = 100.0;
-
-                double targetUb = nominalUb * (uaPct / 100.0);
-                double targetIb = nominalIb * (iaPct / 100.0);
-
-                // Log execution parameters
-                //Log($"[CCM Info] Position {currentPos} executing under TestTypeID = {step.TestTypeID}");
-
-                string ibStrSeq = ((int)nominalIb).ToString();
-                string imaxStrSeq = ((int)nominalIm).ToString();
-                string voltStrSeq = ((int)targetUb).ToString();
-                //byte paramLenSeq = 10;
-                //string calibSeqResult = PerformFullCalibrationSequence(
-                //    new CancellationToken(), 
-                //    layer, 
-                //    ccm, 
-                //    currentPos, 
-                //    step.Name, 
-                //    ibStrSeq, 
-                //    imaxStrSeq, 
-                //    paramLenSeq, 
-                //    voltStrSeq, 
-                //    targetUb, 
-                //    targetIb, 
-                //    phiVal).GetAwaiter().GetResult().Payload;
-
-                var result1 = ReadEnergy(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
-                var result2 = ReadPCBAId(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
-                var result3 = ReadMeterRtc(layer);
-                var result4 = CalibrateVoltage(new CancellationToken(), layer, ccm, "220").GetAwaiter().GetResult().Payload;
-                var result5 = CalibratePhaseCurrent(new CancellationToken(), layer, ccm, targetIb.ToString("F2")).GetAwaiter().GetResult().Payload;
-                var result6 = CalibrateNeutralCurrent(new CancellationToken(), layer, ccm, targetIb.ToString("F2")).GetAwaiter().GetResult().Payload;
-                var result7 = CalibratePhaseAngle(new CancellationToken(), layer, ccm, "70").GetAwaiter().GetResult().Payload;
-                var result8 = ReadEnergy(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
-                var result9 = MeterReset(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
-
-
-
-                if (cmdLower.Contains("pcba") || cmdLower.Contains("step1m1"))
-                {
-                    result = ReadPCBAId(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
-                }
-                else if(cmdLower.Contains("rtc") || cmdLower.Contains("step1m2"))
-                {
-                    result = ReadMeterRtc(layer);
-                }
-                else if (cmdLower.Contains("calibdata") || cmdLower.Contains("step2methodp1"))
-                {
-                    result = ccm.TestCalibrationData();
-                }
-                else if (cmdLower.Contains("verify") || cmdLower.Contains("step3methodw1"))
-                {
-                    result = ccm.VerifyCalibrationData();
-                }
-                else if (cmdLower.Contains("lock") || cmdLower.Contains("step4methodm1"))
-                {
-                    result = ccm.LockingMeter(0x00);
-                }
-                else if (cmdLower.Contains("comm") || cmdLower.Contains("test"))
-                {
-                    result = ccm.CommunicationTest(portName);
-                }
-                else if (cmdLower.Contains("drift"))
-                {
-                    result = ccm.TestRTCDrift("0", "0", "1");
-                }
-                else if (cmdLower.Contains("readenergy"))
-                {
-                    result = ReadEnergy(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
-                }
-                else if (cmdLower.Contains("calibraterealerror"))
-                {
-                    string ibStr = ((int)nominalIb).ToString();
-                    string imaxStr = ((int)nominalIm).ToString();
-                    string voltStr = ((int)targetUb).ToString();
-                    byte paramLen = 10;
-                    result = CalibrateRealError(new CancellationToken(), layer, ccm, currentPos, step.Name, ibStr, imaxStr, paramLen, voltStr).GetAwaiter().GetResult().Payload;
-                }
-                else if (cmdLower.Contains("fullcalibration") || cmdLower.Contains("calibratefull"))
-                {
-                    string ibStr = ((int)nominalIb).ToString();
-                    string imaxStr = ((int)nominalIm).ToString();
-                    string voltStr = ((int)targetUb).ToString();
-                    byte paramLen = 10;
-                    result = PerformFullCalibrationSequence(
-                        new CancellationToken(), 
-                        layer, 
-                        ccm, 
-                        currentPos, 
-                        step.Name, 
-                        ibStr, 
-                        imaxStr, 
-                        paramLen, 
-                        voltStr, 
-                        targetUb, 
-                        targetIb, 
-                        phiVal).GetAwaiter().GetResult().Payload;
-                }
-                else if (cmdLower.Contains("energyerror") || cmdLower.Contains("calibrateenergyerror"))
-                {
-                    string ibStr = ((int)nominalIb).ToString();
-                    string imaxStr = ((int)nominalIm).ToString();
-                    string voltStr = ((int)targetUb).ToString();
-                    byte paramLen = 10;
-                    double powerFactor = 1.0;
-                    if (phiVal > 0) powerFactor = Math.Cos(phiVal * Math.PI / 180.0);
-                    int durationSeconds = step.Duration > 0 ? step.Duration : 5; // Default to 5 seconds if not specified
-                    result = CalibrateEnergyError(new CancellationToken(), layer, ccm, ibStr, imaxStr, paramLen, voltStr, powerFactor, durationSeconds).GetAwaiter().GetResult().Payload;
-                }
-                else if (cmdLower.Contains("calibratevoltage"))
-                {
-                    result = CalibrateVoltage(new CancellationToken(), layer, ccm, targetUb.ToString("F2")).GetAwaiter().GetResult().Payload;
-                }
-                else if (cmdLower.Contains("calibratephasecurrent") || cmdLower.Contains("calibratecurrent"))
-                {
-                    result = CalibratePhaseCurrent(new CancellationToken(), layer, ccm, targetIb.ToString("F2")).GetAwaiter().GetResult().Payload;
-                }
-                else if (cmdLower.Contains("calibrateneutralcurrent") || cmdLower.Contains("calibrateneutral"))
-                {
-                    result = CalibrateNeutralCurrent(new CancellationToken(), layer, ccm, targetIb.ToString("F2")).GetAwaiter().GetResult().Payload;
-                }
-                else if (cmdLower.Contains("calibratephaseangle") || cmdLower.Contains("calibrateangle"))
-                {
-                    result = CalibratePhaseAngle(new CancellationToken(), layer, ccm, phiVal.ToString("F2")).GetAwaiter().GetResult().Payload;
-                }
-                else if (cmdLower.Contains("calibratetemperature") || cmdLower.Contains("calibratetemp"))
-                {
-                    result = CalibrateTemperature(new CancellationToken(), layer, ccm, "+00.00").GetAwaiter().GetResult().Payload;
-                }
-                else if (cmdLower.Contains("calibratemagnetthreshold"))
-                {
-                    result = CalibrateMagnetThreshold(new CancellationToken(), layer, ccm, "+00.00").GetAwaiter().GetResult().Payload;
-                }
-                else if (cmdLower.Contains("calibratemagnet"))
-                {
-                    result = CalibrateMagnet(new CancellationToken(), layer, ccm, "+00.00").GetAwaiter().GetResult().Payload;
-                }
-                else if (cmdLower.Contains("calibrate"))
-                {
-                    result = Calibrate(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
-                }
-                else if (cmdLower.Contains("meterreset") || cmdLower.Contains("reset"))
-                {
-                    result = MeterReset(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
-                }
-                else
-                {
-                    // Fallback to raw execution via extension method
-                    //var layer = new ApplicationInterface.LayerInterface();
-                    layer.ExecuteCommand(command, portName);
-                    return "Success";
-                }
-                Log($"[CCM] Position {currentPos} command '{command}' response: {result}");
+                //var currentMtr = _metersList.FirstOrDefault(m => m.PositionNo == currentPos);
+                //if (currentMtr != null)
+                //{
+                //    var mtrSpec = _meterTypes.FirstOrDefault(m => m.Name == currentMtr.MeterType);
+                //    if (mtrSpec != null)
+                //    {
+                //        nominalUb = mtrSpec.Ub;
+                //        nominalIb = mtrSpec.Ib;
+                //        nominalIm = mtrSpec.Imax;
+                //    }
                 //}
+
+                //// Resolve active target values based on step configuration
+                //double.TryParse(step.UA, out var uaPct);
+                //double.TryParse(step.IA, out var iaPct);
+                //double.TryParse(step.PHI, out var phiVal);
+
+                //if (uaPct <= 0) uaPct = 100.0;
+                //if (iaPct <= 0) iaPct = 100.0;
+
+                //double targetUb = nominalUb * (uaPct / 100.0);
+                //double targetIb = nominalIb * (iaPct / 100.0);
+
+                //// Log execution parameters
+                ////Log($"[CCM Info] Position {currentPos} executing under TestTypeID = {step.TestTypeID}");
+
+                //string ibStrSeq = ((int)nominalIb).ToString();
+                //string imaxStrSeq = ((int)nominalIm).ToString();
+                //string voltStrSeq = ((int)targetUb).ToString();
+
+                //var result1 = ReadEnergy(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
+                //var result2 = ReadPCBAId(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
+                //var result3 = ReadMeterRtc(layer);
+                //var result4 = CalibrateVoltage(new CancellationToken(), layer, ccm, "220").GetAwaiter().GetResult().Payload;
+                //var result5 = CalibratePhaseCurrent(new CancellationToken(), layer, ccm, targetIb.ToString("F2")).GetAwaiter().GetResult().Payload;
+                //var result6 = CalibrateNeutralCurrent(new CancellationToken(), layer, ccm, targetIb.ToString("F2")).GetAwaiter().GetResult().Payload;
+                //var result7 = CalibratePhaseAngle(new CancellationToken(), layer, ccm, "70").GetAwaiter().GetResult().Payload;
+                //var result8 = ReadEnergy(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
+                //var result9 = MeterReset(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
+
+
+
+                //if (cmdLower.Contains("pcba") || cmdLower.Contains("step1m1"))
+                //{
+                //    result = ReadPCBAId(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
+                //}
+                //else if(cmdLower.Contains("rtc") || cmdLower.Contains("step1m2"))
+                //{
+                //    result = ReadMeterRtc(layer);
+                //}
+                //else if (cmdLower.Contains("calibdata") || cmdLower.Contains("step2methodp1"))
+                //{
+                //    result = ccm.TestCalibrationData();
+                //}
+                //else if (cmdLower.Contains("verify") || cmdLower.Contains("step3methodw1"))
+                //{
+                //    result = ccm.VerifyCalibrationData();
+                //}
+                //else if (cmdLower.Contains("lock") || cmdLower.Contains("step4methodm1"))
+                //{
+                //    result = ccm.LockingMeter(0x00);
+                //}
+                //else if (cmdLower.Contains("comm") || cmdLower.Contains("test"))
+                //{
+                //    result = ccm.CommunicationTest(portName);
+                //}
+                //else if (cmdLower.Contains("drift"))
+                //{
+                //    result = ccm.TestRTCDrift("0", "0", "1");
+                //}
+                //else if (cmdLower.Contains("readenergy"))
+                //{
+                //    result = ReadEnergy(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
+                //}
+                //else if (cmdLower.Contains("calibraterealerror"))
+                //{
+                //    string ibStr = ((int)nominalIb).ToString();
+                //    string imaxStr = ((int)nominalIm).ToString();
+                //    string voltStr = ((int)targetUb).ToString();
+                //    byte paramLen = 10;
+                //    result = CalibrateRealError(new CancellationToken(), layer, ccm, currentPos, step.Name, ibStr, imaxStr, paramLen, voltStr).GetAwaiter().GetResult().Payload;
+                //}
+                //else if (cmdLower.Contains("fullcalibration") || cmdLower.Contains("calibratefull"))
+                //{
+                //    string ibStr = ((int)nominalIb).ToString();
+                //    string imaxStr = ((int)nominalIm).ToString();
+                //    string voltStr = ((int)targetUb).ToString();
+                //    byte paramLen = 10;
+                //    result = PerformFullCalibrationSequence(
+                //        new CancellationToken(), 
+                //        layer, 
+                //        ccm, 
+                //        currentPos, 
+                //        step.Name, 
+                //        ibStr, 
+                //        imaxStr, 
+                //        paramLen, 
+                //        voltStr, 
+                //        targetUb, 
+                //        targetIb, 
+                //        phiVal).GetAwaiter().GetResult().Payload;
+                //}
+                //else if (cmdLower.Contains("energyerror") || cmdLower.Contains("calibrateenergyerror"))
+                //{
+                //    string ibStr = ((int)nominalIb).ToString();
+                //    string imaxStr = ((int)nominalIm).ToString();
+                //    string voltStr = ((int)targetUb).ToString();
+                //    byte paramLen = 10;
+                //    double powerFactor = 1.0;
+                //    if (phiVal > 0) powerFactor = Math.Cos(phiVal * Math.PI / 180.0);
+                //    int durationSeconds = step.Duration > 0 ? step.Duration : 5; // Default to 5 seconds if not specified
+                //    result = CalibrateEnergyError(new CancellationToken(), layer, ccm, ibStr, imaxStr, paramLen, voltStr, powerFactor, durationSeconds).GetAwaiter().GetResult().Payload;
+                //}
+                //else if (cmdLower.Contains("calibratevoltage"))
+                //{
+                //    result = CalibrateVoltage(new CancellationToken(), layer, ccm, targetUb.ToString("F2")).GetAwaiter().GetResult().Payload;
+                //}
+                //else if (cmdLower.Contains("calibratephasecurrent") || cmdLower.Contains("calibratecurrent"))
+                //{
+                //    result = CalibratePhaseCurrent(new CancellationToken(), layer, ccm, targetIb.ToString("F2")).GetAwaiter().GetResult().Payload;
+                //}
+                //else if (cmdLower.Contains("calibrateneutralcurrent") || cmdLower.Contains("calibrateneutral"))
+                //{
+                //    result = CalibrateNeutralCurrent(new CancellationToken(), layer, ccm, targetIb.ToString("F2")).GetAwaiter().GetResult().Payload;
+                //}
+                //else if (cmdLower.Contains("calibratephaseangle") || cmdLower.Contains("calibrateangle"))
+                //{
+                //    result = CalibratePhaseAngle(new CancellationToken(), layer, ccm, phiVal.ToString("F2")).GetAwaiter().GetResult().Payload;
+                //}
+                //else if (cmdLower.Contains("calibratetemperature") || cmdLower.Contains("calibratetemp"))
+                //{
+                //    result = CalibrateTemperature(new CancellationToken(), layer, ccm, "+00.00").GetAwaiter().GetResult().Payload;
+                //}
+                //else if (cmdLower.Contains("calibratemagnetthreshold"))
+                //{
+                //    result = CalibrateMagnetThreshold(new CancellationToken(), layer, ccm, "+00.00").GetAwaiter().GetResult().Payload;
+                //}
+                //else if (cmdLower.Contains("calibratemagnet"))
+                //{
+                //    result = CalibrateMagnet(new CancellationToken(), layer, ccm, "+00.00").GetAwaiter().GetResult().Payload;
+                //}
+                //else if (cmdLower.Contains("calibrate"))
+                //{
+                //    result = Calibrate(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
+                //}
+                //else if (cmdLower.Contains("meterreset") || cmdLower.Contains("reset"))
+                //{
+                //    result = MeterReset(new CancellationToken(), layer, ccm).GetAwaiter().GetResult().Payload;
+                //}
+                //else
+                //{
+                //    // Fallback to raw execution via extension method
+                //    //var layer = new ApplicationInterface.LayerInterface();
+                //    layer.ExecuteCommand(command, portName);
+                //    return "Success";
+                //}
+                //Log($"[CCM] Position {currentPos} command '{command}' response: {result}");
+                ////}
 
 
                 return result;
             }
             catch (Exception ex)
             {
-                Log($"[CCM Error] Position {currentPos} command '{command}' failed: {ex.Message}");
+                Log($"[CCM Error] Position {currentPos} step '{step.Name}' failed: {ex.Message}");
                 return "Error: " + ex.Message;
             }
         }
@@ -2758,8 +2359,558 @@ namespace CabconPMP.UI
             return await _meterCalibrator.MeterReset(ct, layer, ccm);
         }
 
+        private (LayerInterface Layer, CommonCommandMethods Ccm) ConnectAndIdentifyMeter(
+            int currentPos,
+            string portName,
+            MeterAllocationRow mtrCopy,
+            System.Collections.Concurrent.ConcurrentDictionary<int, bool> activePositions)
+        {
+            bool isAlreadyConnected = _activeMetersMap.ContainsKey(currentPos);
+            var layerInterface = isAlreadyConnected ? _activeMetersMap[currentPos].Layer : new ApplicationInterface.LayerInterface();
+            var ccm = isAlreadyConnected ? _activeMetersMap[currentPos].Ccm : new COMMONENTITY.CommonCommandMethods();
+            bool isConnected = isAlreadyConnected;
+            string pcbaId = "Unknown";
+            bool connectStatus = isAlreadyConnected;
+            bool readPcbaStatus = isAlreadyConnected;
 
+            if (!isAlreadyConnected)
+            {
+                try
+                {
+                    if (!string.IsNullOrEmpty(portName))
+                    {
+                        isConnected = layerInterface.ConnectToMeter(portName);
+                        if (isConnected)
+                        {
+                            Log($"Pos {currentPos}: Connection successful on port {portName}");
+                        }
+                        else
+                        {
+                            string lastErr = string.Empty;
+                            try { lastErr = GlobalObjects.objSerialComm.LastErrorMessage; } catch { }
+                            Log($"Pos {currentPos}: Connection failed on port {portName}. Serial Error: {lastErr}");
+                        }
+                        connectStatus = isConnected;
+                    }
+                    else
+                    {
+                        Log($"Pos {currentPos}: Connection skipped because portName is empty.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log($"Pos {currentPos}: Connection exception on port {portName}: {ex.Message}");
+                }
 
+                ccm.objLI = layerInterface;
+
+                if (isConnected)
+                {
+                    try
+                    {
+                        Log($"Pos {currentPos}: Attempting to read PCBA ID on port {portName}...");
+                        var response = ReadPCBAId(new CancellationToken(), layerInterface, ccm).GetAwaiter().GetResult();
+                        pcbaId = response.Payload;
+                        readPcbaStatus = response.Status == "Pass" || response.Status == "Success";
+                        if (readPcbaStatus)
+                        {
+                            Log($"Pos {currentPos}: Read PCBAId successfully. Value: {pcbaId}");
+                        }
+                        else
+                        {
+                            Log($"Pos {currentPos}: Read PCBAId returned non-success. Status: {response.Status}, Payload: {pcbaId}");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Log($"Pos {currentPos}: Read PCBAId exception on port {portName}: {ex.Message}");
+                        pcbaId = "Error: " + ex.Message;
+                    }
+                }
+
+                // Create and add position results dynamically for the first time
+                var posResult = new PositionResult
+                {
+                    position = currentPos,
+                    threadId = System.Threading.Thread.CurrentThread.ManagedThreadId,
+                    Port = portName,
+                    PCBAId = pcbaId,
+                    method = new List<MethodResultInfo>
+                    {
+                        new MethodResultInfo { Name = "ConnectToMeter", Response = connectStatus ? "Success" : "Failed", Status = connectStatus },
+                        new MethodResultInfo { Name = "ReadPCBAId", Response = pcbaId, Status = readPcbaStatus }
+                    }
+                };
+                _positionResults.Add(posResult);
+
+                if (connectStatus && readPcbaStatus && !pcbaId.Contains("Error"))
+                {
+                    activePositions[currentPos] = true;
+                    _activeMetersMap[currentPos] = (layerInterface, ccm, mtrCopy);
+                }
+                else
+                {
+                    if (isConnected)
+                    {
+                        try { layerInterface.AssociationDisconnect(); } catch { }
+                    }
+                }
+            }
+            else
+            {
+                // Retrieve pcbaId from existing result
+                var existingResult = _positionResults.FirstOrDefault(p => p.position == currentPos);
+                if (existingResult != null)
+                {
+                    existingResult.threadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
+                }
+                activePositions[currentPos] = true;
+            }
+
+            return (layerInterface, ccm);
+        }
+        private void ExecutePositionThread(
+            int currentPos,
+            MeterAllocationRow mtrCopy,
+            List<RStepRow> steps,
+            System.Threading.Barrier connectBarrier,
+            Func<System.Threading.Barrier> getStepCompleteBarrier,
+            System.Threading.ManualResetEventSlim stepStartEvent,
+            System.Collections.Concurrent.ConcurrentDictionary<int, bool> activePositions,
+            CancellationToken token)
+        {
+            int threadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
+            Log($"[Pos {currentPos}][Thread {threadId}] Dedicated thread started.");
+
+            try
+            {
+                string portName = string.Empty;
+                if (GlobalConstants.MeterPortMap != null && GlobalConstants.MeterPortMap.ContainsKey(currentPos))
+                {
+                    portName = GlobalConstants.MeterPortMap[currentPos];
+                }
+
+                // 1. ConnectToMeter & ReadPCBAId (only once if not already connected)
+                var connection = ConnectAndIdentifyMeter(currentPos, portName, mtrCopy, activePositions);
+                var layerInterface = connection.Layer;
+                var ccm = connection.Ccm;
+
+                // Wait for connection barrier
+                connectBarrier.SignalAndWait();
+
+                // If this thread failed to connect or read PCBA ID, exit cleanly without affecting other threads
+                if (!activePositions.ContainsKey(currentPos))
+                {
+                    return;
+                }
+
+                // Get reference to the posResult for appending step results
+                var activePosResult = _positionResults.FirstOrDefault(p => p.position == currentPos);
+
+                // 2. Sequential execution of steps on the same dedicated thread
+                for (int stepIndex = 0; stepIndex < steps.Count; stepIndex++)
+                {
+                    // Wait for main thread to signal step start
+                    stepStartEvent.Wait(token);
+                    token.ThrowIfCancellationRequested();
+
+                    var step = steps[stepIndex];
+                    int timeLimitSeconds = 30;
+                    if (int.TryParse(step.Timeout, out var tLimit)) timeLimitSeconds = tLimit;
+
+                    try
+                    {
+
+                        Log("Amar1");
+                        // ACMDS (Start Test / Pre-step)
+                        string stepResult = "Success";
+
+                        stepResult = ExecuteCommonCommandMethod(ccm, portName, currentPos, step, layerInterface, token);
+                            if (activePosResult != null)
+                            {
+                                lock (activePosResult.method)
+                                {
+                                    activePosResult.method.Add(new MethodResultInfo
+                                    {
+                                        Name = step.Name,
+                                        Response = stepResult,
+                                        Status = !stepResult.Contains("Error")
+                                    });
+                                }
+                            }
+                        Log("Amar2");
+
+                        Log($"[Pos {currentPos}][Thread {threadId}] [Step {step.Name}][Result {stepResult}]");
+                        // Determine final result value
+                        string finalGridVal = "Pass";
+
+                            if (stepResult.Contains("Error"))
+                            {
+                                finalGridVal = "Fail";
+                            }
+                            else
+                            {
+                                double baseErr = (new Random(currentPos).NextDouble() * 0.1) - 0.05;
+                                finalGridVal = baseErr.ToString("F2");
+                            }
+
+                        UpdatePositionOverview(currentPos, step.Name, finalGridVal);
+                        UpdateGridResult(currentPos, step.StepNo, finalGridVal);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        UpdatePositionOverview(currentPos, step.Name, "Comm Error");
+                        if (activePosResult != null)
+                        {
+                            lock (activePosResult.method)
+                            {
+                                activePosResult.method.Add(new MethodResultInfo
+                                {
+                                    Name = step.Name,
+                                    Response = $"Error: {ex.Message}",
+                                    Status = false
+                                });
+                            }
+                        }
+                    }
+
+                    // Wait for all active position threads to finish current step
+                    var stepCompleteBarrier = getStepCompleteBarrier();
+                    stepCompleteBarrier?.SignalAndWait(token);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                // Clean exit on cancellation
+            }
+            catch (Exception ex)
+            {
+                Log($"Pos {currentPos}: Dedicated thread exited with exception: {ex.Message}");
+            }
+        }
+        private void ExecutePositionThread1(
+            int currentPos,
+            MeterAllocationRow mtrCopy,
+            List<RStepRow> steps,
+            System.Threading.Barrier connectBarrier,
+            Func<System.Threading.Barrier> getStepCompleteBarrier,
+            System.Threading.ManualResetEventSlim stepStartEvent,
+            System.Collections.Concurrent.ConcurrentDictionary<int, bool> activePositions,
+            CancellationToken token)
+        {
+            int threadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
+            Log($"[Pos {currentPos}][Thread {threadId}] Dedicated thread started.");
+
+            try
+            {
+                string portName = string.Empty;
+                if (GlobalConstants.MeterPortMap != null && GlobalConstants.MeterPortMap.ContainsKey(currentPos))
+                {
+                    portName = GlobalConstants.MeterPortMap[currentPos];
+                }
+
+                // 1. ConnectToMeter & ReadPCBAId (only once if not already connected)
+                var connection = ConnectAndIdentifyMeter(currentPos, portName, mtrCopy, activePositions);
+                var layerInterface = connection.Layer;
+                var ccm = connection.Ccm;
+
+                // Wait for connection barrier
+                connectBarrier.SignalAndWait();
+
+                // If this thread failed to connect or read PCBA ID, exit cleanly without affecting other threads
+                if (!activePositions.ContainsKey(currentPos))
+                {
+                    return;
+                }
+
+                // Get reference to the posResult for appending step results
+                var activePosResult = _positionResults.FirstOrDefault(p => p.position == currentPos);
+
+                // 2. Sequential execution of steps on the same dedicated thread
+                for (int stepIndex = 0; stepIndex < steps.Count; stepIndex++)
+                {
+                    // Wait for main thread to signal step start
+                    stepStartEvent.Wait(token);
+                    token.ThrowIfCancellationRequested();
+
+                    var step = steps[stepIndex];
+                    int timeLimitSeconds = 30;
+                    if (int.TryParse(step.Timeout, out var tLimit)) timeLimitSeconds = tLimit;
+
+                    try
+                    {
+
+                        Log("Amar1");
+                        // ACMDS (Start Test / Pre-step)
+                        string acmdResult = "Success";
+                        if (!string.IsNullOrEmpty(step.ACMDS))
+                        {
+                            acmdResult = "ffd"; //ExecuteCommonCommandMethod(ccm, step.ACMDS, portName, currentPos, step, layerInterface);
+                            if (activePosResult != null)
+                            {
+                                lock (activePosResult.method)
+                                {
+                                    activePosResult.method.Add(new MethodResultInfo
+                                    {
+                                        Name = step.Name + " - ACMDS",
+                                        Response = acmdResult,
+                                        Status = !acmdResult.Contains("Error")
+                                    });
+                                }
+                            }
+                        }
+
+                        // BCMDS (During Test / Parallel)
+                        Task bcmdTask = null;
+                        var bcmdCts = new CancellationTokenSource();
+                        if (!string.IsNullOrEmpty(step.BCMDS))
+                        {
+                            bcmdTask = Task.Run(() =>
+                            {
+                                try
+                                {
+                                    while (!bcmdCts.Token.IsCancellationRequested)
+                                    {
+                                        string bcmdResult = "jhjkhk"; //ExecuteCommonCommandMethod(ccm, step.BCMDS, portName, currentPos, step, layerInterface);
+                                        if (activePosResult != null)
+                                        {
+                                            lock (activePosResult.method)
+                                            {
+                                                activePosResult.method.Add(new MethodResultInfo
+                                                {
+                                                    Name = step.Name + " - BCMDS",
+                                                    Response = bcmdResult,
+                                                    Status = !bcmdResult.Contains("Error")
+                                                });
+                                            }
+                                        }
+                                        Thread.Sleep(1000);
+                                    }
+                                }
+                                catch { }
+                            }, bcmdCts.Token);
+                        }
+
+                        // Simulate Step Duration
+                        for (int elapsed = 0; elapsed < timeLimitSeconds; elapsed++)
+                        {
+                            token.ThrowIfCancellationRequested();
+                            _pauseEvent.Wait(token);
+
+                            string displayStatus = "Running...";
+                            if (step.Name.ToLower().Contains("creep"))
+                            {
+                                displayStatus = "Monitoring Creep...";
+                            }
+                            else if (step.Name.ToLower().Contains("starting"))
+                            {
+                                displayStatus = "Checking Start Current...";
+                            }
+                            else
+                            {
+                                displayStatus = "Measuring Accuracy...";
+                            }
+
+                            UpdatePositionOverview(currentPos, step.Name, displayStatus);
+                            Thread.Sleep(1000);
+                        }
+
+                        // Stop parallel BCMDS task
+                        if (bcmdTask != null)
+                        {
+                            bcmdCts.Cancel();
+                            try { bcmdTask.Wait(); } catch { }
+                            bcmdCts.Dispose();
+                        }
+
+                        // CCMDS (End Test / Post-step)
+                        string ccmdResult = "Success";
+                        if (!string.IsNullOrEmpty(step.CCMDS))
+                        {
+                            ccmdResult = "jghjhgj"; //ExecuteCommonCommandMethod(ccm, step.CCMDS, portName, currentPos, step, layerInterface);
+                            if (activePosResult != null)
+                            {
+                                lock (activePosResult.method)
+                                {
+                                    activePosResult.method.Add(new MethodResultInfo
+                                    {
+                                        Name = step.Name + " - CCMDS",
+                                        Response = ccmdResult,
+                                        Status = !ccmdResult.Contains("Error")
+                                    });
+                                }
+                            }
+                        }
+
+                        // Determine final result value
+                        string finalGridVal = "Pass";
+                        if (step.Name.ToLower().Contains("creep"))
+                        {
+                            finalGridVal = ccmdResult.Contains("Error") ? "Fail" : "Pass";
+                        }
+                        else if (step.Name.ToLower().Contains("starting"))
+                        {
+                            finalGridVal = acmdResult.Contains("Error") ? "Fail" : "Pass";
+                        }
+                        else
+                        {
+                            if (acmdResult.Contains("Error") || ccmdResult.Contains("Error"))
+                            {
+                                finalGridVal = "Fail";
+                            }
+                            else
+                            {
+                                double baseErr = (new Random(currentPos).NextDouble() * 0.1) - 0.05;
+                                finalGridVal = baseErr.ToString("F2");
+                            }
+                        }
+
+                        UpdatePositionOverview(currentPos, step.Name, finalGridVal);
+                        UpdateGridResult(currentPos, step.StepNo, finalGridVal);
+
+                        // Append step results to PositionResult
+                        if (activePosResult != null)
+                        {
+                            lock (activePosResult.method)
+                            {
+                                activePosResult.threadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
+                                activePosResult.method.Add(new MethodResultInfo
+                                {
+                                    Name = step.Name,
+                                    Response = $"ACMDS: {acmdResult}; CCMDS: {ccmdResult}; Final: {finalGridVal}",
+                                    Status = !finalGridVal.Equals("Fail", StringComparison.OrdinalIgnoreCase) && !acmdResult.Contains("Error") && !ccmdResult.Contains("Error")
+                                });
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        UpdatePositionOverview(currentPos, step.Name, "Comm Error");
+                        if (activePosResult != null)
+                        {
+                            lock (activePosResult.method)
+                            {
+                                activePosResult.method.Add(new MethodResultInfo
+                                {
+                                    Name = step.Name,
+                                    Response = $"Error: {ex.Message}",
+                                    Status = false
+                                });
+                            }
+                        }
+                    }
+
+                    // Wait for all active position threads to finish current step
+                    var stepCompleteBarrier = getStepCompleteBarrier();
+                    stepCompleteBarrier?.SignalAndWait(token);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                // Clean exit on cancellation
+            }
+            catch (Exception ex)
+            {
+                Log($"Pos {currentPos}: Dedicated thread exited with exception: {ex.Message}");
+            }
+        }
+
+        private void ExecuteCalibrationStep(
+            RStepRow step,
+            double nominalUb,
+            double nominalIb,
+            double nominalIm,
+            System.Threading.ManualResetEventSlim stepStartEvent,
+            System.Threading.Barrier stepCompleteBarrier,
+            CancellationToken token)
+        {
+            Log($"Executing: {step.Name}");
+
+            HighlightActiveStep(step.StepNo);
+
+            // Parse voltage percentages and active power frequency
+            double.TryParse(step.UA, out var uaPct);
+            double.TryParse(step.IA, out var iaPct);
+            double.TryParse(step.FREQ, out var freq);
+            if (freq <= 0) freq = 50.0;
+
+            double targetUb = nominalUb * (uaPct / 100.0);
+            double targetIb = nominalIb * (iaPct / 100.0);
+
+            UpdateBaseValues(targetUb, targetIb, freq, nominalIm);
+
+            // Send output commands to the source board via COM integration
+            Log($"Setting Voltage Out = {targetUb} V, Current Out = {targetIb} A");
+
+            // Determine timeout/duration for this step
+            int timeLimitSeconds = 30;
+            if (int.TryParse(step.Timeout, out var tLimit)) timeLimitSeconds = tLimit;
+
+            // Parse limit indicators
+            string limitDisplay = "-0.50% to 0.50%";
+            UpdateRangeLimits(limitDisplay);
+
+            // Signal dedicated threads to start step execution
+            stepStartEvent.Reset();
+            stepStartEvent.Set();
+
+            // Main execution thread polls telemetry until all tasks complete
+            for (int sec = 0; sec < timeLimitSeconds; sec++)
+            {
+                token.ThrowIfCancellationRequested();
+                _pauseEvent.Wait(token);
+
+                // Telemetry simulation values (or read physically if connected)
+                var act = new Actuals
+                {
+                    IsValid = true,
+                    UA = targetUb,
+                    UB = targetUb,
+                    UC = targetUb,
+                    IA = targetIb,
+                    IB = targetIb,
+                    IC = targetIb,
+                    Freq = freq,
+                    TotalP = targetUb * targetIb * 3.0,
+                    TotalQ = 0,
+                    TotalS = targetUb * targetIb * 3.0
+                };
+                UpdateLiveTelemetry(act);
+
+                Thread.Sleep(1000);
+            }
+
+            // Synchronize with active threads to finish current step
+            stepCompleteBarrier.SignalAndWait(token);
+
+            // Control Function (Duration: 0 = Manual, 1 = Program, 2 = Wait)
+            if (step.Duration == 2) // Wait
+            {
+                Log("[Control Function] 'Wait' mode active. Dropping power and prompting operator...");
+                UpdateBaseValues(0, 0, freq, nominalIm);
+                var zeroAct = new Actuals { IsValid = true, UA = 0, UB = 0, UC = 0, IA = 0, IB = 0, IC = 0, Freq = 0 };
+                UpdateLiveTelemetry(zeroAct);
+
+                // Popup verification dialog for operator
+                this.Invoke(new Action(() =>
+                {
+                    MessageBox.Show("Step completed under 'Wait' control. Please verify the display and connections. Press OK to resume.",
+                                    "Operator Intervention Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }));
+                Log("[Control Function] Resuming sequence after operator verification.");
+            }
+            else if (step.Duration == 1) // Program
+            {
+                Log($"[Control Function] 'Program' mode active. Launching script/executable: {step.ACMDS}");
+            }
+
+            // Finally Action Check (Finally: 0 = None, 1 = Show popup / complete)
+            if (step.Finally == 1)
+            {
+                Log($"[Finally Action] 'Finally' checklist validation running for step: {step.Name}");
+            }
+        }
     }
 
     public class MeterAllocationRow
