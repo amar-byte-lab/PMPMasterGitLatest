@@ -1030,22 +1030,19 @@ namespace CabconPMP.UI
                     catch { }
                 }
 
-                // Only disconnect and clear map if we are running in AllSteps mode, or if stop/cancellation was requested
-                if (_currentExecutionMode == ExecutionMode.AllSteps || token.IsCancellationRequested)
+                // Unconditionally disconnect and clear map when calibration finishes/cancels to release COM ports
+                foreach (var kvp in _activeMetersMap)
                 {
-                    foreach (var kvp in _activeMetersMap)
+                    try
                     {
-                        try
-                        {
-                            kvp.Value.Layer.AssociationDisconnect();
-                        }
-                        catch
-                        {
-                            // Suppress disconnect errors during cleanup
-                        }
+                        kvp.Value.Layer.AssociationDisconnect();
                     }
-                    _activeMetersMap.Clear();
+                    catch
+                    {
+                        // Suppress disconnect errors during cleanup
+                    }
                 }
+                _activeMetersMap.Clear();
 
                 _isRunning = false;
                 _isPaused = false;
@@ -2428,20 +2425,52 @@ namespace CabconPMP.UI
                     }
                 }
 
-                // Create and add position results dynamically for the first time
-                var posResult = new PositionResult
+                // Create or update position results dynamically
+                var existingResult = _positionResults.FirstOrDefault(p => p.position == currentPos);
+                if (existingResult != null)
                 {
-                    position = currentPos,
-                    threadId = System.Threading.Thread.CurrentThread.ManagedThreadId,
-                    Port = portName,
-                    PCBAId = pcbaId,
-                    method = new List<MethodResultInfo>
+                    existingResult.threadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
+                    existingResult.Port = portName;
+                    existingResult.PCBAId = pcbaId;
+
+                    var connectMethod = existingResult.method.FirstOrDefault(m => m.Name == "ConnectToMeter");
+                    if (connectMethod != null)
                     {
-                        new MethodResultInfo { Name = "ConnectToMeter", Response = connectStatus ? "Success" : "Failed", Status = connectStatus },
-                        new MethodResultInfo { Name = "ReadPCBAId", Response = pcbaId, Status = readPcbaStatus }
+                        connectMethod.Response = connectStatus ? "Success" : "Failed";
+                        connectMethod.Status = connectStatus;
                     }
-                };
-                _positionResults.Add(posResult);
+                    else
+                    {
+                        existingResult.method.Add(new MethodResultInfo { Name = "ConnectToMeter", Response = connectStatus ? "Success" : "Failed", Status = connectStatus });
+                    }
+
+                    var pcbaMethod = existingResult.method.FirstOrDefault(m => m.Name == "ReadPCBAId");
+                    if (pcbaMethod != null)
+                    {
+                        pcbaMethod.Response = pcbaId;
+                        pcbaMethod.Status = readPcbaStatus;
+                    }
+                    else
+                    {
+                        existingResult.method.Add(new MethodResultInfo { Name = "ReadPCBAId", Response = pcbaId, Status = readPcbaStatus });
+                    }
+                }
+                else
+                {
+                    var posResult = new PositionResult
+                    {
+                        position = currentPos,
+                        threadId = System.Threading.Thread.CurrentThread.ManagedThreadId,
+                        Port = portName,
+                        PCBAId = pcbaId,
+                        method = new List<MethodResultInfo>
+                        {
+                            new MethodResultInfo { Name = "ConnectToMeter", Response = connectStatus ? "Success" : "Failed", Status = connectStatus },
+                            new MethodResultInfo { Name = "ReadPCBAId", Response = pcbaId, Status = readPcbaStatus }
+                        }
+                    };
+                    _positionResults.Add(posResult);
+                }
 
                 if (connectStatus && readPcbaStatus && !pcbaId.Contains("Error"))
                 {
@@ -2482,6 +2511,7 @@ namespace CabconPMP.UI
             int threadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
             Log($"[Pos {currentPos}][Thread {threadId}] Dedicated thread started.");
 
+            ApplicationInterface.LayerInterface layerInterface = null;
             try
             {
                 string portName = string.Empty;
@@ -2492,7 +2522,7 @@ namespace CabconPMP.UI
 
                 // 1. ConnectToMeter & ReadPCBAId (only once if not already connected)
                 var connection = ConnectAndIdentifyMeter(currentPos, portName, mtrCopy, activePositions);
-                var layerInterface = connection.Layer;
+                layerInterface = connection.Layer;
                 var ccm = connection.Ccm;
 
                 // Wait for connection barrier
@@ -2587,6 +2617,20 @@ namespace CabconPMP.UI
             catch (Exception ex)
             {
                 Log($"Pos {currentPos}: Dedicated thread exited with exception: {ex.Message}");
+            }
+            finally
+            {
+                try
+                {
+                    if (layerInterface != null)
+                    {
+                        layerInterface.AssociationDisconnect();
+                    }
+                }
+                catch
+                {
+                    // Suppress disconnect errors during cleanup
+                }
             }
         }
         private void ExecutePositionThread1(
