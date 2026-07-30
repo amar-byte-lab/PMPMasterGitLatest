@@ -341,8 +341,8 @@ namespace CabconPMP
                 string dlmscommmode = "";
 
                 if (ClientSAP == "10") dlmscommmode += " PC ";
-                else if (ClientSAP == "20") dlmscommmode += " MR ";
-                else if (ClientSAP == "30") dlmscommmode += " US ";
+                //else if (ClientSAP == "20") dlmscommmode += " MR ";
+                //else if (ClientSAP == "30") dlmscommmode += " US ";
                 else if (ClientSAP == "40") dlmscommmode += " FS ";
 
                 dlmscommmode += "| " + SerialPort;
@@ -358,9 +358,9 @@ namespace CabconPMP
                 string connectionString = strtemp = obgxml.GetConnectionString();
 
                 if (connectionString.IndexOf("INDELNB") >= 0) connectionString = "Location : Local System";
-                else if (connectionString.IndexOf("INDEL") >= 0) connectionString = "Location : GDC Noida";
-                else if (connectionString.IndexOf("INBDI") >= 0) connectionString = "Location : Baddi Factory";
-                else if (connectionString.IndexOf("INCCU") >= 0) connectionString = "Location : Joka Factory";
+                //else if (connectionString.IndexOf("INDEL") >= 0) connectionString = "Location : GDC Noida";
+                //else if (connectionString.IndexOf("INBDI") >= 0) connectionString = "Location : Baddi Factory";
+                //else if (connectionString.IndexOf("INCCU") >= 0) connectionString = "Location : Joka Factory";
                 else connectionString = "Location : Others Factory";
 
                 connectionString += " ( " + strtemp.Substring(strtemp.IndexOf('=') + 1, strtemp.IndexOf(';') - strtemp.IndexOf('=') - 1) + " )";

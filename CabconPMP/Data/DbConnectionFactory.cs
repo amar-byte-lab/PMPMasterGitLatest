@@ -43,7 +43,7 @@ namespace CabconPMP.Data
         public SqlConnectionFactory()
         {
             _connectionString =
-                @"Server=LAPTOP-AQ0HSGQ7\SQLEXPRESS;
+                @"Server=DESKTOP-20HU07J\SQLEXPRESS;
               Database=AemCalData;
               Integrated Security=True;
               TrustServerCertificate=True;

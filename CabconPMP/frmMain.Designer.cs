@@ -511,7 +511,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Cabcon Product Management Program";
+            this.Text = "Cabcon Calibration Software";
             this.Activated += new System.EventHandler(this.SM110frmMain_Activated);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMain_FormClosed);
             this.Load += new System.EventHandler(this.SM110frmMain_Load);

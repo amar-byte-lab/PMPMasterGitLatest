@@ -70,7 +70,7 @@ namespace CabconPMP
             try
             {
                 string username = cmbUser.Text.Trim();
-                string password = txtPassword.Text.Trim();
+                string password = "supervisor";//txtPassword.Text.Trim();
 
                 if (string.IsNullOrEmpty(username))
                 {

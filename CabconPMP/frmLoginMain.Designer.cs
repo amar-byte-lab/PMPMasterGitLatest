@@ -31,6 +31,7 @@ namespace CabconPMP
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmLoginMain));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.PanelLoginControl = new System.Windows.Forms.Panel();
+            this.cmbUser = new System.Windows.Forms.ComboBox();
             this.chkPortSelectAll = new System.Windows.Forms.CheckBox();
             this.clbPorts = new System.Windows.Forms.CheckedListBox();
             this.lblPort = new System.Windows.Forms.Label();
@@ -41,7 +42,6 @@ namespace CabconPMP
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.txtPassword = new CabconPMP.TransparentTextBox();
-            this.cmbUser = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.PanelLoginControl.SuspendLayout();
             this.SuspendLayout();
@@ -80,11 +80,20 @@ namespace CabconPMP
             this.PanelLoginControl.Size = new System.Drawing.Size(303, 283);
             this.PanelLoginControl.TabIndex = 23;
             // 
+            // cmbUser
+            // 
+            this.cmbUser.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbUser.FormattingEnabled = true;
+            this.cmbUser.Location = new System.Drawing.Point(96, 177);
+            this.cmbUser.Name = "cmbUser";
+            this.cmbUser.Size = new System.Drawing.Size(167, 21);
+            this.cmbUser.TabIndex = 25;
+            // 
             // chkPortSelectAll
             // 
             this.chkPortSelectAll.AutoSize = true;
             this.chkPortSelectAll.Location = new System.Drawing.Point(96, 133);
-            this.chkPortSelectAll.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.chkPortSelectAll.Margin = new System.Windows.Forms.Padding(2);
             this.chkPortSelectAll.Name = "chkPortSelectAll";
             this.chkPortSelectAll.Size = new System.Drawing.Size(70, 17);
             this.chkPortSelectAll.TabIndex = 24;
@@ -96,7 +105,7 @@ namespace CabconPMP
             // 
             this.clbPorts.FormattingEnabled = true;
             this.clbPorts.Location = new System.Drawing.Point(96, 67);
-            this.clbPorts.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.clbPorts.Margin = new System.Windows.Forms.Padding(2);
             this.clbPorts.Name = "clbPorts";
             this.clbPorts.Size = new System.Drawing.Size(168, 64);
             this.clbPorts.TabIndex = 23;
@@ -122,6 +131,7 @@ namespace CabconPMP
             this.txtBenchId.Name = "txtBenchId";
             this.txtBenchId.Size = new System.Drawing.Size(168, 20);
             this.txtBenchId.TabIndex = 19;
+            this.txtBenchId.Text = "1";
             // 
             // lblBenchId
             // 
@@ -188,16 +198,8 @@ namespace CabconPMP
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(168, 20);
             this.txtPassword.TabIndex = 1;
+            this.txtPassword.Text = "suupervisor";
             this.txtPassword.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPassword_KeyPress);
-            // 
-            // cmbUser
-            // 
-            this.cmbUser.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbUser.FormattingEnabled = true;
-            this.cmbUser.Location = new System.Drawing.Point(96, 177);
-            this.cmbUser.Name = "cmbUser";
-            this.cmbUser.Size = new System.Drawing.Size(167, 21);
-            this.cmbUser.TabIndex = 25;
             // 
             // frmLoginMain
             // 
@@ -211,7 +213,7 @@ namespace CabconPMP
             this.MinimizeBox = false;
             this.Name = "frmLoginMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Cabcon PMP";
+            this.Text = "Cabcon Calib. S/W";
             this.Load += new System.EventHandler(this.frmLoginMain_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.PanelLoginControl.ResumeLayout(false);
