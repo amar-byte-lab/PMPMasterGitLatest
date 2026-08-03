@@ -35,6 +35,7 @@
             this.configurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.calibrateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addProceduresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.meterTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ts_configuration = new System.Windows.Forms.ToolStripMenuItem();
             this.tsm_Association = new System.Windows.Forms.ToolStripMenuItem();
             this.tsm_userManagement = new System.Windows.Forms.ToolStripMenuItem();
@@ -77,7 +78,6 @@
             this.cms_CreateProgram = new System.Windows.Forms.ToolStripMenuItem();
             this.lblMainScreenMsg = new System.Windows.Forms.Label();
             this.pcbBackgroundImage = new System.Windows.Forms.PictureBox();
-            this.meterTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.DLMSStas.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -118,9 +118,11 @@
             // 
             // configurationToolStripMenuItem
             // 
+            this.configurationToolStripMenuItem.Enabled = false;
             this.configurationToolStripMenuItem.Name = "configurationToolStripMenuItem";
             this.configurationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.configurationToolStripMenuItem.Text = "Configuration";
+            this.configurationToolStripMenuItem.Visible = false;
             this.configurationToolStripMenuItem.Click += new System.EventHandler(this.selectProceduresToolStripMenuItem_Click);
             // 
             // calibrateToolStripMenuItem
@@ -137,6 +139,13 @@
             this.addProceduresToolStripMenuItem.Text = "Add Procedures";
             this.addProceduresToolStripMenuItem.Click += new System.EventHandler(this.addProceduresToolStripMenuItem_Click);
             // 
+            // meterTypeToolStripMenuItem
+            // 
+            this.meterTypeToolStripMenuItem.Name = "meterTypeToolStripMenuItem";
+            this.meterTypeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.meterTypeToolStripMenuItem.Text = "Meter Type";
+            this.meterTypeToolStripMenuItem.Click += new System.EventHandler(this.meterTypeToolStripMenuItem_Click);
+            // 
             // ts_configuration
             // 
             this.ts_configuration.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -151,28 +160,32 @@
             // tsm_Association
             // 
             this.tsm_Association.Name = "tsm_Association";
-            this.tsm_Association.Size = new System.Drawing.Size(171, 22);
+            this.tsm_Association.Size = new System.Drawing.Size(180, 22);
             this.tsm_Association.Text = "Association";
             this.tsm_Association.Click += new System.EventHandler(this.tsm_Association_Click);
             // 
             // tsm_userManagement
             // 
+            this.tsm_userManagement.Enabled = false;
             this.tsm_userManagement.Name = "tsm_userManagement";
-            this.tsm_userManagement.Size = new System.Drawing.Size(171, 22);
+            this.tsm_userManagement.Size = new System.Drawing.Size(180, 22);
             this.tsm_userManagement.Text = "User Management";
+            this.tsm_userManagement.Visible = false;
             this.tsm_userManagement.Click += new System.EventHandler(this.userManagementToolStripMenuItem_Click);
             // 
             // tsm_changePassword
             // 
+            this.tsm_changePassword.Enabled = false;
             this.tsm_changePassword.Name = "tsm_changePassword";
-            this.tsm_changePassword.Size = new System.Drawing.Size(171, 22);
+            this.tsm_changePassword.Size = new System.Drawing.Size(180, 22);
             this.tsm_changePassword.Text = "Change Password";
+            this.tsm_changePassword.Visible = false;
             this.tsm_changePassword.Click += new System.EventHandler(this.changePasswordToolStripMenuItem_Click);
             // 
             // tsm_ServerSettings
             // 
             this.tsm_ServerSettings.Name = "tsm_ServerSettings";
-            this.tsm_ServerSettings.Size = new System.Drawing.Size(171, 22);
+            this.tsm_ServerSettings.Size = new System.Drawing.Size(180, 22);
             this.tsm_ServerSettings.Text = "Server Settings";
             this.tsm_ServerSettings.Click += new System.EventHandler(this.tsm_ServerSettings_Click);
             // 
@@ -205,16 +218,20 @@
             // 
             // tsm_parametersWiseReport
             // 
+            this.tsm_parametersWiseReport.Enabled = false;
             this.tsm_parametersWiseReport.Name = "tsm_parametersWiseReport";
             this.tsm_parametersWiseReport.Size = new System.Drawing.Size(258, 22);
             this.tsm_parametersWiseReport.Text = "Parameters Wise Report";
+            this.tsm_parametersWiseReport.Visible = false;
             this.tsm_parametersWiseReport.Click += new System.EventHandler(this.tsm_parametersWiseReport_Click);
             // 
             // tsm_missingMeterReport
             // 
+            this.tsm_missingMeterReport.Enabled = false;
             this.tsm_missingMeterReport.Name = "tsm_missingMeterReport";
             this.tsm_missingMeterReport.Size = new System.Drawing.Size(258, 22);
             this.tsm_missingMeterReport.Text = "Serialization Missing Meters Report";
+            this.tsm_missingMeterReport.Visible = false;
             this.tsm_missingMeterReport.Click += new System.EventHandler(this.tsm_missingMeterReport_Click);
             // 
             // tsm_productionStageReport
@@ -240,9 +257,11 @@
             // 
             // tsm_rejectlist
             // 
+            this.tsm_rejectlist.Enabled = false;
             this.tsm_rejectlist.Name = "tsm_rejectlist";
             this.tsm_rejectlist.Size = new System.Drawing.Size(258, 22);
             this.tsm_rejectlist.Text = "Rejection List Report";
+            this.tsm_rejectlist.Visible = false;
             this.tsm_rejectlist.Click += new System.EventHandler(this.tsm_rejectlist_Click);
             // 
             // helpToolStripMenuItem
@@ -257,14 +276,14 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // contentsToolStripMenuItem
             // 
             this.contentsToolStripMenuItem.Name = "contentsToolStripMenuItem";
-            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.contentsToolStripMenuItem.Text = "Contents";
             this.contentsToolStripMenuItem.Visible = false;
             this.contentsToolStripMenuItem.Click += new System.EventHandler(this.contentsToolStripMenuItem_Click);
@@ -489,13 +508,6 @@
             this.pcbBackgroundImage.TabIndex = 19;
             this.pcbBackgroundImage.TabStop = false;
             this.pcbBackgroundImage.Click += new System.EventHandler(this.pcbBackgroundImage_Click);
-            // 
-            // meterTypeToolStripMenuItem
-            // 
-            this.meterTypeToolStripMenuItem.Name = "meterTypeToolStripMenuItem";
-            this.meterTypeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.meterTypeToolStripMenuItem.Text = "Meter Type";
-            this.meterTypeToolStripMenuItem.Click += new System.EventHandler(this.meterTypeToolStripMenuItem_Click);
             // 
             // frmMain
             // 

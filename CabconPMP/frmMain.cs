@@ -384,7 +384,7 @@ namespace CabconPMP
             }
             catch (Exception Ex)
             {
-                MessageBox.Show("Setting Main Form Status Failed !" + "\r\n" + "\r\n" + Ex.ToString(), "Cabcon PMP", MessageBoxButtons.OK, MessageBoxIcon.Stop, MessageBoxDefaultButton.Button1);
+                MessageBox.Show("Setting Main Form Status Failed !" + "\r\n" + "\r\n" + Ex.ToString(), "Cabcon Calibration", MessageBoxButtons.OK, MessageBoxIcon.Stop, MessageBoxDefaultButton.Button1);
             }
         }
 
@@ -422,7 +422,7 @@ namespace CabconPMP
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Setting Main Form Status Failed !" + "\r\n" + "\r\n" + ex.ToString(), "Cabcon PMP", MessageBoxButtons.OK, MessageBoxIcon.Stop, MessageBoxDefaultButton.Button1);
+                MessageBox.Show("Setting Main Form Status Failed !" + "\r\n" + "\r\n" + ex.ToString(), "Cabcon Calibration", MessageBoxButtons.OK, MessageBoxIcon.Stop, MessageBoxDefaultButton.Button1);
             }
         }
 
@@ -779,7 +779,7 @@ namespace CabconPMP
             }
             catch (Exception)
             {
-                MessageBox.Show("Unable To open Help File !", "Cabcon PMP", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Unable To open Help File !", "Cabcon Calibration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -791,7 +791,7 @@ namespace CabconPMP
             }
             catch (Exception)
             {
-                MessageBox.Show("Unable To open Help File !", "Cabcon PMP", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Unable To open Help File !", "Cabcon Clibration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 

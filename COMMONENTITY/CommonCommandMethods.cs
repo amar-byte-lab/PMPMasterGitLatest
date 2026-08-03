@@ -1109,18 +1109,18 @@ namespace COMMONENTITY
               string VValue = RelayWireSwapTest(refdefault, refMin, refMax);
               if (VValue.IndexOf(StaticVariables.ERRORPreFix) >= 0)
                {
-                   MessageBox.Show("Phase Wire Not Connected !", "Cabcon PMP", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                   MessageBox.Show("Phase Wire Not Connected !", "Cabcon Calibration", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                    return VValue;
                }
-              //---------------------Read and Verify V I PF in Disconnected mode--------------------------------------------------------
-               //CommandExecutionWaitTimer(1000);
-               //MessageBox.Show("Switch ON Current ! Then Hit OK To Continue !", "Cabcon PMP", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-               //Application.DoEvents();
-               //CommandExecutionWaitTimer(1000);
-               string VIPFValueDis = "Dis =" + ReadVIPF_RelayTest(false,refdefault,refMin,refMax);
+                //---------------------Read and Verify V I PF in Disconnected mode--------------------------------------------------------
+                //CommandExecutionWaitTimer(1000);
+                //MessageBox.Show("Switch ON Current ! Then Hit OK To Continue !", "Cabcon Calibration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //Application.DoEvents();
+                //CommandExecutionWaitTimer(1000);
+                string VIPFValueDis = "Dis =" + ReadVIPF_RelayTest(false,refdefault,refMin,refMax);
                if (VIPFValueDis.IndexOf(StaticVariables.ERRORPreFix) >= 0)
                {
-                   MessageBox.Show("Relay Malfunction !", "Cabcon PMP", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                   MessageBox.Show("Relay Malfunction !", "Cabcon Calibration", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                    return VIPFValueDis;
                }
                //---------------------Read and Verify V I PF in in Connected mode--------------------------------------------------------
@@ -1129,7 +1129,7 @@ namespace COMMONENTITY
                string VIPFValueCon = "Con =" + ReadVIPF_RelayTest(true,refdefault,refMin,refMax);
                if (VIPFValueCon.IndexOf(StaticVariables.ERRORPreFix) >= 0)
                {
-                   MessageBox.Show("CT Wire Swaped !", "Cabcon PMP", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                   MessageBox.Show("CT Wire Swaped !", "Cabcon Calibration", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                }
                return VIPFValueCon + VIPFValueDis + VValue;
                 
@@ -1150,7 +1150,7 @@ namespace COMMONENTITY
        {
            try
            {
-               MessageBox.Show("Press Phase Current Switch And Hit OK To Continue.", "Cabcon PMP", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+               MessageBox.Show("Press Phase Current Switch And Hit OK To Continue.", "Cabcon Calibration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                Application.DoEvents();
                //CommandExecutionWaitTimer(10000);
                //---------------------Disconnect--------------------------------------------------------
@@ -1167,7 +1167,7 @@ namespace COMMONENTITY
                string CurrentValueDis = "Dis: " + ReadandVerifyCurrentFromBufferSinglePhaseFalcon("", "", "0.0");  
                if (CurrentValueDis.IndexOf(StaticVariables.ERRORPreFix) >= 0)
                {
-                   MessageBox.Show("Realy Dis-Connection Issue !" + "\n" + "Current Detected After Disconnect.", "Cabcon PMP", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                   MessageBox.Show("Realy Dis-Connection Issue !" + "\n" + "Current Detected After Disconnect.", "Cabcon Calibration", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                    return CurrentValueDis;
                }
                //-------------------------------Connect Relay and verify Ph Current Value, It should be within range-------------------------------------
@@ -1177,18 +1177,18 @@ namespace COMMONENTITY
                string CurrentValueConn =", Con: " + MetrologyTest_1PhaseFalcon(refdefault, refMin, refMax, (int)StaticVariables.MMITestParameters.PhaseCurrentTest);
                if (CurrentValueConn.IndexOf(StaticVariables.ERRORPreFix) >= 0)
                {
-                   MessageBox.Show("Realy Connection issue !" + "\n" + "Metrology Error in Phase.", "Cabcon PMP", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                   MessageBox.Show("Realy Connection issue !" + "\n" + "Metrology Error in Phase.", "Cabcon Calibration", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                    return CurrentValueDis + CurrentValueConn;;
                }
                //------------------------------------Read and verify Neu Current Value, It should be within range ----------------------------------------
-               MessageBox.Show("Press Neu Current Switch And Hit OK To Continue.", "Cabcon PMP", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+               MessageBox.Show("Press Neu Current Switch And Hit OK To Continue.", "Cabcon Calibration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                Application.DoEvents();
 
                CommandExecutionWaitTimer(2000);
                CurrentValueConn += ", " + MetrologyTest_1PhaseFalcon(refdefault, refMin, refMax, (int)StaticVariables.MMITestParameters.NeutralCurrentTest);
                if (CurrentValueConn.IndexOf(StaticVariables.ERRORPreFix) >= 0)
                {
-                   MessageBox.Show("Realy Connection issue !" + "\n" + "Metrology Error in Neutral.", "Cabcon PMP", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                   MessageBox.Show("Realy Connection issue !" + "\n" + "Metrology Error in Neutral.", "Cabcon Calibration", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                }
                return CurrentValueDis + CurrentValueConn;
 
@@ -2704,7 +2704,7 @@ namespace COMMONENTITY
            }
            catch (Exception Ex)
            {
-               MessageBox.Show(Ex.ToString() + "\n" + "Unable To Save Settings!", "Cabcon PMP", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+               MessageBox.Show(Ex.ToString() + "\n" + "Unable To Save Settings!", "Cabcon Calibration", MessageBoxButtons.OK, MessageBoxIcon.Stop);
            }
        }
 

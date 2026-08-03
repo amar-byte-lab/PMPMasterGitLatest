@@ -195,7 +195,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Cabcon PMP - Secure Access";
+            this.Text = "Cabcon Calibration - Secure Access";
             this.Load += new System.EventHandler(this.AccessPassword_Load);
             this.pnlMain.ResumeLayout(false);
             this.pnlMain.PerformLayout();

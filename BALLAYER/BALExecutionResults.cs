@@ -26,15 +26,15 @@ namespace BALLAYER
                     string tempMsg = objccmdmethod.IsSerialIDinRange(objexeresult.PCBAID, objexeresult.ExecutionTestID);
                     if (tempMsg != "")
                     {
-                        MessageBox.Show(tempMsg, "Cabcon PMP", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        MessageBox.Show(tempMsg, "Cabcon Calibration", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                         return null;
                     }
                    ds = Select_GetExecutionResult_onMeterIDandProcedureType(objexeresult);               
                 }
                 else ds = Select_GetExecutionResult_onPCBAIDandProcedureType(objexeresult);
-                if (ds == null) { MessageBox.Show("Unable To Connect To DataBase/ Column Value Not Found !", "Cabcon PMP", MessageBoxButtons.OK, MessageBoxIcon.Stop); return null; }
+                if (ds == null) { MessageBox.Show("Unable To Connect To DataBase/ Column Value Not Found !", "Cabcon Calibration", MessageBoxButtons.OK, MessageBoxIcon.Stop); return null; }
 
-                if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0) { if (MessageBox.Show("Meter Details Already Found in DataBase!" + "\n" + "Do You Want To Continue ??", "Cabcon PMP", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No) return null; }
+                if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0) { if (MessageBox.Show("Meter Details Already Found in DataBase!" + "\n" + "Do You Want To Continue ??", "Cabcon Calibration", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No) return null; }
                 
                 return ds;                
             

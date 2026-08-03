@@ -24,7 +24,7 @@ namespace CabconPMP
         {
             MyCrypro oblcrypto = new MyCrypro();
             lblProductVersion.Text = SystemInfo.ProductVersion();
-            lblproductname.Text = Application.ProductName.ToString() + " (Product Management Program)";
+            lblproductname.Text = Application.ProductName.ToString() + " (Calibraion Program)";
             label1.Text = SystemInfo.CopyRightsDetail() + "  " + "All Rights Reserved.";
             lblliciencedto.Text = "This Product is Licensed To : " +  System.Environment.MachineName.ToString(); 
         }

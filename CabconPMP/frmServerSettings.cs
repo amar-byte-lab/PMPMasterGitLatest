@@ -39,7 +39,7 @@ namespace CabconPMP
                 if (cmbServerLoc.SelectedIndex == 1) dbServer = "INDELVS01";
                // else if (cmbServerLoc.SelectedIndex == 2) dbServer = "INBDISV06";//"INBDISV04\\FRSPMP";//"INBDISV06";//--Factory Closed Server removed
                 else if (cmbServerLoc.SelectedIndex == 2) dbServer = "INCCUSV05";//"INCCUSV03";
-                else if (cmbServerLoc.SelectedIndex == 3) dbServer = txtServerName.Text.Trim();//Bangladesh Production Server
+                else if (cmbServerLoc.SelectedIndex == 3) dbServer = txtServerName.Text.Trim();
                 else dbServer = "INDELNB688";
                 DataTable dt = new DataTable("SQLCONN");
                 dt.Columns.Add("ConnectionClient", typeof(string));

@@ -31,12 +31,12 @@
             this.cmbServerLoc = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtTimeout = new System.Windows.Forms.TextBox();
             this.lblServerName = new System.Windows.Forms.Label();
             this.txtServerName = new System.Windows.Forms.TextBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtTimeout = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -47,9 +47,7 @@
             this.cmbServerLoc.FormattingEnabled = true;
             this.cmbServerLoc.Items.AddRange(new object[] {
             "-------------------------------Select---------------------------------------",
-            "GDC NOIDA PMP Data Base Server",
-            "JOKA FACTORY PMP Data Base Server",
-            "OTHERS PMP Data Base Server"});
+            "Cabcon  Data Base Server"});
             this.cmbServerLoc.Location = new System.Drawing.Point(150, 18);
             this.cmbServerLoc.Name = "cmbServerLoc";
             this.cmbServerLoc.Size = new System.Drawing.Size(242, 21);
@@ -78,6 +76,25 @@
             this.groupBox1.Size = new System.Drawing.Size(398, 99);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(13, 48);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(132, 13);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "Connection TimeOut (Sec)";
+            // 
+            // txtTimeout
+            // 
+            this.txtTimeout.Location = new System.Drawing.Point(151, 45);
+            this.txtTimeout.MaxLength = 3;
+            this.txtTimeout.Name = "txtTimeout";
+            this.txtTimeout.Size = new System.Drawing.Size(79, 20);
+            this.txtTimeout.TabIndex = 4;
+            this.txtTimeout.Text = "10";
+            this.txtTimeout.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
             // 
             // lblServerName
             // 
@@ -114,25 +131,6 @@
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 48);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(132, 13);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "Connection TimeOut (Sec)";
-            // 
-            // txtTimeout
-            // 
-            this.txtTimeout.Location = new System.Drawing.Point(151, 45);
-            this.txtTimeout.MaxLength = 3;
-            this.txtTimeout.Name = "txtTimeout";
-            this.txtTimeout.Size = new System.Drawing.Size(79, 20);
-            this.txtTimeout.TabIndex = 4;
-            this.txtTimeout.Text = "10";
-            this.txtTimeout.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
             // 
             // frmServerSettings
             // 
