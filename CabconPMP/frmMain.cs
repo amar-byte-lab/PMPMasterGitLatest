@@ -49,6 +49,12 @@ namespace CabconPMP
         public frmMain(EntityUserManagement objetyum, IDbConnectionFactory dbFactory, PersonRepository personRepo, MeterTypeRepository meterTypeRepo, ProcedureRepository procedureRepo, RunRepository runRepo, BenchRepository benchRepo)
         {
             InitializeComponent(); COMMONENTITY.FormStyleHelper.Apply(this);
+
+            // Modernize MenuStrip
+            menuStrip1.Renderer = new ModernMenuRenderer();
+            menuStrip1.Font = new Font("Segoe UI", 10f, FontStyle.Bold);
+            menuStrip1.Padding = new Padding(0, 5, 0, 5);
+
             objetyusermgt.LoginuserID = objetyum.LoginuserID;
             objetyusermgt = objetyum;
             logedUserType = objetyum.LogType;
@@ -943,6 +949,11 @@ namespace CabconPMP
         {
             var frm = new frmMeterType(_meterTypeRepository);
             frm.Show();
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
         }
     }
 }

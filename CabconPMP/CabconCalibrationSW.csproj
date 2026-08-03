@@ -330,6 +330,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PMPDataSet.xsd</DependentUpon>
     </Compile>
+
+    <Compile Include="ModernMenuRenderer.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\frmMeterType.cs">
