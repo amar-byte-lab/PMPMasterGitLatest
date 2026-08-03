@@ -89,6 +89,7 @@
             // menuStrip1
             // 
             this.menuStrip1.BackColor = System.Drawing.Color.LightCyan;
+            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.calibrationToolStripMenuItem,
@@ -99,8 +100,8 @@
             this.exitToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
-            this.menuStrip1.Size = new System.Drawing.Size(1119, 24);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(6, 2, 0, 2);
+            this.menuStrip1.Size = new System.Drawing.Size(1678, 33);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -112,7 +113,7 @@
             this.addProceduresToolStripMenuItem,
             this.meterTypeToolStripMenuItem});
             this.calibrationToolStripMenuItem.Name = "calibrationToolStripMenuItem";
-            this.calibrationToolStripMenuItem.Size = new System.Drawing.Size(77, 22);
+            this.calibrationToolStripMenuItem.Size = new System.Drawing.Size(113, 29);
             this.calibrationToolStripMenuItem.Text = "Calibration";
             this.calibrationToolStripMenuItem.Click += new System.EventHandler(this.calibrationToolStripMenuItem_Click);
             // 
@@ -120,7 +121,7 @@
             // 
             this.configurationToolStripMenuItem.Enabled = false;
             this.configurationToolStripMenuItem.Name = "configurationToolStripMenuItem";
-            this.configurationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.configurationToolStripMenuItem.Size = new System.Drawing.Size(241, 34);
             this.configurationToolStripMenuItem.Text = "Configuration";
             this.configurationToolStripMenuItem.Visible = false;
             this.configurationToolStripMenuItem.Click += new System.EventHandler(this.selectProceduresToolStripMenuItem_Click);
@@ -128,21 +129,21 @@
             // calibrateToolStripMenuItem
             // 
             this.calibrateToolStripMenuItem.Name = "calibrateToolStripMenuItem";
-            this.calibrateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.calibrateToolStripMenuItem.Size = new System.Drawing.Size(241, 34);
             this.calibrateToolStripMenuItem.Text = "Calibrate";
             this.calibrateToolStripMenuItem.Click += new System.EventHandler(this.calibrateToolStripMenuItem_Click);
             // 
             // addProceduresToolStripMenuItem
             // 
             this.addProceduresToolStripMenuItem.Name = "addProceduresToolStripMenuItem";
-            this.addProceduresToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addProceduresToolStripMenuItem.Size = new System.Drawing.Size(241, 34);
             this.addProceduresToolStripMenuItem.Text = "Add Procedures";
             this.addProceduresToolStripMenuItem.Click += new System.EventHandler(this.addProceduresToolStripMenuItem_Click);
             // 
             // meterTypeToolStripMenuItem
             // 
             this.meterTypeToolStripMenuItem.Name = "meterTypeToolStripMenuItem";
-            this.meterTypeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.meterTypeToolStripMenuItem.Size = new System.Drawing.Size(241, 34);
             this.meterTypeToolStripMenuItem.Text = "Meter Type";
             this.meterTypeToolStripMenuItem.Click += new System.EventHandler(this.meterTypeToolStripMenuItem_Click);
             // 
@@ -154,13 +155,13 @@
             this.tsm_changePassword,
             this.tsm_ServerSettings});
             this.ts_configuration.Name = "ts_configuration";
-            this.ts_configuration.Size = new System.Drawing.Size(61, 22);
+            this.ts_configuration.Size = new System.Drawing.Size(92, 29);
             this.ts_configuration.Text = "Settings";
             // 
             // tsm_Association
             // 
             this.tsm_Association.Name = "tsm_Association";
-            this.tsm_Association.Size = new System.Drawing.Size(180, 22);
+            this.tsm_Association.Size = new System.Drawing.Size(259, 34);
             this.tsm_Association.Text = "Association";
             this.tsm_Association.Click += new System.EventHandler(this.tsm_Association_Click);
             // 
@@ -168,7 +169,7 @@
             // 
             this.tsm_userManagement.Enabled = false;
             this.tsm_userManagement.Name = "tsm_userManagement";
-            this.tsm_userManagement.Size = new System.Drawing.Size(180, 22);
+            this.tsm_userManagement.Size = new System.Drawing.Size(259, 34);
             this.tsm_userManagement.Text = "User Management";
             this.tsm_userManagement.Visible = false;
             this.tsm_userManagement.Click += new System.EventHandler(this.userManagementToolStripMenuItem_Click);
@@ -177,7 +178,7 @@
             // 
             this.tsm_changePassword.Enabled = false;
             this.tsm_changePassword.Name = "tsm_changePassword";
-            this.tsm_changePassword.Size = new System.Drawing.Size(180, 22);
+            this.tsm_changePassword.Size = new System.Drawing.Size(259, 34);
             this.tsm_changePassword.Text = "Change Password";
             this.tsm_changePassword.Visible = false;
             this.tsm_changePassword.Click += new System.EventHandler(this.changePasswordToolStripMenuItem_Click);
@@ -185,14 +186,14 @@
             // tsm_ServerSettings
             // 
             this.tsm_ServerSettings.Name = "tsm_ServerSettings";
-            this.tsm_ServerSettings.Size = new System.Drawing.Size(180, 22);
+            this.tsm_ServerSettings.Size = new System.Drawing.Size(259, 34);
             this.tsm_ServerSettings.Text = "Server Settings";
             this.tsm_ServerSettings.Click += new System.EventHandler(this.tsm_ServerSettings_Click);
             // 
             // verificationToolStripMenuItem
             // 
             this.verificationToolStripMenuItem.Name = "verificationToolStripMenuItem";
-            this.verificationToolStripMenuItem.Size = new System.Drawing.Size(78, 22);
+            this.verificationToolStripMenuItem.Size = new System.Drawing.Size(115, 29);
             this.verificationToolStripMenuItem.Text = "Verification";
             // 
             // ts_report
@@ -206,13 +207,13 @@
             this.backupDataReportToolStripMenuItem,
             this.tsm_rejectlist});
             this.ts_report.Name = "ts_report";
-            this.ts_report.Size = new System.Drawing.Size(59, 22);
+            this.ts_report.Size = new System.Drawing.Size(89, 29);
             this.ts_report.Text = "Reports";
             // 
             // tsm_executionReports
             // 
             this.tsm_executionReports.Name = "tsm_executionReports";
-            this.tsm_executionReports.Size = new System.Drawing.Size(258, 22);
+            this.tsm_executionReports.Size = new System.Drawing.Size(391, 34);
             this.tsm_executionReports.Text = "Detailed Report";
             this.tsm_executionReports.Click += new System.EventHandler(this.tsm_executionReports_Click);
             // 
@@ -220,7 +221,7 @@
             // 
             this.tsm_parametersWiseReport.Enabled = false;
             this.tsm_parametersWiseReport.Name = "tsm_parametersWiseReport";
-            this.tsm_parametersWiseReport.Size = new System.Drawing.Size(258, 22);
+            this.tsm_parametersWiseReport.Size = new System.Drawing.Size(391, 34);
             this.tsm_parametersWiseReport.Text = "Parameters Wise Report";
             this.tsm_parametersWiseReport.Visible = false;
             this.tsm_parametersWiseReport.Click += new System.EventHandler(this.tsm_parametersWiseReport_Click);
@@ -229,7 +230,7 @@
             // 
             this.tsm_missingMeterReport.Enabled = false;
             this.tsm_missingMeterReport.Name = "tsm_missingMeterReport";
-            this.tsm_missingMeterReport.Size = new System.Drawing.Size(258, 22);
+            this.tsm_missingMeterReport.Size = new System.Drawing.Size(391, 34);
             this.tsm_missingMeterReport.Text = "Serialization Missing Meters Report";
             this.tsm_missingMeterReport.Visible = false;
             this.tsm_missingMeterReport.Click += new System.EventHandler(this.tsm_missingMeterReport_Click);
@@ -237,21 +238,21 @@
             // tsm_productionStageReport
             // 
             this.tsm_productionStageReport.Name = "tsm_productionStageReport";
-            this.tsm_productionStageReport.Size = new System.Drawing.Size(258, 22);
+            this.tsm_productionStageReport.Size = new System.Drawing.Size(391, 34);
             this.tsm_productionStageReport.Text = "Production Stage Report";
             this.tsm_productionStageReport.Click += new System.EventHandler(this.tsm_productionStageReport_Click);
             // 
             // routineTestReportToolStripMenuItem
             // 
             this.routineTestReportToolStripMenuItem.Name = "routineTestReportToolStripMenuItem";
-            this.routineTestReportToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
+            this.routineTestReportToolStripMenuItem.Size = new System.Drawing.Size(391, 34);
             this.routineTestReportToolStripMenuItem.Text = "Calibration Routine Test Report";
             this.routineTestReportToolStripMenuItem.Click += new System.EventHandler(this.routineTestReportToolStripMenuItem_Click);
             // 
             // backupDataReportToolStripMenuItem
             // 
             this.backupDataReportToolStripMenuItem.Name = "backupDataReportToolStripMenuItem";
-            this.backupDataReportToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
+            this.backupDataReportToolStripMenuItem.Size = new System.Drawing.Size(391, 34);
             this.backupDataReportToolStripMenuItem.Text = "Backup Data Report";
             this.backupDataReportToolStripMenuItem.Click += new System.EventHandler(this.backupDataReportToolStripMenuItem_Click);
             // 
@@ -259,7 +260,7 @@
             // 
             this.tsm_rejectlist.Enabled = false;
             this.tsm_rejectlist.Name = "tsm_rejectlist";
-            this.tsm_rejectlist.Size = new System.Drawing.Size(258, 22);
+            this.tsm_rejectlist.Size = new System.Drawing.Size(391, 34);
             this.tsm_rejectlist.Text = "Rejection List Report";
             this.tsm_rejectlist.Visible = false;
             this.tsm_rejectlist.Click += new System.EventHandler(this.tsm_rejectlist_Click);
@@ -270,20 +271,20 @@
             this.aboutToolStripMenuItem,
             this.contentsToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 22);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(65, 29);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(185, 34);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // contentsToolStripMenuItem
             // 
             this.contentsToolStripMenuItem.Name = "contentsToolStripMenuItem";
-            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(185, 34);
             this.contentsToolStripMenuItem.Text = "Contents";
             this.contentsToolStripMenuItem.Visible = false;
             this.contentsToolStripMenuItem.Click += new System.EventHandler(this.contentsToolStripMenuItem_Click);
@@ -292,7 +293,7 @@
             // 
             this.exitToolStripMenuItem.BackColor = System.Drawing.Color.Transparent;
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(37, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(55, 29);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -306,17 +307,18 @@
             this.lblversion,
             this.dlmsCommStatusmsh2,
             this.lblLoginInfo});
-            this.DLMSStas.Location = new System.Drawing.Point(0, 632);
+            this.DLMSStas.Location = new System.Drawing.Point(0, 972);
             this.DLMSStas.Name = "DLMSStas";
+            this.DLMSStas.Padding = new System.Windows.Forms.Padding(2, 0, 21, 0);
             this.DLMSStas.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.DLMSStas.Size = new System.Drawing.Size(1119, 22);
+            this.DLMSStas.Size = new System.Drawing.Size(1678, 34);
             this.DLMSStas.TabIndex = 1;
             this.DLMSStas.Text = "statusStrip1";
             // 
             // stsReady
             // 
             this.stsReady.Name = "stsReady";
-            this.stsReady.Size = new System.Drawing.Size(39, 17);
+            this.stsReady.Size = new System.Drawing.Size(60, 27);
             this.stsReady.Text = "Ready";
             // 
             // dlmsCommStatusmsh
@@ -325,13 +327,13 @@
             this.dlmsCommStatusmsh.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dlmsCommStatusmsh.ForeColor = System.Drawing.Color.Green;
             this.dlmsCommStatusmsh.Name = "dlmsCommStatusmsh";
-            this.dlmsCommStatusmsh.Size = new System.Drawing.Size(38, 17);
+            this.dlmsCommStatusmsh.Size = new System.Drawing.Size(38, 27);
             this.dlmsCommStatusmsh.Text = "Space";
             // 
             // lblversion
             // 
             this.lblversion.Name = "lblversion";
-            this.lblversion.Size = new System.Drawing.Size(90, 17);
+            this.lblversion.Size = new System.Drawing.Size(137, 27);
             this.lblversion.Text = "Product Version";
             // 
             // dlmsCommStatusmsh2
@@ -340,13 +342,13 @@
             this.dlmsCommStatusmsh2.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dlmsCommStatusmsh2.ForeColor = System.Drawing.Color.Green;
             this.dlmsCommStatusmsh2.Name = "dlmsCommStatusmsh2";
-            this.dlmsCommStatusmsh2.Size = new System.Drawing.Size(38, 17);
+            this.dlmsCommStatusmsh2.Size = new System.Drawing.Size(38, 27);
             this.dlmsCommStatusmsh2.Text = "Space";
             // 
             // lblLoginInfo
             // 
             this.lblLoginInfo.Name = "lblLoginInfo";
-            this.lblLoginInfo.Size = new System.Drawing.Size(58, 17);
+            this.lblLoginInfo.Size = new System.Drawing.Size(88, 27);
             this.lblLoginInfo.Text = "LoginInfo";
             // 
             // toolStrip1
@@ -362,10 +364,10 @@
             this.ts_Exit,
             this.toolStripSeparator3,
             this.toolRetry});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 21);
+            this.toolStrip1.Location = new System.Drawing.Point(0, 32);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.toolStrip1.Size = new System.Drawing.Size(1119, 39);
+            this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 3, 0);
+            this.toolStrip1.Size = new System.Drawing.Size(1678, 60);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
             this.toolStrip1.Visible = false;
@@ -374,7 +376,7 @@
             // 
             this.ts_ico_report.Image = ((System.Drawing.Image)(resources.GetObject("ts_ico_report.Image")));
             this.ts_ico_report.Name = "ts_ico_report";
-            this.ts_ico_report.Size = new System.Drawing.Size(66, 36);
+            this.ts_ico_report.Size = new System.Drawing.Size(105, 55);
             this.ts_ico_report.Text = "    Report    ";
             this.ts_ico_report.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.ts_ico_report.Click += new System.EventHandler(this.toolStripLabel3_Click);
@@ -382,13 +384,13 @@
             // tss_Report
             // 
             this.tss_Report.Name = "tss_Report";
-            this.tss_Report.Size = new System.Drawing.Size(6, 39);
+            this.tss_Report.Size = new System.Drawing.Size(6, 60);
             // 
             // ts_ico_Association
             // 
             this.ts_ico_Association.Image = global::CabconPMP.Properties.Resources.alliance;
             this.ts_ico_Association.Name = "ts_ico_Association";
-            this.ts_ico_Association.Size = new System.Drawing.Size(68, 36);
+            this.ts_ico_Association.Size = new System.Drawing.Size(103, 55);
             this.ts_ico_Association.Text = "Association";
             this.ts_ico_Association.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.ts_ico_Association.Click += new System.EventHandler(this.ts_Association_Click);
@@ -397,7 +399,7 @@
             // 
             this.ts_Help.Image = ((System.Drawing.Image)(resources.GetObject("ts_Help.Image")));
             this.ts_Help.Name = "ts_Help";
-            this.ts_Help.Size = new System.Drawing.Size(71, 36);
+            this.ts_Help.Size = new System.Drawing.Size(114, 55);
             this.ts_Help.Text = "       Help      ";
             this.ts_Help.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.ts_Help.Visible = false;
@@ -406,13 +408,13 @@
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 39);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 60);
             // 
             // ts_Exit
             // 
             this.ts_Exit.Image = ((System.Drawing.Image)(resources.GetObject("ts_Exit.Image")));
             this.ts_Exit.Name = "ts_Exit";
-            this.ts_Exit.Size = new System.Drawing.Size(61, 36);
+            this.ts_Exit.Size = new System.Drawing.Size(99, 55);
             this.ts_Exit.Text = "      Exit      ";
             this.ts_Exit.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.ts_Exit.Click += new System.EventHandler(this.ts_Exit_Click);
@@ -420,13 +422,13 @@
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 39);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 60);
             // 
             // toolRetry
             // 
             this.toolRetry.Image = ((System.Drawing.Image)(resources.GetObject("toolRetry.Image")));
             this.toolRetry.Name = "toolRetry";
-            this.toolRetry.Size = new System.Drawing.Size(69, 36);
+            this.toolRetry.Size = new System.Drawing.Size(106, 55);
             this.toolRetry.Text = "     Calibrate";
             this.toolRetry.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolRetry.Click += new System.EventHandler(this.toolRetry_Click);
@@ -438,20 +440,20 @@
             this.cms_openProcedure,
             this.cms_OpenProgram});
             this.cms_Open.Name = "cms_Open";
-            this.cms_Open.Size = new System.Drawing.Size(129, 48);
+            this.cms_Open.Size = new System.Drawing.Size(165, 68);
             this.cms_Open.Text = "Open";
             // 
             // cms_openProcedure
             // 
             this.cms_openProcedure.Name = "cms_openProcedure";
-            this.cms_openProcedure.Size = new System.Drawing.Size(128, 22);
+            this.cms_openProcedure.Size = new System.Drawing.Size(164, 32);
             this.cms_openProcedure.Text = "Procedure";
             this.cms_openProcedure.Click += new System.EventHandler(this.cms_openProcedure_Click);
             // 
             // cms_OpenProgram
             // 
             this.cms_OpenProgram.Name = "cms_OpenProgram";
-            this.cms_OpenProgram.Size = new System.Drawing.Size(128, 22);
+            this.cms_OpenProgram.Size = new System.Drawing.Size(164, 32);
             this.cms_OpenProgram.Text = "Program";
             this.cms_OpenProgram.Click += new System.EventHandler(this.cms_OpenProgram_Click);
             // 
@@ -463,27 +465,27 @@
             this.cms_CreateProcedure,
             this.cms_CreateProgram});
             this.cms_New.Name = "cms_Open";
-            this.cms_New.Size = new System.Drawing.Size(166, 70);
+            this.cms_New.Size = new System.Drawing.Size(220, 100);
             this.cms_New.Text = "Open";
             // 
             // cms_RunProcedure
             // 
             this.cms_RunProcedure.Name = "cms_RunProcedure";
-            this.cms_RunProcedure.Size = new System.Drawing.Size(165, 22);
+            this.cms_RunProcedure.Size = new System.Drawing.Size(219, 32);
             this.cms_RunProcedure.Text = "Run Procedure";
             this.cms_RunProcedure.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // cms_CreateProcedure
             // 
             this.cms_CreateProcedure.Name = "cms_CreateProcedure";
-            this.cms_CreateProcedure.Size = new System.Drawing.Size(165, 22);
+            this.cms_CreateProcedure.Size = new System.Drawing.Size(219, 32);
             this.cms_CreateProcedure.Text = "Create Procedure";
             this.cms_CreateProcedure.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // cms_CreateProgram
             // 
             this.cms_CreateProgram.Name = "cms_CreateProgram";
-            this.cms_CreateProgram.Size = new System.Drawing.Size(165, 22);
+            this.cms_CreateProgram.Size = new System.Drawing.Size(219, 32);
             this.cms_CreateProgram.Text = "Create Program";
             this.cms_CreateProgram.Click += new System.EventHandler(this.createProgramToolStripMenuItem_Click);
             // 
@@ -492,9 +494,10 @@
             this.lblMainScreenMsg.AutoSize = true;
             this.lblMainScreenMsg.BackColor = System.Drawing.Color.Transparent;
             this.lblMainScreenMsg.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMainScreenMsg.Location = new System.Drawing.Point(430, 406);
+            this.lblMainScreenMsg.Location = new System.Drawing.Point(645, 625);
+            this.lblMainScreenMsg.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMainScreenMsg.Name = "lblMainScreenMsg";
-            this.lblMainScreenMsg.Size = new System.Drawing.Size(0, 23);
+            this.lblMainScreenMsg.Size = new System.Drawing.Size(0, 33);
             this.lblMainScreenMsg.TabIndex = 20;
             // 
             // pcbBackgroundImage
@@ -502,18 +505,19 @@
             this.pcbBackgroundImage.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pcbBackgroundImage.BackgroundImage")));
             this.pcbBackgroundImage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pcbBackgroundImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pcbBackgroundImage.Location = new System.Drawing.Point(0, 24);
+            this.pcbBackgroundImage.Location = new System.Drawing.Point(0, 33);
+            this.pcbBackgroundImage.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.pcbBackgroundImage.Name = "pcbBackgroundImage";
-            this.pcbBackgroundImage.Size = new System.Drawing.Size(1119, 608);
+            this.pcbBackgroundImage.Size = new System.Drawing.Size(1678, 939);
             this.pcbBackgroundImage.TabIndex = 19;
             this.pcbBackgroundImage.TabStop = false;
             this.pcbBackgroundImage.Click += new System.EventHandler(this.pcbBackgroundImage_Click);
             // 
             // frmMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1119, 654);
+            this.ClientSize = new System.Drawing.Size(1678, 1006);
             this.Controls.Add(this.lblMainScreenMsg);
             this.Controls.Add(this.pcbBackgroundImage);
             this.Controls.Add(this.DLMSStas);
@@ -521,6 +525,7 @@
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Cabcon Calibration Software";
