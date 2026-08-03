@@ -72,6 +72,9 @@ namespace CabconPMP.UI
             Run selectedRun = null)
         {
             InitializeComponent();
+            ApplyModernTabs();
+            ModernizeUI(this);
+
             _dbConnectionFactory = dbConnectionFactory;
             _runRepository = runRepository;
             _procedureRepository = procedureRepository;
@@ -79,6 +82,90 @@ namespace CabconPMP.UI
             _benchRepository = benchRepository;
             _currentUser = currentUser;
             _initialSelectedRun = selectedRun;
+        }
+
+        private void ApplyModernTabs()
+        {
+            tabControl1.DrawMode = TabDrawMode.OwnerDrawFixed;
+            tabControl1.ItemSize = new System.Drawing.Size(120, 35);
+            tabControl1.SizeMode = TabSizeMode.Fixed;
+            tabControl1.DrawItem += TabControl1_DrawItem;
+        }
+
+        private void TabControl1_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            TabControl tabCtrl = (TabControl)sender;
+            System.Drawing.Graphics g = e.Graphics;
+            System.Drawing.Rectangle r = tabCtrl.GetTabRect(e.Index);
+            bool isSelected = (e.State == DrawItemState.Selected);
+
+            using (System.Drawing.SolidBrush bgBrush = new System.Drawing.SolidBrush(isSelected ? System.Drawing.Color.White : System.Drawing.Color.FromArgb(240, 240, 240)))
+            {
+                g.FillRectangle(bgBrush, r);
+            }
+
+            if (isSelected)
+            {
+                using (System.Drawing.SolidBrush lineBrush = new System.Drawing.SolidBrush(System.Drawing.Color.FromArgb(41, 53, 86)))
+                {
+                    g.FillRectangle(lineBrush, new System.Drawing.Rectangle(r.X, r.Bottom - 3, r.Width, 3));
+                }
+            }
+
+            string tabText = tabCtrl.TabPages[e.Index].Text;
+            System.Drawing.Font font = new System.Drawing.Font("Segoe UI", 10f, isSelected ? System.Drawing.FontStyle.Bold : System.Drawing.FontStyle.Regular);
+            using (System.Drawing.SolidBrush textBrush = new System.Drawing.SolidBrush(System.Drawing.Color.Black))
+            {
+                System.Drawing.StringFormat sf = new System.Drawing.StringFormat
+                {
+                    Alignment = System.Drawing.StringAlignment.Center,
+                    LineAlignment = System.Drawing.StringAlignment.Center
+                };
+                g.DrawString(tabText, font, textBrush, r, sf);
+            }
+        }
+
+        private void ModernizeUI(Control parent)
+        {
+            foreach (Control c in parent.Controls)
+            {
+                if (c is System.Windows.Forms.Button btn)
+                {
+                    btn.FlatStyle = FlatStyle.Flat;
+                    btn.FlatAppearance.BorderSize = 0;
+                    btn.BackColor = System.Drawing.Color.FromArgb(41, 53, 86);
+                    btn.ForeColor = System.Drawing.Color.White;
+                    btn.Font = new System.Drawing.Font("Segoe UI", 9f, System.Drawing.FontStyle.Bold);
+                    btn.Cursor = Cursors.Hand;
+                }
+                else if (c is System.Windows.Forms.DataGridView dgv)
+                {
+                    dgv.BackgroundColor = System.Drawing.Color.White;
+                    dgv.BorderStyle = BorderStyle.None;
+                    dgv.EnableHeadersVisualStyles = false;
+                    dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+                    dgv.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(41, 53, 86);
+                    dgv.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
+                    dgv.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9f, System.Drawing.FontStyle.Bold);
+                    dgv.RowHeadersVisible = false;
+                    dgv.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(245, 245, 245);
+                    dgv.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(220, 230, 245);
+                    dgv.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
+                }
+                else if (c is System.Windows.Forms.GroupBox gb)
+                {
+                    gb.FlatStyle = FlatStyle.Flat;
+                }
+                else if (c is System.Windows.Forms.TabPage tp)
+                {
+                    tp.BackColor = System.Drawing.Color.White;
+                }
+
+                if (c.HasChildren)
+                {
+                    ModernizeUI(c);
+                }
+            }
         }
         private void FrmTestRun_FormClosing(object sender, FormClosingEventArgs e)
         {
