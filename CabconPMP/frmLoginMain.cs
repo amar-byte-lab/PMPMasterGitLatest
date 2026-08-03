@@ -39,28 +39,59 @@ namespace CabconPMP
 
              this.txtPassword.BackColor = System.Drawing.Color.Transparent;
              this.txtPassword.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            
+            this.txtBenchId.BackColor = System.Drawing.Color.Transparent;
+            this.txtBenchId.BorderStyle = System.Windows.Forms.BorderStyle.None;
+
+            this.txtUser.BackColor = System.Drawing.Color.Transparent;
+            this.txtUser.BorderStyle = System.Windows.Forms.BorderStyle.None;
+
+            this.btnUserDropdown.BackColor = System.Drawing.Color.Transparent;
+            this.flpPorts.BackColor = System.Drawing.Color.Transparent;
+
+            // Button styling
+            this.btnLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLogin.FlatAppearance.BorderSize = 0;
+            this.btnLogin.BackColor = System.Drawing.Color.FromArgb(31, 58, 96); // Cabcon dark blue
+            this.btnLogin.ForeColor = System.Drawing.Color.White;
+
+            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClose.FlatAppearance.BorderSize = 1;
+            this.btnClose.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(31, 58, 96);
+            this.btnClose.BackColor = System.Drawing.Color.Transparent;
+            this.btnClose.ForeColor = System.Drawing.Color.FromArgb(31, 58, 96);
 
             _personRepository = personRepository;
 
              LoadOperators();
         }
 
+        private ContextMenuStrip userMenu = new ContextMenuStrip();
+
         private async void LoadOperators()
         {
             try
             {
                 var users = await _personRepository.GetAllAsync();
-                cmbUser.Items.Clear();
+                userMenu.Items.Clear();
                 foreach (var user in users)
                 {
-                    cmbUser.Items.Add(user.Name);
+                    userMenu.Items.Add(user.Name, null, (s, e) => { txtUser.Text = user.Name; });
                 }
-                if (cmbUser.Items.Count > 0) cmbUser.SelectedIndex = 0;
+                if (userMenu.Items.Count > 0) txtUser.Text = userMenu.Items[0].Text;
+
+                txtUser.Click += (s, e) => ShowUserMenu();
+                btnUserDropdown.Click += (s, e) => ShowUserMenu();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error loading operators: {ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void ShowUserMenu()
+        {
+            userMenu.Show(txtUser, new Point(0, txtUser.Height));
         }
 
         private async void btnLogin_Click(object sender, EventArgs e)
@@ -69,7 +100,7 @@ namespace CabconPMP
             BALUserManagement objum = new BALUserManagement();
             try
             {
-                string username = cmbUser.Text.Trim();
+                string username = txtUser.Text.Trim();
                 string password = "supervisor";//txtPassword.Text.Trim();
 
                 if (string.IsNullOrEmpty(username))
@@ -90,9 +121,12 @@ namespace CabconPMP
                     association.ShowDefaultSettings();
                     association.CheckAllAssociation();
 
-                    //-------------------Save Association Setting-----------------------
                     List<string> selectedPorts = new List<string>();
-                    foreach (object it in clbPorts.CheckedItems) selectedPorts.Add(it.ToString());
+                    foreach (Control ctrl in flpPorts.Controls)
+                    {
+                        if (ctrl is CheckBox cb && cb.Checked)
+                            selectedPorts.Add(cb.Text);
+                    }
                     association.SaveAssociation(selectedPorts);
 
                     this.Close();
@@ -122,12 +156,21 @@ namespace CabconPMP
             //-------------------Get Avilable COM Port---------------
             string[] PortNames = objSerialComm.GetAvailablePorts();
             Array.Reverse(PortNames);
-            foreach (string Port in PortNames) clbPorts.Items.Add(Port);
+            flpPorts.Controls.Clear();
+            foreach (string Port in PortNames) 
+            {
+                CheckBox cb = new CheckBox();
+                cb.Text = Port;
+                cb.AutoSize = true;
+                cb.BackColor = Color.Transparent;
+                cb.CheckedChanged += clbPorts_ItemCheck;
+                flpPorts.Controls.Add(cb);
+            }
 
             Point panelLoc = PanelLoginControl.Location;
             PanelLoginControl.Parent = pictureBox1;
             PanelLoginControl.Location = panelLoc;
-            cmbUser.Focus();
+            txtUser.Focus();
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -163,47 +206,58 @@ namespace CabconPMP
 
         private void PanelLoginControl_Paint(object sender, PaintEventArgs e)
         {
-            // Draw a stylish 1px border around the transparent text boxes
+            // Draw a stylish 1px border around the transparent controls
             using (Pen borderPen = new Pen(Color.FromArgb(180, 200, 220), 1))
             {
-                // Around cmbUser
-                Rectangle rectUser = new Rectangle(cmbUser.Left - 1, cmbUser.Top - 1, cmbUser.Width + 1, cmbUser.Height + 1);
+                // Around txtUser
+                Rectangle rectUser = new Rectangle(txtUser.Left - 1, txtUser.Top - 1, 248 + 1, txtUser.Height + 1);
                 e.Graphics.DrawRectangle(borderPen, rectUser);
 
                 // Around txtPassword
                 Rectangle rectPass = new Rectangle(txtPassword.Left - 1, txtPassword.Top - 1, txtPassword.Width + 1, txtPassword.Height + 1);
                 e.Graphics.DrawRectangle(borderPen, rectPass);
+
+                // Around txtBenchId
+                Rectangle rectBench = new Rectangle(txtBenchId.Left - 1, txtBenchId.Top - 1, txtBenchId.Width + 1, txtBenchId.Height + 1);
+                e.Graphics.DrawRectangle(borderPen, rectBench);
+
+                // Around flpPorts
+                Rectangle rectPorts = new Rectangle(flpPorts.Left - 1, flpPorts.Top - 1, flpPorts.Width + 1, flpPorts.Height + 1);
+                e.Graphics.DrawRectangle(borderPen, rectPorts);
             }
         }
 
         private bool _updatingSelectAll;
         private void chkPortSelectAll_CheckedChanged(object sender, EventArgs e)
         {
-            if (_updatingSelectAll)
-                return;
+            if (_updatingSelectAll) return;
 
             _updatingSelectAll = true;
-
-            for (int i = 0; i < clbPorts.Items.Count; i++)
+            foreach (Control ctrl in flpPorts.Controls)
             {
-                clbPorts.SetItemChecked(i, chkPortSelectAll.Checked);
+                if (ctrl is CheckBox cb) cb.Checked = chkPortSelectAll.Checked;
             }
-
             _updatingSelectAll = false;
         }
 
-        private void clbPorts_ItemCheck(object sender, ItemCheckEventArgs e)
+        private void clbPorts_ItemCheck(object sender, EventArgs e)
         {
-            if (_updatingSelectAll)
-                return;
+            if (_updatingSelectAll) return;
 
             BeginInvoke(new Action(() =>
             {
                 _updatingSelectAll = true;
-
-                chkPortSelectAll.Checked =
-                    clbPorts.CheckedItems.Count == clbPorts.Items.Count;
-
+                int checkedCount = 0;
+                int totalCount = 0;
+                foreach (Control ctrl in flpPorts.Controls)
+                {
+                    if (ctrl is CheckBox cb)
+                    {
+                        totalCount++;
+                        if (cb.Checked) checkedCount++;
+                    }
+                }
+                chkPortSelectAll.Checked = (checkedCount == totalCount && totalCount > 0);
                 _updatingSelectAll = false;
             }));
         }
