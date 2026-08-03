@@ -17,31 +17,32 @@ namespace CabconPMP.UI
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmTestRun));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.lblBenchName = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabCommon = new System.Windows.Forms.TabPage();
-            this.txtComment = new System.Windows.Forms.TextBox();
+            this.txtComment = new CabconPMP.TransparentTextBox();
             this.lblComment = new System.Windows.Forms.Label();
-            this.txtMaxRH = new System.Windows.Forms.TextBox();
+            this.txtMaxRH = new CabconPMP.TransparentTextBox();
             this.lblMaxRH = new System.Windows.Forms.Label();
-            this.txtMinRH = new System.Windows.Forms.TextBox();
+            this.txtMinRH = new CabconPMP.TransparentTextBox();
             this.lblMinRH = new System.Windows.Forms.Label();
-            this.txtMaxTemp = new System.Windows.Forms.TextBox();
+            this.txtMaxTemp = new CabconPMP.TransparentTextBox();
             this.lblMaxTemp = new System.Windows.Forms.Label();
-            this.txtMinTemp = new System.Windows.Forms.TextBox();
+            this.txtMinTemp = new CabconPMP.TransparentTextBox();
             this.lblMinTemp = new System.Windows.Forms.Label();
-            this.txtDateRun = new System.Windows.Forms.TextBox();
+            this.txtDateRun = new CabconPMP.TransparentTextBox();
             this.lblDateRun = new System.Windows.Forms.Label();
-            this.txtOperator = new System.Windows.Forms.TextBox();
+            this.txtOperator = new CabconPMP.TransparentTextBox();
             this.lblOperator = new System.Windows.Forms.Label();
-            this.txtSupervisor = new System.Windows.Forms.TextBox();
+            this.txtSupervisor = new CabconPMP.TransparentTextBox();
             this.lblSupervisor = new System.Windows.Forms.Label();
-            this.txtSequenceName = new System.Windows.Forms.TextBox();
+            this.txtSequenceName = new CabconPMP.TransparentTextBox();
             this.lblSequenceName = new System.Windows.Forms.Label();
-            this.txtStatus = new System.Windows.Forms.TextBox();
+            this.txtStatus = new CabconPMP.TransparentTextBox();
             this.lblStatus = new System.Windows.Forms.Label();
             this.tabDevices = new System.Windows.Forms.TabPage();
             this.grpDeviceInputs = new System.Windows.Forms.GroupBox();
@@ -161,9 +162,10 @@ namespace CabconPMP.UI
             // 
             this.lblBenchName.AutoSize = true;
             this.lblBenchName.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblBenchName.Location = new System.Drawing.Point(10, 8);
+            this.lblBenchName.Location = new System.Drawing.Point(15, 12);
+            this.lblBenchName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblBenchName.Name = "lblBenchName";
-            this.lblBenchName.Size = new System.Drawing.Size(123, 21);
+            this.lblBenchName.Size = new System.Drawing.Size(185, 32);
             this.lblBenchName.TabIndex = 0;
             this.lblBenchName.Text = "Bench Name ...";
             // 
@@ -174,14 +176,17 @@ namespace CabconPMP.UI
             this.tabControl1.Controls.Add(this.tabSequence);
             this.tabControl1.Controls.Add(this.tabExecute);
             this.tabControl1.Controls.Add(this.tabResults);
-            this.tabControl1.Location = new System.Drawing.Point(10, 35);
+            this.tabControl1.Location = new System.Drawing.Point(15, 54);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1009, 555);
+            this.tabControl1.Size = new System.Drawing.Size(1514, 854);
             this.tabControl1.TabIndex = 1;
             // 
             // tabCommon
             // 
+            this.tabCommon.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tabCommon.BackgroundImage")));
+            this.tabCommon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.tabCommon.Controls.Add(this.txtComment);
             this.tabCommon.Controls.Add(this.lblComment);
             this.tabCommon.Controls.Add(this.txtMaxRH);
@@ -202,179 +207,200 @@ namespace CabconPMP.UI
             this.tabCommon.Controls.Add(this.lblSequenceName);
             this.tabCommon.Controls.Add(this.txtStatus);
             this.tabCommon.Controls.Add(this.lblStatus);
-            this.tabCommon.Location = new System.Drawing.Point(4, 22);
+            this.tabCommon.Location = new System.Drawing.Point(4, 29);
+            this.tabCommon.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabCommon.Name = "tabCommon";
-            this.tabCommon.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCommon.Size = new System.Drawing.Size(1001, 529);
+            this.tabCommon.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabCommon.Size = new System.Drawing.Size(1506, 821);
             this.tabCommon.TabIndex = 0;
             this.tabCommon.Text = "Common properties";
             this.tabCommon.UseVisualStyleBackColor = true;
             // 
             // txtComment
             // 
-            this.txtComment.Location = new System.Drawing.Point(377, 35);
+            this.txtComment.Location = new System.Drawing.Point(566, 54);
+            this.txtComment.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtComment.Multiline = true;
             this.txtComment.Name = "txtComment";
-            this.txtComment.Size = new System.Drawing.Size(335, 209);
+            this.txtComment.Size = new System.Drawing.Size(500, 319);
             this.txtComment.TabIndex = 19;
             // 
             // lblComment
             // 
             this.lblComment.AutoSize = true;
-            this.lblComment.Location = new System.Drawing.Point(377, 17);
+            this.lblComment.Location = new System.Drawing.Point(566, 26);
+            this.lblComment.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblComment.Name = "lblComment";
-            this.lblComment.Size = new System.Drawing.Size(51, 13);
+            this.lblComment.Size = new System.Drawing.Size(78, 20);
             this.lblComment.TabIndex = 18;
             this.lblComment.Text = "Comment";
             // 
             // txtMaxRH
             // 
-            this.txtMaxRH.Location = new System.Drawing.Point(270, 152);
+            this.txtMaxRH.Location = new System.Drawing.Point(405, 234);
+            this.txtMaxRH.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtMaxRH.Name = "txtMaxRH";
-            this.txtMaxRH.Size = new System.Drawing.Size(78, 20);
+            this.txtMaxRH.Size = new System.Drawing.Size(115, 26);
             this.txtMaxRH.TabIndex = 17;
             this.txtMaxRH.Text = "55.0";
             // 
             // lblMaxRH
             // 
             this.lblMaxRH.AutoSize = true;
-            this.lblMaxRH.Location = new System.Drawing.Point(270, 134);
+            this.lblMaxRH.Location = new System.Drawing.Point(405, 206);
+            this.lblMaxRH.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMaxRH.Name = "lblMaxRH";
-            this.lblMaxRH.Size = new System.Drawing.Size(33, 13);
+            this.lblMaxRH.Size = new System.Drawing.Size(46, 20);
             this.lblMaxRH.TabIndex = 16;
             this.lblMaxRH.Text = "Max. ";
             // 
             // txtMinRH
             // 
-            this.txtMinRH.Location = new System.Drawing.Point(184, 152);
+            this.txtMinRH.Location = new System.Drawing.Point(276, 234);
+            this.txtMinRH.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtMinRH.Name = "txtMinRH";
-            this.txtMinRH.Size = new System.Drawing.Size(78, 20);
+            this.txtMinRH.Size = new System.Drawing.Size(115, 26);
             this.txtMinRH.TabIndex = 15;
             this.txtMinRH.Text = "45.0";
             // 
             // lblMinRH
             // 
             this.lblMinRH.AutoSize = true;
-            this.lblMinRH.Location = new System.Drawing.Point(184, 134);
+            this.lblMinRH.Location = new System.Drawing.Point(276, 206);
+            this.lblMinRH.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMinRH.Name = "lblMinRH";
-            this.lblMinRH.Size = new System.Drawing.Size(84, 13);
+            this.lblMinRH.Size = new System.Drawing.Size(125, 20);
             this.lblMinRH.TabIndex = 14;
             this.lblMinRH.Text = "Rel. humidity [%]";
             // 
             // txtMaxTemp
             // 
-            this.txtMaxTemp.Location = new System.Drawing.Point(99, 152);
+            this.txtMaxTemp.Location = new System.Drawing.Point(148, 234);
+            this.txtMaxTemp.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtMaxTemp.Name = "txtMaxTemp";
-            this.txtMaxTemp.Size = new System.Drawing.Size(78, 20);
+            this.txtMaxTemp.Size = new System.Drawing.Size(115, 26);
             this.txtMaxTemp.TabIndex = 13;
             this.txtMaxTemp.Text = "25.0";
             // 
             // lblMaxTemp
             // 
             this.lblMaxTemp.AutoSize = true;
-            this.lblMaxTemp.Location = new System.Drawing.Point(99, 134);
+            this.lblMaxTemp.Location = new System.Drawing.Point(148, 206);
+            this.lblMaxTemp.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMaxTemp.Name = "lblMaxTemp";
-            this.lblMaxTemp.Size = new System.Drawing.Size(30, 13);
+            this.lblMaxTemp.Size = new System.Drawing.Size(42, 20);
             this.lblMaxTemp.TabIndex = 12;
             this.lblMaxTemp.Text = "Max.";
             // 
             // txtMinTemp
             // 
-            this.txtMinTemp.Location = new System.Drawing.Point(13, 152);
+            this.txtMinTemp.Location = new System.Drawing.Point(20, 234);
+            this.txtMinTemp.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtMinTemp.Name = "txtMinTemp";
-            this.txtMinTemp.Size = new System.Drawing.Size(78, 20);
+            this.txtMinTemp.Size = new System.Drawing.Size(115, 26);
             this.txtMinTemp.TabIndex = 11;
             this.txtMinTemp.Text = "23.0";
             // 
             // lblMinTemp
             // 
             this.lblMinTemp.AutoSize = true;
-            this.lblMinTemp.Location = new System.Drawing.Point(13, 134);
+            this.lblMinTemp.Location = new System.Drawing.Point(20, 206);
+            this.lblMinTemp.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMinTemp.Name = "lblMinTemp";
-            this.lblMinTemp.Size = new System.Drawing.Size(104, 13);
+            this.lblMinTemp.Size = new System.Drawing.Size(154, 20);
             this.lblMinTemp.TabIndex = 10;
             this.lblMinTemp.Text = "Temperature [deg C]";
             // 
             // txtDateRun
             // 
-            this.txtDateRun.Location = new System.Drawing.Point(184, 95);
+            this.txtDateRun.Location = new System.Drawing.Point(276, 146);
+            this.txtDateRun.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtDateRun.Name = "txtDateRun";
             this.txtDateRun.ReadOnly = true;
-            this.txtDateRun.Size = new System.Drawing.Size(163, 20);
+            this.txtDateRun.Size = new System.Drawing.Size(242, 26);
             this.txtDateRun.TabIndex = 9;
             // 
             // lblDateRun
             // 
             this.lblDateRun.AutoSize = true;
-            this.lblDateRun.Location = new System.Drawing.Point(184, 78);
+            this.lblDateRun.Location = new System.Drawing.Point(276, 120);
+            this.lblDateRun.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDateRun.Name = "lblDateRun";
-            this.lblDateRun.Size = new System.Drawing.Size(52, 13);
+            this.lblDateRun.Size = new System.Drawing.Size(76, 20);
             this.lblDateRun.TabIndex = 8;
             this.lblDateRun.Text = "Test date";
             // 
             // txtOperator
             // 
-            this.txtOperator.Location = new System.Drawing.Point(184, 208);
+            this.txtOperator.Location = new System.Drawing.Point(276, 320);
+            this.txtOperator.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtOperator.Name = "txtOperator";
-            this.txtOperator.Size = new System.Drawing.Size(163, 20);
+            this.txtOperator.Size = new System.Drawing.Size(242, 26);
             this.txtOperator.TabIndex = 7;
             // 
             // lblOperator
             // 
             this.lblOperator.AutoSize = true;
-            this.lblOperator.Location = new System.Drawing.Point(184, 191);
+            this.lblOperator.Location = new System.Drawing.Point(276, 294);
+            this.lblOperator.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblOperator.Name = "lblOperator";
-            this.lblOperator.Size = new System.Drawing.Size(48, 13);
+            this.lblOperator.Size = new System.Drawing.Size(72, 20);
             this.lblOperator.TabIndex = 6;
             this.lblOperator.Text = "Operator";
             // 
             // txtSupervisor
             // 
-            this.txtSupervisor.Location = new System.Drawing.Point(13, 208);
+            this.txtSupervisor.Location = new System.Drawing.Point(20, 320);
+            this.txtSupervisor.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtSupervisor.Name = "txtSupervisor";
-            this.txtSupervisor.Size = new System.Drawing.Size(163, 20);
+            this.txtSupervisor.Size = new System.Drawing.Size(242, 26);
             this.txtSupervisor.TabIndex = 5;
             // 
             // lblSupervisor
             // 
             this.lblSupervisor.AutoSize = true;
-            this.lblSupervisor.Location = new System.Drawing.Point(13, 191);
+            this.lblSupervisor.Location = new System.Drawing.Point(20, 294);
+            this.lblSupervisor.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblSupervisor.Name = "lblSupervisor";
-            this.lblSupervisor.Size = new System.Drawing.Size(57, 13);
+            this.lblSupervisor.Size = new System.Drawing.Size(84, 20);
             this.lblSupervisor.TabIndex = 4;
             this.lblSupervisor.Text = "Supervisor";
             // 
             // txtSequenceName
             // 
-            this.txtSequenceName.Location = new System.Drawing.Point(13, 35);
+            this.txtSequenceName.Location = new System.Drawing.Point(20, 54);
+            this.txtSequenceName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtSequenceName.Name = "txtSequenceName";
-            this.txtSequenceName.Size = new System.Drawing.Size(335, 20);
+            this.txtSequenceName.Size = new System.Drawing.Size(500, 26);
             this.txtSequenceName.TabIndex = 3;
             // 
             // lblSequenceName
             // 
             this.lblSequenceName.AutoSize = true;
-            this.lblSequenceName.Location = new System.Drawing.Point(13, 17);
+            this.lblSequenceName.Location = new System.Drawing.Point(20, 26);
+            this.lblSequenceName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblSequenceName.Name = "lblSequenceName";
-            this.lblSequenceName.Size = new System.Drawing.Size(78, 13);
+            this.lblSequenceName.Size = new System.Drawing.Size(114, 20);
             this.lblSequenceName.TabIndex = 2;
             this.lblSequenceName.Text = "Test sequence";
             // 
             // txtStatus
             // 
-            this.txtStatus.Location = new System.Drawing.Point(13, 95);
+            this.txtStatus.Location = new System.Drawing.Point(20, 146);
+            this.txtStatus.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtStatus.Name = "txtStatus";
             this.txtStatus.ReadOnly = true;
-            this.txtStatus.Size = new System.Drawing.Size(163, 20);
+            this.txtStatus.Size = new System.Drawing.Size(242, 26);
             this.txtStatus.TabIndex = 1;
             this.txtStatus.Text = "New Run";
             // 
             // lblStatus
             // 
             this.lblStatus.AutoSize = true;
-            this.lblStatus.Location = new System.Drawing.Point(13, 78);
+            this.lblStatus.Location = new System.Drawing.Point(20, 120);
+            this.lblStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(32, 13);
+            this.lblStatus.Size = new System.Drawing.Size(48, 20);
             this.lblStatus.TabIndex = 0;
             this.lblStatus.Text = "State";
             // 
@@ -382,10 +408,11 @@ namespace CabconPMP.UI
             // 
             this.tabDevices.Controls.Add(this.grpDeviceInputs);
             this.tabDevices.Controls.Add(this.dgvMeters);
-            this.tabDevices.Location = new System.Drawing.Point(4, 22);
+            this.tabDevices.Location = new System.Drawing.Point(4, 29);
+            this.tabDevices.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabDevices.Name = "tabDevices";
-            this.tabDevices.Padding = new System.Windows.Forms.Padding(3);
-            this.tabDevices.Size = new System.Drawing.Size(1001, 529);
+            this.tabDevices.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabDevices.Size = new System.Drawing.Size(1506, 821);
             this.tabDevices.TabIndex = 1;
             this.tabDevices.Text = "Test devices";
             this.tabDevices.UseVisualStyleBackColor = true;
@@ -416,17 +443,20 @@ namespace CabconPMP.UI
             this.grpDeviceInputs.Controls.Add(this.lblMeterType);
             this.grpDeviceInputs.Controls.Add(this.txtPositions);
             this.grpDeviceInputs.Controls.Add(this.lblPositions);
-            this.grpDeviceInputs.Location = new System.Drawing.Point(9, 4);
+            this.grpDeviceInputs.Location = new System.Drawing.Point(14, 6);
+            this.grpDeviceInputs.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grpDeviceInputs.Name = "grpDeviceInputs";
-            this.grpDeviceInputs.Size = new System.Drawing.Size(711, 175);
+            this.grpDeviceInputs.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpDeviceInputs.Size = new System.Drawing.Size(1066, 269);
             this.grpDeviceInputs.TabIndex = 0;
             this.grpDeviceInputs.TabStop = false;
             // 
             // btnDeleteDevice
             // 
-            this.btnDeleteDevice.Location = new System.Drawing.Point(594, 143);
+            this.btnDeleteDevice.Location = new System.Drawing.Point(891, 220);
+            this.btnDeleteDevice.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnDeleteDevice.Name = "btnDeleteDevice";
-            this.btnDeleteDevice.Size = new System.Drawing.Size(103, 24);
+            this.btnDeleteDevice.Size = new System.Drawing.Size(154, 37);
             this.btnDeleteDevice.TabIndex = 23;
             this.btnDeleteDevice.Text = "Delete";
             this.btnDeleteDevice.UseVisualStyleBackColor = true;
@@ -434,9 +464,10 @@ namespace CabconPMP.UI
             // 
             // btnAddDevice
             // 
-            this.btnAddDevice.Location = new System.Drawing.Point(473, 143);
+            this.btnAddDevice.Location = new System.Drawing.Point(710, 220);
+            this.btnAddDevice.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnAddDevice.Name = "btnAddDevice";
-            this.btnAddDevice.Size = new System.Drawing.Size(103, 24);
+            this.btnAddDevice.Size = new System.Drawing.Size(154, 37);
             this.btnAddDevice.TabIndex = 22;
             this.btnAddDevice.Text = "Add";
             this.btnAddDevice.UseVisualStyleBackColor = true;
@@ -445,149 +476,167 @@ namespace CabconPMP.UI
             // cmbClientNo
             // 
             this.cmbClientNo.FormattingEnabled = true;
-            this.cmbClientNo.Location = new System.Drawing.Point(529, 103);
+            this.cmbClientNo.Location = new System.Drawing.Point(794, 158);
+            this.cmbClientNo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbClientNo.Name = "cmbClientNo";
-            this.cmbClientNo.Size = new System.Drawing.Size(168, 21);
+            this.cmbClientNo.Size = new System.Drawing.Size(250, 28);
             this.cmbClientNo.TabIndex = 21;
             // 
             // lblClientNo
             // 
             this.lblClientNo.AutoSize = true;
-            this.lblClientNo.Location = new System.Drawing.Point(457, 110);
+            this.lblClientNo.Location = new System.Drawing.Point(686, 169);
+            this.lblClientNo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblClientNo.Name = "lblClientNo";
-            this.lblClientNo.Size = new System.Drawing.Size(58, 13);
+            this.lblClientNo.Size = new System.Drawing.Size(85, 20);
             this.lblClientNo.TabIndex = 20;
             this.lblClientNo.Text = "Clients No.";
             // 
             // cmbClient
             // 
             this.cmbClient.FormattingEnabled = true;
-            this.cmbClient.Location = new System.Drawing.Point(529, 76);
+            this.cmbClient.Location = new System.Drawing.Point(794, 117);
+            this.cmbClient.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbClient.Name = "cmbClient";
-            this.cmbClient.Size = new System.Drawing.Size(168, 21);
+            this.cmbClient.Size = new System.Drawing.Size(250, 28);
             this.cmbClient.TabIndex = 19;
             // 
             // lblClient
             // 
             this.lblClient.AutoSize = true;
-            this.lblClient.Location = new System.Drawing.Point(482, 79);
+            this.lblClient.Location = new System.Drawing.Point(723, 122);
+            this.lblClient.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblClient.Name = "lblClient";
-            this.lblClient.Size = new System.Drawing.Size(33, 13);
+            this.lblClient.Size = new System.Drawing.Size(49, 20);
             this.lblClient.TabIndex = 18;
             this.lblClient.Text = "Client";
             // 
             // cmbContractNo
             // 
             this.cmbContractNo.FormattingEnabled = true;
-            this.cmbContractNo.Location = new System.Drawing.Point(529, 46);
+            this.cmbContractNo.Location = new System.Drawing.Point(794, 71);
+            this.cmbContractNo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbContractNo.Name = "cmbContractNo";
-            this.cmbContractNo.Size = new System.Drawing.Size(168, 21);
+            this.cmbContractNo.Size = new System.Drawing.Size(250, 28);
             this.cmbContractNo.TabIndex = 17;
             // 
             // lblContractNo
             // 
             this.lblContractNo.AutoSize = true;
-            this.lblContractNo.Location = new System.Drawing.Point(448, 50);
+            this.lblContractNo.Location = new System.Drawing.Point(672, 77);
+            this.lblContractNo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblContractNo.Name = "lblContractNo";
-            this.lblContractNo.Size = new System.Drawing.Size(67, 13);
+            this.lblContractNo.Size = new System.Drawing.Size(98, 20);
             this.lblContractNo.TabIndex = 16;
             this.lblContractNo.Text = "Contract No.";
             // 
             // txtLastApproval
             // 
-            this.txtLastApproval.Location = new System.Drawing.Point(315, 103);
+            this.txtLastApproval.Location = new System.Drawing.Point(472, 158);
+            this.txtLastApproval.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtLastApproval.Name = "txtLastApproval";
-            this.txtLastApproval.Size = new System.Drawing.Size(121, 20);
+            this.txtLastApproval.Size = new System.Drawing.Size(180, 26);
             this.txtLastApproval.TabIndex = 15;
             this.txtLastApproval.Text = "None";
             // 
             // lblLastApproval
             // 
             this.lblLastApproval.AutoSize = true;
-            this.lblLastApproval.Location = new System.Drawing.Point(238, 106);
+            this.lblLastApproval.Location = new System.Drawing.Point(357, 163);
+            this.lblLastApproval.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblLastApproval.Name = "lblLastApproval";
-            this.lblLastApproval.Size = new System.Drawing.Size(71, 13);
+            this.lblLastApproval.Size = new System.Drawing.Size(104, 20);
             this.lblLastApproval.TabIndex = 14;
             this.lblLastApproval.Text = "Last approval";
             // 
             // txtYearOfManufacture
             // 
-            this.txtYearOfManufacture.Location = new System.Drawing.Point(114, 103);
+            this.txtYearOfManufacture.Location = new System.Drawing.Point(171, 158);
+            this.txtYearOfManufacture.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtYearOfManufacture.Name = "txtYearOfManufacture";
-            this.txtYearOfManufacture.Size = new System.Drawing.Size(103, 20);
+            this.txtYearOfManufacture.Size = new System.Drawing.Size(152, 26);
             this.txtYearOfManufacture.TabIndex = 13;
             this.txtYearOfManufacture.Text = "2026";
             // 
             // lblYear
             // 
             this.lblYear.AutoSize = true;
-            this.lblYear.Location = new System.Drawing.Point(6, 105);
+            this.lblYear.Location = new System.Drawing.Point(9, 162);
+            this.lblYear.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblYear.Name = "lblYear";
-            this.lblYear.Size = new System.Drawing.Size(104, 13);
+            this.lblYear.Size = new System.Drawing.Size(155, 20);
             this.lblYear.TabIndex = 12;
             this.lblYear.Text = "Year of Manufacture";
             // 
             // txtStepOwnerNo
             // 
-            this.txtStepOwnerNo.Location = new System.Drawing.Point(315, 76);
+            this.txtStepOwnerNo.Location = new System.Drawing.Point(472, 117);
+            this.txtStepOwnerNo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtStepOwnerNo.Name = "txtStepOwnerNo";
-            this.txtStepOwnerNo.Size = new System.Drawing.Size(43, 20);
+            this.txtStepOwnerNo.Size = new System.Drawing.Size(62, 26);
             this.txtStepOwnerNo.TabIndex = 11;
             // 
             // lblStepOwner
             // 
             this.lblStepOwner.AutoSize = true;
-            this.lblStepOwner.Location = new System.Drawing.Point(280, 79);
+            this.lblStepOwner.Location = new System.Drawing.Point(420, 122);
+            this.lblStepOwner.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblStepOwner.Name = "lblStepOwner";
-            this.lblStepOwner.Size = new System.Drawing.Size(29, 13);
+            this.lblStepOwner.Size = new System.Drawing.Size(43, 20);
             this.lblStepOwner.TabIndex = 10;
             this.lblStepOwner.Text = "Step";
             // 
             // txtOwnerNo
             // 
-            this.txtOwnerNo.Location = new System.Drawing.Point(114, 76);
+            this.txtOwnerNo.Location = new System.Drawing.Point(171, 117);
+            this.txtOwnerNo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtOwnerNo.Name = "txtOwnerNo";
-            this.txtOwnerNo.Size = new System.Drawing.Size(103, 20);
+            this.txtOwnerNo.Size = new System.Drawing.Size(152, 26);
             this.txtOwnerNo.TabIndex = 9;
             // 
             // lblOwnerNo
             // 
             this.lblOwnerNo.AutoSize = true;
-            this.lblOwnerNo.Location = new System.Drawing.Point(47, 79);
+            this.lblOwnerNo.Location = new System.Drawing.Point(70, 122);
+            this.lblOwnerNo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblOwnerNo.Name = "lblOwnerNo";
-            this.lblOwnerNo.Size = new System.Drawing.Size(63, 13);
+            this.lblOwnerNo.Size = new System.Drawing.Size(91, 20);
             this.lblOwnerNo.TabIndex = 8;
             this.lblOwnerNo.Text = "Owners No.";
             // 
             // txtStepMSN
             // 
-            this.txtStepMSN.Location = new System.Drawing.Point(315, 47);
+            this.txtStepMSN.Location = new System.Drawing.Point(472, 72);
+            this.txtStepMSN.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtStepMSN.Name = "txtStepMSN";
-            this.txtStepMSN.Size = new System.Drawing.Size(43, 20);
+            this.txtStepMSN.Size = new System.Drawing.Size(62, 26);
             this.txtStepMSN.TabIndex = 7;
             // 
             // lblStepMSN
             // 
             this.lblStepMSN.AutoSize = true;
-            this.lblStepMSN.Location = new System.Drawing.Point(280, 50);
+            this.lblStepMSN.Location = new System.Drawing.Point(420, 77);
+            this.lblStepMSN.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblStepMSN.Name = "lblStepMSN";
-            this.lblStepMSN.Size = new System.Drawing.Size(29, 13);
+            this.lblStepMSN.Size = new System.Drawing.Size(43, 20);
             this.lblStepMSN.TabIndex = 6;
             this.lblStepMSN.Text = "Step";
             // 
             // txtMSN
             // 
-            this.txtMSN.Location = new System.Drawing.Point(114, 47);
+            this.txtMSN.Location = new System.Drawing.Point(171, 72);
+            this.txtMSN.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtMSN.Name = "txtMSN";
-            this.txtMSN.Size = new System.Drawing.Size(103, 20);
+            this.txtMSN.Size = new System.Drawing.Size(152, 26);
             this.txtMSN.TabIndex = 5;
             // 
             // lblMSN
             // 
             this.lblMSN.AutoSize = true;
-            this.lblMSN.Location = new System.Drawing.Point(15, 54);
+            this.lblMSN.Location = new System.Drawing.Point(22, 83);
+            this.lblMSN.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMSN.Name = "lblMSN";
-            this.lblMSN.Size = new System.Drawing.Size(95, 13);
+            this.lblMSN.Size = new System.Drawing.Size(139, 20);
             this.lblMSN.TabIndex = 4;
             this.lblMSN.Text = "Manufacturing No.";
             // 
@@ -595,33 +644,37 @@ namespace CabconPMP.UI
             // 
             this.cmbMeterType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbMeterType.FormattingEnabled = true;
-            this.cmbMeterType.Location = new System.Drawing.Point(315, 16);
+            this.cmbMeterType.Location = new System.Drawing.Point(472, 25);
+            this.cmbMeterType.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbMeterType.Name = "cmbMeterType";
-            this.cmbMeterType.Size = new System.Drawing.Size(382, 21);
+            this.cmbMeterType.Size = new System.Drawing.Size(571, 28);
             this.cmbMeterType.TabIndex = 3;
             // 
             // lblMeterType
             // 
             this.lblMeterType.AutoSize = true;
-            this.lblMeterType.Location = new System.Drawing.Point(252, 24);
+            this.lblMeterType.Location = new System.Drawing.Point(378, 37);
+            this.lblMeterType.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMeterType.Name = "lblMeterType";
-            this.lblMeterType.Size = new System.Drawing.Size(57, 13);
+            this.lblMeterType.Size = new System.Drawing.Size(84, 20);
             this.lblMeterType.TabIndex = 2;
             this.lblMeterType.Text = "Meter type";
             // 
             // txtPositions
             // 
-            this.txtPositions.Location = new System.Drawing.Point(114, 21);
+            this.txtPositions.Location = new System.Drawing.Point(171, 32);
+            this.txtPositions.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtPositions.Name = "txtPositions";
-            this.txtPositions.Size = new System.Drawing.Size(103, 20);
+            this.txtPositions.Size = new System.Drawing.Size(152, 26);
             this.txtPositions.TabIndex = 1;
             // 
             // lblPositions
             // 
             this.lblPositions.AutoSize = true;
-            this.lblPositions.Location = new System.Drawing.Point(44, 28);
+            this.lblPositions.Location = new System.Drawing.Point(66, 43);
+            this.lblPositions.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPositions.Name = "lblPositions";
-            this.lblPositions.Size = new System.Drawing.Size(64, 13);
+            this.lblPositions.Size = new System.Drawing.Size(93, 20);
             this.lblPositions.TabIndex = 0;
             this.lblPositions.Text = "Position No.";
             // 
@@ -629,36 +682,38 @@ namespace CabconPMP.UI
             // 
             this.dgvMeters.AllowUserToAddRows = false;
             this.dgvMeters.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMeters.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMeters.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvMeters.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMeters.DefaultCellStyle = dataGridViewCellStyle8;
-            this.dgvMeters.Location = new System.Drawing.Point(9, 185);
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMeters.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvMeters.Location = new System.Drawing.Point(14, 285);
+            this.dgvMeters.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dgvMeters.Name = "dgvMeters";
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMeters.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMeters.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvMeters.RowHeadersVisible = false;
+            this.dgvMeters.RowHeadersWidth = 62;
             this.dgvMeters.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMeters.Size = new System.Drawing.Size(711, 236);
+            this.dgvMeters.Size = new System.Drawing.Size(1066, 363);
             this.dgvMeters.TabIndex = 1;
             // 
             // tabSequence
@@ -675,9 +730,10 @@ namespace CabconPMP.UI
             this.tabSequence.Controls.Add(this.lblSelectedSteps);
             this.tabSequence.Controls.Add(this.lstAvailableProcedures);
             this.tabSequence.Controls.Add(this.lblAvailableProcs);
-            this.tabSequence.Location = new System.Drawing.Point(4, 22);
+            this.tabSequence.Location = new System.Drawing.Point(4, 29);
+            this.tabSequence.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabSequence.Name = "tabSequence";
-            this.tabSequence.Size = new System.Drawing.Size(1001, 529);
+            this.tabSequence.Size = new System.Drawing.Size(1506, 821);
             this.tabSequence.TabIndex = 2;
             this.tabSequence.Text = "Sequence of test procedures";
             this.tabSequence.UseVisualStyleBackColor = true;
@@ -685,9 +741,10 @@ namespace CabconPMP.UI
             // lblReset
             // 
             this.lblReset.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblReset.Location = new System.Drawing.Point(329, 70);
+            this.lblReset.Location = new System.Drawing.Point(494, 108);
+            this.lblReset.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.lblReset.Name = "lblReset";
-            this.lblReset.Size = new System.Drawing.Size(50, 28);
+            this.lblReset.Size = new System.Drawing.Size(75, 43);
             this.lblReset.TabIndex = 53;
             this.lblReset.Text = "Reset";
             this.lblReset.UseVisualStyleBackColor = true;
@@ -697,18 +754,20 @@ namespace CabconPMP.UI
             // 
             this.lblDisplayParaTotalSelected.AutoSize = true;
             this.lblDisplayParaTotalSelected.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDisplayParaTotalSelected.Location = new System.Drawing.Point(316, 298);
+            this.lblDisplayParaTotalSelected.Location = new System.Drawing.Point(474, 458);
+            this.lblDisplayParaTotalSelected.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDisplayParaTotalSelected.Name = "lblDisplayParaTotalSelected";
-            this.lblDisplayParaTotalSelected.Size = new System.Drawing.Size(77, 12);
+            this.lblDisplayParaTotalSelected.Size = new System.Drawing.Size(113, 17);
             this.lblDisplayParaTotalSelected.TabIndex = 51;
             this.lblDisplayParaTotalSelected.Text = "Total Selected";
             // 
             // btnDispAutoMoveDown
             // 
             this.btnDispAutoMoveDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDispAutoMoveDown.Location = new System.Drawing.Point(358, 240);
+            this.btnDispAutoMoveDown.Location = new System.Drawing.Point(537, 369);
+            this.btnDispAutoMoveDown.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnDispAutoMoveDown.Name = "btnDispAutoMoveDown";
-            this.btnDispAutoMoveDown.Size = new System.Drawing.Size(20, 46);
+            this.btnDispAutoMoveDown.Size = new System.Drawing.Size(30, 71);
             this.btnDispAutoMoveDown.TabIndex = 50;
             this.btnDispAutoMoveDown.Text = "v";
             this.btnDispAutoMoveDown.UseVisualStyleBackColor = true;
@@ -717,9 +776,10 @@ namespace CabconPMP.UI
             // btnDispAutoMoveUP
             // 
             this.btnDispAutoMoveUP.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDispAutoMoveUP.Location = new System.Drawing.Point(328, 240);
+            this.btnDispAutoMoveUP.Location = new System.Drawing.Point(492, 369);
+            this.btnDispAutoMoveUP.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnDispAutoMoveUP.Name = "btnDispAutoMoveUP";
-            this.btnDispAutoMoveUP.Size = new System.Drawing.Size(20, 46);
+            this.btnDispAutoMoveUP.Size = new System.Drawing.Size(30, 71);
             this.btnDispAutoMoveUP.TabIndex = 49;
             this.btnDispAutoMoveUP.Text = "^";
             this.btnDispAutoMoveUP.UseVisualStyleBackColor = true;
@@ -728,9 +788,10 @@ namespace CabconPMP.UI
             // btnDispAutoMove
             // 
             this.btnDispAutoMove.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDispAutoMove.Location = new System.Drawing.Point(329, 104);
+            this.btnDispAutoMove.Location = new System.Drawing.Point(494, 160);
+            this.btnDispAutoMove.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnDispAutoMove.Name = "btnDispAutoMove";
-            this.btnDispAutoMove.Size = new System.Drawing.Size(50, 28);
+            this.btnDispAutoMove.Size = new System.Drawing.Size(75, 43);
             this.btnDispAutoMove.TabIndex = 46;
             this.btnDispAutoMove.Text = ">";
             this.btnDispAutoMove.UseVisualStyleBackColor = true;
@@ -739,9 +800,10 @@ namespace CabconPMP.UI
             // btnDispAutoRemove
             // 
             this.btnDispAutoRemove.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDispAutoRemove.Location = new System.Drawing.Point(329, 172);
+            this.btnDispAutoRemove.Location = new System.Drawing.Point(494, 265);
+            this.btnDispAutoRemove.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnDispAutoRemove.Name = "btnDispAutoRemove";
-            this.btnDispAutoRemove.Size = new System.Drawing.Size(50, 28);
+            this.btnDispAutoRemove.Size = new System.Drawing.Size(75, 43);
             this.btnDispAutoRemove.TabIndex = 47;
             this.btnDispAutoRemove.Text = "<";
             this.btnDispAutoRemove.UseVisualStyleBackColor = true;
@@ -750,9 +812,10 @@ namespace CabconPMP.UI
             // btnDispAutoRemoveAll
             // 
             this.btnDispAutoRemoveAll.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDispAutoRemoveAll.Location = new System.Drawing.Point(328, 206);
+            this.btnDispAutoRemoveAll.Location = new System.Drawing.Point(492, 317);
+            this.btnDispAutoRemoveAll.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnDispAutoRemoveAll.Name = "btnDispAutoRemoveAll";
-            this.btnDispAutoRemoveAll.Size = new System.Drawing.Size(50, 28);
+            this.btnDispAutoRemoveAll.Size = new System.Drawing.Size(75, 43);
             this.btnDispAutoRemoveAll.TabIndex = 48;
             this.btnDispAutoRemoveAll.Text = "<<";
             this.btnDispAutoRemoveAll.UseVisualStyleBackColor = true;
@@ -761,9 +824,10 @@ namespace CabconPMP.UI
             // btnDispAutoMoveAll
             // 
             this.btnDispAutoMoveAll.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDispAutoMoveAll.Location = new System.Drawing.Point(329, 138);
+            this.btnDispAutoMoveAll.Location = new System.Drawing.Point(494, 212);
+            this.btnDispAutoMoveAll.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnDispAutoMoveAll.Name = "btnDispAutoMoveAll";
-            this.btnDispAutoMoveAll.Size = new System.Drawing.Size(50, 28);
+            this.btnDispAutoMoveAll.Size = new System.Drawing.Size(75, 43);
             this.btnDispAutoMoveAll.TabIndex = 45;
             this.btnDispAutoMoveAll.Text = ">>";
             this.btnDispAutoMoveAll.UseVisualStyleBackColor = true;
@@ -772,35 +836,41 @@ namespace CabconPMP.UI
             // lstDisplatAutoSelected
             // 
             this.lstDisplatAutoSelected.FormattingEnabled = true;
-            this.lstDisplatAutoSelected.Location = new System.Drawing.Point(425, 35);
+            this.lstDisplatAutoSelected.ItemHeight = 20;
+            this.lstDisplatAutoSelected.Location = new System.Drawing.Point(638, 54);
+            this.lstDisplatAutoSelected.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.lstDisplatAutoSelected.Name = "lstDisplatAutoSelected";
             this.lstDisplatAutoSelected.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lstDisplatAutoSelected.Size = new System.Drawing.Size(292, 381);
+            this.lstDisplatAutoSelected.Size = new System.Drawing.Size(436, 584);
             this.lstDisplatAutoSelected.TabIndex = 9;
             // 
             // lblSelectedSteps
             // 
             this.lblSelectedSteps.AutoSize = true;
-            this.lblSelectedSteps.Location = new System.Drawing.Point(422, 19);
+            this.lblSelectedSteps.Location = new System.Drawing.Point(633, 29);
+            this.lblSelectedSteps.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblSelectedSteps.Name = "lblSelectedSteps";
-            this.lblSelectedSteps.Size = new System.Drawing.Size(130, 13);
+            this.lblSelectedSteps.Size = new System.Drawing.Size(192, 20);
             this.lblSelectedSteps.TabIndex = 2;
             this.lblSelectedSteps.Text = "Selected Test Procedures";
             // 
             // lstAvailableProcedures
             // 
             this.lstAvailableProcedures.FormattingEnabled = true;
-            this.lstAvailableProcedures.Location = new System.Drawing.Point(9, 35);
+            this.lstAvailableProcedures.ItemHeight = 20;
+            this.lstAvailableProcedures.Location = new System.Drawing.Point(14, 54);
+            this.lstAvailableProcedures.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.lstAvailableProcedures.Name = "lstAvailableProcedures";
-            this.lstAvailableProcedures.Size = new System.Drawing.Size(272, 381);
+            this.lstAvailableProcedures.Size = new System.Drawing.Size(406, 584);
             this.lstAvailableProcedures.TabIndex = 1;
             // 
             // lblAvailableProcs
             // 
             this.lblAvailableProcs.AutoSize = true;
-            this.lblAvailableProcs.Location = new System.Drawing.Point(9, 17);
+            this.lblAvailableProcs.Location = new System.Drawing.Point(14, 26);
+            this.lblAvailableProcs.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblAvailableProcs.Name = "lblAvailableProcs";
-            this.lblAvailableProcs.Size = new System.Drawing.Size(131, 13);
+            this.lblAvailableProcs.Size = new System.Drawing.Size(192, 20);
             this.lblAvailableProcs.TabIndex = 0;
             this.lblAvailableProcs.Text = "Available Test Procedures";
             // 
@@ -822,9 +892,10 @@ namespace CabconPMP.UI
             this.tabExecute.Controls.Add(this.lblOverview);
             this.tabExecute.Controls.Add(this.txtLogs);
             this.tabExecute.Controls.Add(this.lblLogs);
-            this.tabExecute.Location = new System.Drawing.Point(4, 22);
+            this.tabExecute.Location = new System.Drawing.Point(4, 29);
+            this.tabExecute.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabExecute.Name = "tabExecute";
-            this.tabExecute.Size = new System.Drawing.Size(1001, 529);
+            this.tabExecute.Size = new System.Drawing.Size(1506, 821);
             this.tabExecute.TabIndex = 3;
             this.tabExecute.Text = "Execute";
             this.tabExecute.UseVisualStyleBackColor = true;
@@ -846,9 +917,11 @@ namespace CabconPMP.UI
             this.grpLiveTelemetry.Controls.Add(this.lblPhaseC);
             this.grpLiveTelemetry.Controls.Add(this.lblPhaseB);
             this.grpLiveTelemetry.Controls.Add(this.lblPhaseA);
-            this.grpLiveTelemetry.Location = new System.Drawing.Point(745, 98);
+            this.grpLiveTelemetry.Location = new System.Drawing.Point(1118, 151);
+            this.grpLiveTelemetry.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grpLiveTelemetry.Name = "grpLiveTelemetry";
-            this.grpLiveTelemetry.Size = new System.Drawing.Size(253, 108);
+            this.grpLiveTelemetry.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpLiveTelemetry.Size = new System.Drawing.Size(380, 166);
             this.grpLiveTelemetry.TabIndex = 11;
             this.grpLiveTelemetry.TabStop = false;
             this.grpLiveTelemetry.Text = "Monitor";
@@ -856,126 +929,141 @@ namespace CabconPMP.UI
             // lblMonFreq
             // 
             this.lblMonFreq.AutoSize = true;
-            this.lblMonFreq.Location = new System.Drawing.Point(193, 20);
+            this.lblMonFreq.Location = new System.Drawing.Point(290, 31);
+            this.lblMonFreq.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMonFreq.Name = "lblMonFreq";
-            this.lblMonFreq.Size = new System.Drawing.Size(52, 13);
+            this.lblMonFreq.Size = new System.Drawing.Size(74, 20);
             this.lblMonFreq.TabIndex = 14;
             this.lblMonFreq.Text = " Phi [deg]";
             // 
             // txtMonPhiC
             // 
-            this.txtMonPhiC.Location = new System.Drawing.Point(197, 85);
+            this.txtMonPhiC.Location = new System.Drawing.Point(296, 131);
+            this.txtMonPhiC.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtMonPhiC.Name = "txtMonPhiC";
             this.txtMonPhiC.ReadOnly = true;
-            this.txtMonPhiC.Size = new System.Drawing.Size(48, 20);
+            this.txtMonPhiC.Size = new System.Drawing.Size(70, 26);
             this.txtMonPhiC.TabIndex = 13;
             // 
             // txtMonPhiB
             // 
-            this.txtMonPhiB.Location = new System.Drawing.Point(197, 64);
+            this.txtMonPhiB.Location = new System.Drawing.Point(296, 98);
+            this.txtMonPhiB.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtMonPhiB.Name = "txtMonPhiB";
             this.txtMonPhiB.ReadOnly = true;
-            this.txtMonPhiB.Size = new System.Drawing.Size(48, 20);
+            this.txtMonPhiB.Size = new System.Drawing.Size(70, 26);
             this.txtMonPhiB.TabIndex = 12;
             // 
             // txtMonPhiA
             // 
-            this.txtMonPhiA.Location = new System.Drawing.Point(197, 42);
+            this.txtMonPhiA.Location = new System.Drawing.Point(296, 65);
+            this.txtMonPhiA.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtMonPhiA.Name = "txtMonPhiA";
             this.txtMonPhiA.ReadOnly = true;
-            this.txtMonPhiA.Size = new System.Drawing.Size(48, 20);
+            this.txtMonPhiA.Size = new System.Drawing.Size(70, 26);
             this.txtMonPhiA.TabIndex = 11;
             // 
             // txtMonIC
             // 
-            this.txtMonIC.Location = new System.Drawing.Point(115, 82);
+            this.txtMonIC.Location = new System.Drawing.Point(172, 126);
+            this.txtMonIC.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtMonIC.Name = "txtMonIC";
             this.txtMonIC.ReadOnly = true;
-            this.txtMonIC.Size = new System.Drawing.Size(48, 20);
+            this.txtMonIC.Size = new System.Drawing.Size(70, 26);
             this.txtMonIC.TabIndex = 9;
             // 
             // txtMonIB
             // 
-            this.txtMonIB.Location = new System.Drawing.Point(115, 61);
+            this.txtMonIB.Location = new System.Drawing.Point(172, 94);
+            this.txtMonIB.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtMonIB.Name = "txtMonIB";
             this.txtMonIB.ReadOnly = true;
-            this.txtMonIB.Size = new System.Drawing.Size(48, 20);
+            this.txtMonIB.Size = new System.Drawing.Size(70, 26);
             this.txtMonIB.TabIndex = 8;
             // 
             // txtMonIA
             // 
-            this.txtMonIA.Location = new System.Drawing.Point(115, 39);
+            this.txtMonIA.Location = new System.Drawing.Point(172, 60);
+            this.txtMonIA.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtMonIA.Name = "txtMonIA";
             this.txtMonIA.ReadOnly = true;
-            this.txtMonIA.Size = new System.Drawing.Size(48, 20);
+            this.txtMonIA.Size = new System.Drawing.Size(70, 26);
             this.txtMonIA.TabIndex = 7;
             // 
             // lblLiveI
             // 
             this.lblLiveI.AutoSize = true;
-            this.lblLiveI.Location = new System.Drawing.Point(126, 20);
+            this.lblLiveI.Location = new System.Drawing.Point(189, 31);
+            this.lblLiveI.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblLiveI.Name = "lblLiveI";
-            this.lblLiveI.Size = new System.Drawing.Size(26, 13);
+            this.lblLiveI.Size = new System.Drawing.Size(37, 20);
             this.lblLiveI.TabIndex = 6;
             this.lblLiveI.Text = "I [A]";
             // 
             // txtMonUC
             // 
-            this.txtMonUC.Location = new System.Drawing.Point(39, 82);
+            this.txtMonUC.Location = new System.Drawing.Point(58, 126);
+            this.txtMonUC.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtMonUC.Name = "txtMonUC";
             this.txtMonUC.ReadOnly = true;
-            this.txtMonUC.Size = new System.Drawing.Size(48, 20);
+            this.txtMonUC.Size = new System.Drawing.Size(70, 26);
             this.txtMonUC.TabIndex = 5;
             // 
             // txtMonUB
             // 
-            this.txtMonUB.Location = new System.Drawing.Point(39, 61);
+            this.txtMonUB.Location = new System.Drawing.Point(58, 94);
+            this.txtMonUB.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtMonUB.Name = "txtMonUB";
             this.txtMonUB.ReadOnly = true;
-            this.txtMonUB.Size = new System.Drawing.Size(48, 20);
+            this.txtMonUB.Size = new System.Drawing.Size(70, 26);
             this.txtMonUB.TabIndex = 4;
             // 
             // txtMonUA
             // 
-            this.txtMonUA.Location = new System.Drawing.Point(39, 39);
+            this.txtMonUA.Location = new System.Drawing.Point(58, 60);
+            this.txtMonUA.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtMonUA.Name = "txtMonUA";
             this.txtMonUA.ReadOnly = true;
-            this.txtMonUA.Size = new System.Drawing.Size(48, 20);
+            this.txtMonUA.Size = new System.Drawing.Size(70, 26);
             this.txtMonUA.TabIndex = 3;
             // 
             // lblLiveU
             // 
             this.lblLiveU.AutoSize = true;
-            this.lblLiveU.Location = new System.Drawing.Point(39, 20);
+            this.lblLiveU.Location = new System.Drawing.Point(58, 31);
+            this.lblLiveU.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblLiveU.Name = "lblLiveU";
-            this.lblLiveU.Size = new System.Drawing.Size(31, 13);
+            this.lblLiveU.Size = new System.Drawing.Size(44, 20);
             this.lblLiveU.TabIndex = 2;
             this.lblLiveU.Text = "U [V]";
             // 
             // lblPhaseC
             // 
             this.lblPhaseC.AutoSize = true;
-            this.lblPhaseC.Location = new System.Drawing.Point(13, 85);
+            this.lblPhaseC.Location = new System.Drawing.Point(20, 131);
+            this.lblPhaseC.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPhaseC.Name = "lblPhaseC";
-            this.lblPhaseC.Size = new System.Drawing.Size(13, 13);
+            this.lblPhaseC.Size = new System.Drawing.Size(18, 20);
             this.lblPhaseC.TabIndex = 1;
             this.lblPhaseC.Text = "3";
             // 
             // lblPhaseB
             // 
             this.lblPhaseB.AutoSize = true;
-            this.lblPhaseB.Location = new System.Drawing.Point(13, 63);
+            this.lblPhaseB.Location = new System.Drawing.Point(20, 97);
+            this.lblPhaseB.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPhaseB.Name = "lblPhaseB";
-            this.lblPhaseB.Size = new System.Drawing.Size(13, 13);
+            this.lblPhaseB.Size = new System.Drawing.Size(18, 20);
             this.lblPhaseB.TabIndex = 0;
             this.lblPhaseB.Text = "2";
             // 
             // lblPhaseA
             // 
             this.lblPhaseA.AutoSize = true;
-            this.lblPhaseA.Location = new System.Drawing.Point(13, 42);
+            this.lblPhaseA.Location = new System.Drawing.Point(20, 65);
+            this.lblPhaseA.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPhaseA.Name = "lblPhaseA";
-            this.lblPhaseA.Size = new System.Drawing.Size(13, 13);
+            this.lblPhaseA.Size = new System.Drawing.Size(18, 20);
             this.lblPhaseA.TabIndex = 0;
             this.lblPhaseA.Text = "1";
             // 
@@ -985,44 +1073,50 @@ namespace CabconPMP.UI
             this.grpEnvValues.Controls.Add(this.lblHumidity);
             this.grpEnvValues.Controls.Add(this.txtEnvTemp);
             this.grpEnvValues.Controls.Add(this.lblTemp);
-            this.grpEnvValues.Location = new System.Drawing.Point(743, 296);
+            this.grpEnvValues.Location = new System.Drawing.Point(1114, 455);
+            this.grpEnvValues.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grpEnvValues.Name = "grpEnvValues";
-            this.grpEnvValues.Size = new System.Drawing.Size(253, 61);
+            this.grpEnvValues.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpEnvValues.Size = new System.Drawing.Size(380, 94);
             this.grpEnvValues.TabIndex = 14;
             this.grpEnvValues.TabStop = false;
             this.grpEnvValues.Text = "Environmental values";
             // 
             // txtEnvHumidity
             // 
-            this.txtEnvHumidity.Location = new System.Drawing.Point(176, 30);
+            this.txtEnvHumidity.Location = new System.Drawing.Point(264, 46);
+            this.txtEnvHumidity.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtEnvHumidity.Name = "txtEnvHumidity";
             this.txtEnvHumidity.ReadOnly = true;
-            this.txtEnvHumidity.Size = new System.Drawing.Size(69, 20);
+            this.txtEnvHumidity.Size = new System.Drawing.Size(102, 26);
             this.txtEnvHumidity.TabIndex = 3;
             // 
             // lblHumidity
             // 
             this.lblHumidity.AutoSize = true;
-            this.lblHumidity.Location = new System.Drawing.Point(173, 15);
+            this.lblHumidity.Location = new System.Drawing.Point(260, 23);
+            this.lblHumidity.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblHumidity.Name = "lblHumidity";
-            this.lblHumidity.Size = new System.Drawing.Size(47, 13);
+            this.lblHumidity.Size = new System.Drawing.Size(70, 20);
             this.lblHumidity.TabIndex = 2;
             this.lblHumidity.Text = "Humidity";
             // 
             // txtEnvTemp
             // 
-            this.txtEnvTemp.Location = new System.Drawing.Point(17, 30);
+            this.txtEnvTemp.Location = new System.Drawing.Point(26, 46);
+            this.txtEnvTemp.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtEnvTemp.Name = "txtEnvTemp";
             this.txtEnvTemp.ReadOnly = true;
-            this.txtEnvTemp.Size = new System.Drawing.Size(69, 20);
+            this.txtEnvTemp.Size = new System.Drawing.Size(102, 26);
             this.txtEnvTemp.TabIndex = 1;
             // 
             // lblTemp
             // 
             this.lblTemp.AutoSize = true;
-            this.lblTemp.Location = new System.Drawing.Point(17, 15);
+            this.lblTemp.Location = new System.Drawing.Point(26, 23);
+            this.lblTemp.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTemp.Name = "lblTemp";
-            this.lblTemp.Size = new System.Drawing.Size(67, 13);
+            this.lblTemp.Size = new System.Drawing.Size(100, 20);
             this.lblTemp.TabIndex = 0;
             this.lblTemp.Text = "Temperature";
             // 
@@ -1034,70 +1128,80 @@ namespace CabconPMP.UI
             this.grpActualPower.Controls.Add(this.lblTotalQ);
             this.grpActualPower.Controls.Add(this.txtTotalP);
             this.grpActualPower.Controls.Add(this.lblTotalP);
-            this.grpActualPower.Location = new System.Drawing.Point(745, 212);
+            this.grpActualPower.Location = new System.Drawing.Point(1118, 326);
+            this.grpActualPower.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grpActualPower.Name = "grpActualPower";
-            this.grpActualPower.Size = new System.Drawing.Size(253, 78);
+            this.grpActualPower.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpActualPower.Size = new System.Drawing.Size(380, 120);
             this.grpActualPower.TabIndex = 13;
             this.grpActualPower.TabStop = false;
             this.grpActualPower.Text = "Actual power";
             // 
             // txtTotalS
             // 
-            this.txtTotalS.Location = new System.Drawing.Point(30, 56);
+            this.txtTotalS.Location = new System.Drawing.Point(45, 86);
+            this.txtTotalS.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtTotalS.Name = "txtTotalS";
             this.txtTotalS.ReadOnly = true;
-            this.txtTotalS.Size = new System.Drawing.Size(215, 20);
+            this.txtTotalS.Size = new System.Drawing.Size(320, 26);
             this.txtTotalS.TabIndex = 5;
             // 
             // lblTotalS
             // 
             this.lblTotalS.AutoSize = true;
-            this.lblTotalS.Location = new System.Drawing.Point(9, 59);
+            this.lblTotalS.Location = new System.Drawing.Point(14, 91);
+            this.lblTotalS.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTotalS.Name = "lblTotalS";
-            this.lblTotalS.Size = new System.Drawing.Size(14, 13);
+            this.lblTotalS.Size = new System.Drawing.Size(20, 20);
             this.lblTotalS.TabIndex = 4;
             this.lblTotalS.Text = "S";
             // 
             // txtTotalQ
             // 
-            this.txtTotalQ.Location = new System.Drawing.Point(30, 35);
+            this.txtTotalQ.Location = new System.Drawing.Point(45, 54);
+            this.txtTotalQ.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtTotalQ.Name = "txtTotalQ";
             this.txtTotalQ.ReadOnly = true;
-            this.txtTotalQ.Size = new System.Drawing.Size(215, 20);
+            this.txtTotalQ.Size = new System.Drawing.Size(320, 26);
             this.txtTotalQ.TabIndex = 3;
             // 
             // lblTotalQ
             // 
             this.lblTotalQ.AutoSize = true;
-            this.lblTotalQ.Location = new System.Drawing.Point(9, 37);
+            this.lblTotalQ.Location = new System.Drawing.Point(14, 57);
+            this.lblTotalQ.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTotalQ.Name = "lblTotalQ";
-            this.lblTotalQ.Size = new System.Drawing.Size(15, 13);
+            this.lblTotalQ.Size = new System.Drawing.Size(21, 20);
             this.lblTotalQ.TabIndex = 2;
             this.lblTotalQ.Text = "Q";
             // 
             // txtTotalP
             // 
-            this.txtTotalP.Location = new System.Drawing.Point(30, 13);
+            this.txtTotalP.Location = new System.Drawing.Point(45, 20);
+            this.txtTotalP.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtTotalP.Name = "txtTotalP";
             this.txtTotalP.ReadOnly = true;
-            this.txtTotalP.Size = new System.Drawing.Size(215, 20);
+            this.txtTotalP.Size = new System.Drawing.Size(320, 26);
             this.txtTotalP.TabIndex = 1;
             // 
             // lblTotalP
             // 
             this.lblTotalP.AutoSize = true;
-            this.lblTotalP.Location = new System.Drawing.Point(9, 16);
+            this.lblTotalP.Location = new System.Drawing.Point(14, 25);
+            this.lblTotalP.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTotalP.Name = "lblTotalP";
-            this.lblTotalP.Size = new System.Drawing.Size(14, 13);
+            this.lblTotalP.Size = new System.Drawing.Size(19, 20);
             this.lblTotalP.TabIndex = 0;
             this.lblTotalP.Text = "P";
             // 
             // grpRangeLimits
             // 
             this.grpRangeLimits.Controls.Add(this.lblRangeLimits);
-            this.grpRangeLimits.Location = new System.Drawing.Point(6, 7);
+            this.grpRangeLimits.Location = new System.Drawing.Point(9, 11);
+            this.grpRangeLimits.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grpRangeLimits.Name = "grpRangeLimits";
-            this.grpRangeLimits.Size = new System.Drawing.Size(403, 39);
+            this.grpRangeLimits.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpRangeLimits.Size = new System.Drawing.Size(604, 60);
             this.grpRangeLimits.TabIndex = 10;
             this.grpRangeLimits.TabStop = false;
             this.grpRangeLimits.Text = "Range of Limits";
@@ -1105,9 +1209,10 @@ namespace CabconPMP.UI
             // lblRangeLimits
             // 
             this.lblRangeLimits.AutoSize = true;
-            this.lblRangeLimits.Location = new System.Drawing.Point(13, 17);
+            this.lblRangeLimits.Location = new System.Drawing.Point(20, 26);
+            this.lblRangeLimits.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblRangeLimits.Name = "lblRangeLimits";
-            this.lblRangeLimits.Size = new System.Drawing.Size(83, 13);
+            this.lblRangeLimits.Size = new System.Drawing.Size(126, 20);
             this.lblRangeLimits.TabIndex = 0;
             this.lblRangeLimits.Text = "-0.50% to 0.50%";
             // 
@@ -1121,86 +1226,97 @@ namespace CabconPMP.UI
             this.grpBaseValues.Controls.Add(this.lblBaseIb);
             this.grpBaseValues.Controls.Add(this.txtBaseUb);
             this.grpBaseValues.Controls.Add(this.lblBaseUb);
-            this.grpBaseValues.Location = new System.Drawing.Point(745, 24);
+            this.grpBaseValues.Location = new System.Drawing.Point(1118, 37);
+            this.grpBaseValues.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grpBaseValues.Name = "grpBaseValues";
-            this.grpBaseValues.Size = new System.Drawing.Size(253, 65);
+            this.grpBaseValues.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpBaseValues.Size = new System.Drawing.Size(380, 100);
             this.grpBaseValues.TabIndex = 9;
             this.grpBaseValues.TabStop = false;
             this.grpBaseValues.Text = "Base values";
             // 
             // txtBaseIm
             // 
-            this.txtBaseIm.Location = new System.Drawing.Point(184, 39);
+            this.txtBaseIm.Location = new System.Drawing.Point(276, 60);
+            this.txtBaseIm.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtBaseIm.Name = "txtBaseIm";
             this.txtBaseIm.ReadOnly = true;
-            this.txtBaseIm.Size = new System.Drawing.Size(61, 20);
+            this.txtBaseIm.Size = new System.Drawing.Size(90, 26);
             this.txtBaseIm.TabIndex = 7;
             // 
             // lblBaseIm
             // 
             this.lblBaseIm.AutoSize = true;
-            this.lblBaseIm.Location = new System.Drawing.Point(141, 42);
+            this.lblBaseIm.Location = new System.Drawing.Point(212, 65);
+            this.lblBaseIm.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblBaseIm.Name = "lblBaseIm";
-            this.lblBaseIm.Size = new System.Drawing.Size(34, 13);
+            this.lblBaseIm.Size = new System.Drawing.Size(50, 20);
             this.lblBaseIm.TabIndex = 6;
             this.lblBaseIm.Text = "Im [A]";
             // 
             // txtBaseFreq
             // 
-            this.txtBaseFreq.Location = new System.Drawing.Point(43, 39);
+            this.txtBaseFreq.Location = new System.Drawing.Point(64, 60);
+            this.txtBaseFreq.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtBaseFreq.Name = "txtBaseFreq";
             this.txtBaseFreq.ReadOnly = true;
-            this.txtBaseFreq.Size = new System.Drawing.Size(61, 20);
+            this.txtBaseFreq.Size = new System.Drawing.Size(90, 26);
             this.txtBaseFreq.TabIndex = 5;
             // 
             // lblBaseFreq
             // 
             this.lblBaseFreq.AutoSize = true;
-            this.lblBaseFreq.Location = new System.Drawing.Point(9, 42);
+            this.lblBaseFreq.Location = new System.Drawing.Point(14, 65);
+            this.lblBaseFreq.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblBaseFreq.Name = "lblBaseFreq";
-            this.lblBaseFreq.Size = new System.Drawing.Size(32, 13);
+            this.lblBaseFreq.Size = new System.Drawing.Size(46, 20);
             this.lblBaseFreq.TabIndex = 4;
             this.lblBaseFreq.Text = "f [Hz]";
             // 
             // txtBaseIb
             // 
-            this.txtBaseIb.Location = new System.Drawing.Point(184, 16);
+            this.txtBaseIb.Location = new System.Drawing.Point(276, 25);
+            this.txtBaseIb.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtBaseIb.Name = "txtBaseIb";
             this.txtBaseIb.ReadOnly = true;
-            this.txtBaseIb.Size = new System.Drawing.Size(61, 20);
+            this.txtBaseIb.Size = new System.Drawing.Size(90, 26);
             this.txtBaseIb.TabIndex = 3;
             // 
             // lblBaseIb
             // 
             this.lblBaseIb.AutoSize = true;
-            this.lblBaseIb.Location = new System.Drawing.Point(141, 18);
+            this.lblBaseIb.Location = new System.Drawing.Point(212, 28);
+            this.lblBaseIb.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblBaseIb.Name = "lblBaseIb";
-            this.lblBaseIb.Size = new System.Drawing.Size(32, 13);
+            this.lblBaseIb.Size = new System.Drawing.Size(46, 20);
             this.lblBaseIb.TabIndex = 2;
             this.lblBaseIb.Text = "Ib [A]";
             // 
             // txtBaseUb
             // 
-            this.txtBaseUb.Location = new System.Drawing.Point(43, 16);
+            this.txtBaseUb.Location = new System.Drawing.Point(64, 25);
+            this.txtBaseUb.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtBaseUb.Name = "txtBaseUb";
             this.txtBaseUb.ReadOnly = true;
-            this.txtBaseUb.Size = new System.Drawing.Size(61, 20);
+            this.txtBaseUb.Size = new System.Drawing.Size(90, 26);
             this.txtBaseUb.TabIndex = 1;
             // 
             // lblBaseUb
             // 
             this.lblBaseUb.AutoSize = true;
-            this.lblBaseUb.Location = new System.Drawing.Point(9, 18);
+            this.lblBaseUb.Location = new System.Drawing.Point(14, 28);
+            this.lblBaseUb.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblBaseUb.Name = "lblBaseUb";
-            this.lblBaseUb.Size = new System.Drawing.Size(37, 13);
+            this.lblBaseUb.Size = new System.Drawing.Size(53, 20);
             this.lblBaseUb.TabIndex = 0;
             this.lblBaseUb.Text = "Ub [V]";
             // 
             // btnStop
             // 
-            this.btnStop.Location = new System.Drawing.Point(679, 307);
+            this.btnStop.Location = new System.Drawing.Point(1018, 472);
+            this.btnStop.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(47, 30);
+            this.btnStop.Size = new System.Drawing.Size(70, 46);
             this.btnStop.TabIndex = 8;
             this.btnStop.Text = "Stop";
             this.btnStop.UseVisualStyleBackColor = true;
@@ -1208,9 +1324,10 @@ namespace CabconPMP.UI
             // 
             // btnPause
             // 
-            this.btnPause.Location = new System.Drawing.Point(626, 307);
+            this.btnPause.Location = new System.Drawing.Point(939, 472);
+            this.btnPause.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnPause.Name = "btnPause";
-            this.btnPause.Size = new System.Drawing.Size(47, 30);
+            this.btnPause.Size = new System.Drawing.Size(70, 46);
             this.btnPause.TabIndex = 7;
             this.btnPause.Text = "Pause";
             this.btnPause.UseVisualStyleBackColor = true;
@@ -1218,9 +1335,10 @@ namespace CabconPMP.UI
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(570, 307);
+            this.btnStart.Location = new System.Drawing.Point(855, 472);
+            this.btnStart.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(50, 30);
+            this.btnStart.Size = new System.Drawing.Size(75, 46);
             this.btnStart.TabIndex = 6;
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = true;
@@ -1230,18 +1348,20 @@ namespace CabconPMP.UI
             // 
             this.cmbStep.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbStep.FormattingEnabled = true;
-            this.cmbStep.Location = new System.Drawing.Point(419, 313);
+            this.cmbStep.Location = new System.Drawing.Point(628, 482);
+            this.cmbStep.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbStep.Name = "cmbStep";
-            this.cmbStep.Size = new System.Drawing.Size(134, 21);
+            this.cmbStep.Size = new System.Drawing.Size(199, 28);
             this.cmbStep.TabIndex = 5;
             this.cmbStep.SelectedIndexChanged += new System.EventHandler(this.cmbStep_SelectedIndexChanged);
             // 
             // lblSingleStep
             // 
             this.lblSingleStep.AutoSize = true;
-            this.lblSingleStep.Location = new System.Drawing.Point(416, 296);
+            this.lblSingleStep.Location = new System.Drawing.Point(624, 455);
+            this.lblSingleStep.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblSingleStep.Name = "lblSingleStep";
-            this.lblSingleStep.Size = new System.Drawing.Size(81, 13);
+            this.lblSingleStep.Size = new System.Drawing.Size(117, 20);
             this.lblSingleStep.TabIndex = 4;
             this.lblSingleStep.Text = "Execution Type";
             // 
@@ -1250,57 +1370,65 @@ namespace CabconPMP.UI
             this.dgvExecuteSteps.AllowUserToAddRows = false;
             this.dgvExecuteSteps.AllowUserToDeleteRows = false;
             this.dgvExecuteSteps.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvExecuteSteps.Location = new System.Drawing.Point(418, 24);
+            this.dgvExecuteSteps.Location = new System.Drawing.Point(627, 37);
+            this.dgvExecuteSteps.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dgvExecuteSteps.MultiSelect = false;
             this.dgvExecuteSteps.Name = "dgvExecuteSteps";
             this.dgvExecuteSteps.ReadOnly = true;
             this.dgvExecuteSteps.RowHeadersVisible = false;
+            this.dgvExecuteSteps.RowHeadersWidth = 62;
             this.dgvExecuteSteps.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvExecuteSteps.Size = new System.Drawing.Size(321, 256);
+            this.dgvExecuteSteps.Size = new System.Drawing.Size(482, 394);
             this.dgvExecuteSteps.TabIndex = 3;
             // 
             // lblExeSteps
             // 
             this.lblExeSteps.AutoSize = true;
-            this.lblExeSteps.Location = new System.Drawing.Point(415, 4);
+            this.lblExeSteps.Location = new System.Drawing.Point(622, 6);
+            this.lblExeSteps.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblExeSteps.Name = "lblExeSteps";
-            this.lblExeSteps.Size = new System.Drawing.Size(82, 13);
+            this.lblExeSteps.Size = new System.Drawing.Size(122, 20);
             this.lblExeSteps.TabIndex = 2;
             this.lblExeSteps.Text = "Execution steps";
             // 
             // lstOverview
             // 
             this.lstOverview.FormattingEnabled = true;
-            this.lstOverview.Location = new System.Drawing.Point(3, 63);
+            this.lstOverview.ItemHeight = 20;
+            this.lstOverview.Location = new System.Drawing.Point(4, 97);
+            this.lstOverview.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.lstOverview.Name = "lstOverview";
-            this.lstOverview.Size = new System.Drawing.Size(407, 459);
+            this.lstOverview.Size = new System.Drawing.Size(608, 704);
             this.lstOverview.TabIndex = 1;
             // 
             // lblOverview
             // 
             this.lblOverview.AutoSize = true;
-            this.lblOverview.Location = new System.Drawing.Point(3, 49);
+            this.lblOverview.Location = new System.Drawing.Point(4, 75);
+            this.lblOverview.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblOverview.Name = "lblOverview";
-            this.lblOverview.Size = new System.Drawing.Size(52, 13);
+            this.lblOverview.Size = new System.Drawing.Size(72, 20);
             this.lblOverview.TabIndex = 0;
             this.lblOverview.Text = "Overview";
             // 
             // txtLogs
             // 
-            this.txtLogs.Location = new System.Drawing.Point(416, 363);
+            this.txtLogs.Location = new System.Drawing.Point(624, 558);
+            this.txtLogs.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtLogs.Multiline = true;
             this.txtLogs.Name = "txtLogs";
             this.txtLogs.ReadOnly = true;
             this.txtLogs.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLogs.Size = new System.Drawing.Size(580, 159);
+            this.txtLogs.Size = new System.Drawing.Size(868, 242);
             this.txtLogs.TabIndex = 2;
             // 
             // lblLogs
             // 
             this.lblLogs.AutoSize = true;
-            this.lblLogs.Location = new System.Drawing.Point(416, 347);
+            this.lblLogs.Location = new System.Drawing.Point(624, 534);
+            this.lblLogs.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblLogs.Name = "lblLogs";
-            this.lblLogs.Size = new System.Drawing.Size(30, 13);
+            this.lblLogs.Size = new System.Drawing.Size(44, 20);
             this.lblLogs.TabIndex = 1;
             this.lblLogs.Text = "Logs";
             // 
@@ -1311,9 +1439,10 @@ namespace CabconPMP.UI
             this.tabResults.Controls.Add(this.btnReport);
             this.tabResults.Controls.Add(this.btnExportResults);
             this.tabResults.Controls.Add(this.dgvResults);
-            this.tabResults.Location = new System.Drawing.Point(4, 22);
+            this.tabResults.Location = new System.Drawing.Point(4, 29);
+            this.tabResults.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabResults.Name = "tabResults";
-            this.tabResults.Size = new System.Drawing.Size(1001, 529);
+            this.tabResults.Size = new System.Drawing.Size(1506, 821);
             this.tabResults.TabIndex = 4;
             this.tabResults.Text = "Results";
             this.tabResults.UseVisualStyleBackColor = true;
@@ -1322,34 +1451,38 @@ namespace CabconPMP.UI
             // 
             this.cmbWhatMeter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbWhatMeter.FormattingEnabled = true;
-            this.cmbWhatMeter.Location = new System.Drawing.Point(69, 394);
+            this.cmbWhatMeter.Location = new System.Drawing.Point(104, 606);
+            this.cmbWhatMeter.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbWhatMeter.Name = "cmbWhatMeter";
-            this.cmbWhatMeter.Size = new System.Drawing.Size(129, 21);
+            this.cmbWhatMeter.Size = new System.Drawing.Size(192, 28);
             this.cmbWhatMeter.TabIndex = 4;
             // 
             // lblWhatMeter
             // 
             this.lblWhatMeter.AutoSize = true;
-            this.lblWhatMeter.Location = new System.Drawing.Point(9, 397);
+            this.lblWhatMeter.Location = new System.Drawing.Point(14, 611);
+            this.lblWhatMeter.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblWhatMeter.Name = "lblWhatMeter";
-            this.lblWhatMeter.Size = new System.Drawing.Size(63, 13);
+            this.lblWhatMeter.Size = new System.Drawing.Size(92, 20);
             this.lblWhatMeter.TabIndex = 3;
             this.lblWhatMeter.Text = "What Meter";
             // 
             // btnReport
             // 
-            this.btnReport.Location = new System.Drawing.Point(596, 392);
+            this.btnReport.Location = new System.Drawing.Point(894, 603);
+            this.btnReport.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnReport.Name = "btnReport";
-            this.btnReport.Size = new System.Drawing.Size(120, 24);
+            this.btnReport.Size = new System.Drawing.Size(180, 37);
             this.btnReport.TabIndex = 2;
             this.btnReport.Text = "Report";
             this.btnReport.UseVisualStyleBackColor = true;
             // 
             // btnExportResults
             // 
-            this.btnExportResults.Location = new System.Drawing.Point(467, 392);
+            this.btnExportResults.Location = new System.Drawing.Point(700, 603);
+            this.btnExportResults.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnExportResults.Name = "btnExportResults";
-            this.btnExportResults.Size = new System.Drawing.Size(120, 24);
+            this.btnExportResults.Size = new System.Drawing.Size(180, 37);
             this.btnExportResults.TabIndex = 1;
             this.btnExportResults.Text = "Export Results to Text File";
             this.btnExportResults.UseVisualStyleBackColor = true;
@@ -1359,20 +1492,23 @@ namespace CabconPMP.UI
             this.dgvResults.AllowUserToAddRows = false;
             this.dgvResults.AllowUserToDeleteRows = false;
             this.dgvResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvResults.Location = new System.Drawing.Point(9, 13);
+            this.dgvResults.Location = new System.Drawing.Point(14, 20);
+            this.dgvResults.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dgvResults.Name = "dgvResults";
             this.dgvResults.RowHeadersVisible = false;
-            this.dgvResults.Size = new System.Drawing.Size(711, 364);
+            this.dgvResults.RowHeadersWidth = 62;
+            this.dgvResults.Size = new System.Drawing.Size(1066, 560);
             this.dgvResults.TabIndex = 0;
             // 
             // frmTestRun
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1022, 591);
+            this.ClientSize = new System.Drawing.Size(1533, 909);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.lblBenchName);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximizeBox = false;
             this.Name = "frmTestRun";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -1417,25 +1553,25 @@ namespace CabconPMP.UI
         private System.Windows.Forms.TabPage tabSequence;
         private System.Windows.Forms.TabPage tabExecute;
         private System.Windows.Forms.TabPage tabResults;
-        private System.Windows.Forms.TextBox txtComment;
+        private CabconPMP.TransparentTextBox txtComment;
         private System.Windows.Forms.Label lblComment;
-        private System.Windows.Forms.TextBox txtMaxRH;
+        private CabconPMP.TransparentTextBox txtMaxRH;
         private System.Windows.Forms.Label lblMaxRH;
-        private System.Windows.Forms.TextBox txtMinRH;
+        private CabconPMP.TransparentTextBox txtMinRH;
         private System.Windows.Forms.Label lblMinRH;
-        private System.Windows.Forms.TextBox txtMaxTemp;
+        private CabconPMP.TransparentTextBox txtMaxTemp;
         private System.Windows.Forms.Label lblMaxTemp;
-        private System.Windows.Forms.TextBox txtMinTemp;
+        private CabconPMP.TransparentTextBox txtMinTemp;
         private System.Windows.Forms.Label lblMinTemp;
-        private System.Windows.Forms.TextBox txtDateRun;
+        private CabconPMP.TransparentTextBox txtDateRun;
         private System.Windows.Forms.Label lblDateRun;
-        private System.Windows.Forms.TextBox txtOperator;
+        private CabconPMP.TransparentTextBox txtOperator;
         private System.Windows.Forms.Label lblOperator;
-        private System.Windows.Forms.TextBox txtSupervisor;
+        private CabconPMP.TransparentTextBox txtSupervisor;
         private System.Windows.Forms.Label lblSupervisor;
-        private System.Windows.Forms.TextBox txtSequenceName;
+        private CabconPMP.TransparentTextBox txtSequenceName;
         private System.Windows.Forms.Label lblSequenceName;
-        private System.Windows.Forms.TextBox txtStatus;
+        private CabconPMP.TransparentTextBox txtStatus;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.GroupBox grpDeviceInputs;
         private System.Windows.Forms.TextBox txtPositions;

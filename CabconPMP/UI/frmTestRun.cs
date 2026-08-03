@@ -156,6 +156,10 @@ namespace CabconPMP.UI
                 {
                     gb.FlatStyle = FlatStyle.Flat;
                 }
+                else if (c is System.Windows.Forms.Label lbl)
+                {
+                    lbl.BackColor = System.Drawing.Color.Transparent;
+                }
                 else if (c is System.Windows.Forms.TabPage tp)
                 {
                     tp.BackColor = System.Drawing.Color.White;
