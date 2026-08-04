@@ -248,6 +248,21 @@ namespace CabconPMP.UI
                 }
             }
         }
+
+        private void dgvMeterTypes_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void grpAccuracy_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dgvConstants_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 
     public class ChannelConstant
