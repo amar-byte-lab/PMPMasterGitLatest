@@ -18,31 +18,21 @@ namespace CabconPMP.UI
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmTestRun));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.lblBenchName = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabCommon = new System.Windows.Forms.TabPage();
-            this.txtComment = new CabconPMP.TransparentTextBox();
             this.lblComment = new System.Windows.Forms.Label();
-            this.txtMaxRH = new CabconPMP.TransparentTextBox();
             this.lblMaxRH = new System.Windows.Forms.Label();
-            this.txtMinRH = new CabconPMP.TransparentTextBox();
             this.lblMinRH = new System.Windows.Forms.Label();
-            this.txtMaxTemp = new CabconPMP.TransparentTextBox();
             this.lblMaxTemp = new System.Windows.Forms.Label();
-            this.txtMinTemp = new CabconPMP.TransparentTextBox();
             this.lblMinTemp = new System.Windows.Forms.Label();
-            this.txtDateRun = new CabconPMP.TransparentTextBox();
             this.lblDateRun = new System.Windows.Forms.Label();
-            this.txtOperator = new CabconPMP.TransparentTextBox();
             this.lblOperator = new System.Windows.Forms.Label();
-            this.txtSupervisor = new CabconPMP.TransparentTextBox();
             this.lblSupervisor = new System.Windows.Forms.Label();
-            this.txtSequenceName = new CabconPMP.TransparentTextBox();
             this.lblSequenceName = new System.Windows.Forms.Label();
-            this.txtStatus = new CabconPMP.TransparentTextBox();
             this.lblStatus = new System.Windows.Forms.Label();
             this.tabDevices = new System.Windows.Forms.TabPage();
             this.grpDeviceInputs = new System.Windows.Forms.GroupBox();
@@ -141,6 +131,16 @@ namespace CabconPMP.UI
             this.btnReport = new System.Windows.Forms.Button();
             this.btnExportResults = new System.Windows.Forms.Button();
             this.dgvResults = new System.Windows.Forms.DataGridView();
+            this.txtComment = new CabconPMP.TransparentTextBox();
+            this.txtMaxRH = new CabconPMP.TransparentTextBox();
+            this.txtMinRH = new CabconPMP.TransparentTextBox();
+            this.txtMaxTemp = new CabconPMP.TransparentTextBox();
+            this.txtMinTemp = new CabconPMP.TransparentTextBox();
+            this.txtDateRun = new CabconPMP.TransparentTextBox();
+            this.txtOperator = new CabconPMP.TransparentTextBox();
+            this.txtSupervisor = new CabconPMP.TransparentTextBox();
+            this.txtSequenceName = new CabconPMP.TransparentTextBox();
+            this.txtStatus = new CabconPMP.TransparentTextBox();
             this.tabControl1.SuspendLayout();
             this.tabCommon.SuspendLayout();
             this.tabDevices.SuspendLayout();
@@ -216,33 +216,16 @@ namespace CabconPMP.UI
             this.tabCommon.Text = "Common properties";
             this.tabCommon.UseVisualStyleBackColor = true;
             // 
-            // txtComment
-            // 
-            this.txtComment.Location = new System.Drawing.Point(566, 54);
-            this.txtComment.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtComment.Multiline = true;
-            this.txtComment.Name = "txtComment";
-            this.txtComment.Size = new System.Drawing.Size(500, 319);
-            this.txtComment.TabIndex = 19;
-            // 
             // lblComment
             // 
             this.lblComment.AutoSize = true;
+            this.lblComment.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblComment.Location = new System.Drawing.Point(566, 26);
             this.lblComment.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblComment.Name = "lblComment";
-            this.lblComment.Size = new System.Drawing.Size(78, 20);
+            this.lblComment.Size = new System.Drawing.Size(86, 22);
             this.lblComment.TabIndex = 18;
             this.lblComment.Text = "Comment";
-            // 
-            // txtMaxRH
-            // 
-            this.txtMaxRH.Location = new System.Drawing.Point(405, 234);
-            this.txtMaxRH.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtMaxRH.Name = "txtMaxRH";
-            this.txtMaxRH.Size = new System.Drawing.Size(115, 26);
-            this.txtMaxRH.TabIndex = 17;
-            this.txtMaxRH.Text = "55.0";
             // 
             // lblMaxRH
             // 
@@ -254,33 +237,16 @@ namespace CabconPMP.UI
             this.lblMaxRH.TabIndex = 16;
             this.lblMaxRH.Text = "Max. ";
             // 
-            // txtMinRH
-            // 
-            this.txtMinRH.Location = new System.Drawing.Point(276, 234);
-            this.txtMinRH.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtMinRH.Name = "txtMinRH";
-            this.txtMinRH.Size = new System.Drawing.Size(115, 26);
-            this.txtMinRH.TabIndex = 15;
-            this.txtMinRH.Text = "45.0";
-            // 
             // lblMinRH
             // 
             this.lblMinRH.AutoSize = true;
+            this.lblMinRH.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMinRH.Location = new System.Drawing.Point(276, 206);
             this.lblMinRH.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMinRH.Name = "lblMinRH";
-            this.lblMinRH.Size = new System.Drawing.Size(125, 20);
+            this.lblMinRH.Size = new System.Drawing.Size(144, 22);
             this.lblMinRH.TabIndex = 14;
             this.lblMinRH.Text = "Rel. humidity [%]";
-            // 
-            // txtMaxTemp
-            // 
-            this.txtMaxTemp.Location = new System.Drawing.Point(148, 234);
-            this.txtMaxTemp.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtMaxTemp.Name = "txtMaxTemp";
-            this.txtMaxTemp.Size = new System.Drawing.Size(115, 26);
-            this.txtMaxTemp.TabIndex = 13;
-            this.txtMaxTemp.Text = "25.0";
             // 
             // lblMaxTemp
             // 
@@ -292,120 +258,76 @@ namespace CabconPMP.UI
             this.lblMaxTemp.TabIndex = 12;
             this.lblMaxTemp.Text = "Max.";
             // 
-            // txtMinTemp
-            // 
-            this.txtMinTemp.Location = new System.Drawing.Point(20, 234);
-            this.txtMinTemp.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtMinTemp.Name = "txtMinTemp";
-            this.txtMinTemp.Size = new System.Drawing.Size(115, 26);
-            this.txtMinTemp.TabIndex = 11;
-            this.txtMinTemp.Text = "23.0";
-            // 
             // lblMinTemp
             // 
             this.lblMinTemp.AutoSize = true;
+            this.lblMinTemp.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMinTemp.Location = new System.Drawing.Point(20, 206);
             this.lblMinTemp.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMinTemp.Name = "lblMinTemp";
-            this.lblMinTemp.Size = new System.Drawing.Size(154, 20);
+            this.lblMinTemp.Size = new System.Drawing.Size(176, 22);
             this.lblMinTemp.TabIndex = 10;
             this.lblMinTemp.Text = "Temperature [deg C]";
-            // 
-            // txtDateRun
-            // 
-            this.txtDateRun.Location = new System.Drawing.Point(276, 146);
-            this.txtDateRun.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtDateRun.Name = "txtDateRun";
-            this.txtDateRun.ReadOnly = true;
-            this.txtDateRun.Size = new System.Drawing.Size(242, 26);
-            this.txtDateRun.TabIndex = 9;
             // 
             // lblDateRun
             // 
             this.lblDateRun.AutoSize = true;
+            this.lblDateRun.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDateRun.Location = new System.Drawing.Point(276, 120);
             this.lblDateRun.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDateRun.Name = "lblDateRun";
-            this.lblDateRun.Size = new System.Drawing.Size(76, 20);
+            this.lblDateRun.Size = new System.Drawing.Size(86, 22);
             this.lblDateRun.TabIndex = 8;
             this.lblDateRun.Text = "Test date";
-            // 
-            // txtOperator
-            // 
-            this.txtOperator.Location = new System.Drawing.Point(276, 320);
-            this.txtOperator.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtOperator.Name = "txtOperator";
-            this.txtOperator.Size = new System.Drawing.Size(242, 26);
-            this.txtOperator.TabIndex = 7;
             // 
             // lblOperator
             // 
             this.lblOperator.AutoSize = true;
+            this.lblOperator.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblOperator.Location = new System.Drawing.Point(276, 294);
             this.lblOperator.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblOperator.Name = "lblOperator";
-            this.lblOperator.Size = new System.Drawing.Size(72, 20);
+            this.lblOperator.Size = new System.Drawing.Size(81, 22);
             this.lblOperator.TabIndex = 6;
             this.lblOperator.Text = "Operator";
-            // 
-            // txtSupervisor
-            // 
-            this.txtSupervisor.Location = new System.Drawing.Point(20, 320);
-            this.txtSupervisor.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtSupervisor.Name = "txtSupervisor";
-            this.txtSupervisor.Size = new System.Drawing.Size(242, 26);
-            this.txtSupervisor.TabIndex = 5;
             // 
             // lblSupervisor
             // 
             this.lblSupervisor.AutoSize = true;
+            this.lblSupervisor.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSupervisor.Location = new System.Drawing.Point(20, 294);
             this.lblSupervisor.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblSupervisor.Name = "lblSupervisor";
-            this.lblSupervisor.Size = new System.Drawing.Size(84, 20);
+            this.lblSupervisor.Size = new System.Drawing.Size(96, 22);
             this.lblSupervisor.TabIndex = 4;
             this.lblSupervisor.Text = "Supervisor";
-            // 
-            // txtSequenceName
-            // 
-            this.txtSequenceName.Location = new System.Drawing.Point(20, 54);
-            this.txtSequenceName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtSequenceName.Name = "txtSequenceName";
-            this.txtSequenceName.Size = new System.Drawing.Size(500, 26);
-            this.txtSequenceName.TabIndex = 3;
             // 
             // lblSequenceName
             // 
             this.lblSequenceName.AutoSize = true;
+            this.lblSequenceName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSequenceName.Location = new System.Drawing.Point(20, 26);
             this.lblSequenceName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblSequenceName.Name = "lblSequenceName";
-            this.lblSequenceName.Size = new System.Drawing.Size(114, 20);
+            this.lblSequenceName.Size = new System.Drawing.Size(129, 22);
             this.lblSequenceName.TabIndex = 2;
             this.lblSequenceName.Text = "Test sequence";
-            // 
-            // txtStatus
-            // 
-            this.txtStatus.Location = new System.Drawing.Point(20, 146);
-            this.txtStatus.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtStatus.Name = "txtStatus";
-            this.txtStatus.ReadOnly = true;
-            this.txtStatus.Size = new System.Drawing.Size(242, 26);
-            this.txtStatus.TabIndex = 1;
-            this.txtStatus.Text = "New Run";
+            this.lblSequenceName.Click += new System.EventHandler(this.lblSequenceName_Click);
             // 
             // lblStatus
             // 
             this.lblStatus.AutoSize = true;
+            this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblStatus.Location = new System.Drawing.Point(20, 120);
             this.lblStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(48, 20);
+            this.lblStatus.Size = new System.Drawing.Size(52, 22);
             this.lblStatus.TabIndex = 0;
             this.lblStatus.Text = "State";
             // 
             // tabDevices
             // 
+            this.tabDevices.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tabDevices.BackgroundImage")));
             this.tabDevices.Controls.Add(this.grpDeviceInputs);
             this.tabDevices.Controls.Add(this.dgvMeters);
             this.tabDevices.Location = new System.Drawing.Point(4, 29);
@@ -419,6 +341,8 @@ namespace CabconPMP.UI
             // 
             // grpDeviceInputs
             // 
+            this.grpDeviceInputs.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("grpDeviceInputs.BackgroundImage")));
+            this.grpDeviceInputs.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.grpDeviceInputs.Controls.Add(this.btnDeleteDevice);
             this.grpDeviceInputs.Controls.Add(this.btnAddDevice);
             this.grpDeviceInputs.Controls.Add(this.cmbClientNo);
@@ -447,7 +371,7 @@ namespace CabconPMP.UI
             this.grpDeviceInputs.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grpDeviceInputs.Name = "grpDeviceInputs";
             this.grpDeviceInputs.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grpDeviceInputs.Size = new System.Drawing.Size(1066, 269);
+            this.grpDeviceInputs.Size = new System.Drawing.Size(1191, 269);
             this.grpDeviceInputs.TabIndex = 0;
             this.grpDeviceInputs.TabStop = false;
             // 
@@ -682,42 +606,45 @@ namespace CabconPMP.UI
             // 
             this.dgvMeters.AllowUserToAddRows = false;
             this.dgvMeters.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMeters.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvMeters.BackgroundColor = System.Drawing.Color.GhostWhite;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMeters.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvMeters.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMeters.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMeters.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgvMeters.Location = new System.Drawing.Point(14, 285);
             this.dgvMeters.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dgvMeters.Name = "dgvMeters";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMeters.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMeters.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.dgvMeters.RowHeadersVisible = false;
             this.dgvMeters.RowHeadersWidth = 62;
             this.dgvMeters.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMeters.Size = new System.Drawing.Size(1066, 363);
+            this.dgvMeters.Size = new System.Drawing.Size(1191, 363);
             this.dgvMeters.TabIndex = 1;
             // 
             // tabSequence
             // 
+            this.tabSequence.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tabSequence.BackgroundImage")));
+            this.tabSequence.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.tabSequence.Controls.Add(this.lblReset);
             this.tabSequence.Controls.Add(this.lblDisplayParaTotalSelected);
             this.tabSequence.Controls.Add(this.btnDispAutoMoveDown);
@@ -835,9 +762,10 @@ namespace CabconPMP.UI
             // 
             // lstDisplatAutoSelected
             // 
+            this.lstDisplatAutoSelected.BackColor = System.Drawing.SystemColors.MenuBar;
             this.lstDisplatAutoSelected.FormattingEnabled = true;
             this.lstDisplatAutoSelected.ItemHeight = 20;
-            this.lstDisplatAutoSelected.Location = new System.Drawing.Point(638, 54);
+            this.lstDisplatAutoSelected.Location = new System.Drawing.Point(637, 54);
             this.lstDisplatAutoSelected.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.lstDisplatAutoSelected.Name = "lstDisplatAutoSelected";
             this.lstDisplatAutoSelected.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
@@ -856,6 +784,7 @@ namespace CabconPMP.UI
             // 
             // lstAvailableProcedures
             // 
+            this.lstAvailableProcedures.BackColor = System.Drawing.SystemColors.MenuBar;
             this.lstAvailableProcedures.FormattingEnabled = true;
             this.lstAvailableProcedures.ItemHeight = 20;
             this.lstAvailableProcedures.Location = new System.Drawing.Point(14, 54);
@@ -1499,6 +1428,104 @@ namespace CabconPMP.UI
             this.dgvResults.RowHeadersWidth = 62;
             this.dgvResults.Size = new System.Drawing.Size(1066, 560);
             this.dgvResults.TabIndex = 0;
+            // 
+            // txtComment
+            // 
+            this.txtComment.BackColor = System.Drawing.Color.Transparent;
+            this.txtComment.Location = new System.Drawing.Point(566, 54);
+            this.txtComment.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtComment.Multiline = true;
+            this.txtComment.Name = "txtComment";
+            this.txtComment.Size = new System.Drawing.Size(500, 319);
+            this.txtComment.TabIndex = 19;
+            // 
+            // txtMaxRH
+            // 
+            this.txtMaxRH.BackColor = System.Drawing.Color.Transparent;
+            this.txtMaxRH.Location = new System.Drawing.Point(405, 234);
+            this.txtMaxRH.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtMaxRH.Name = "txtMaxRH";
+            this.txtMaxRH.Size = new System.Drawing.Size(115, 26);
+            this.txtMaxRH.TabIndex = 17;
+            this.txtMaxRH.Text = "55.0";
+            // 
+            // txtMinRH
+            // 
+            this.txtMinRH.BackColor = System.Drawing.Color.Transparent;
+            this.txtMinRH.Location = new System.Drawing.Point(276, 234);
+            this.txtMinRH.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtMinRH.Name = "txtMinRH";
+            this.txtMinRH.Size = new System.Drawing.Size(115, 26);
+            this.txtMinRH.TabIndex = 15;
+            this.txtMinRH.Text = "45.0";
+            // 
+            // txtMaxTemp
+            // 
+            this.txtMaxTemp.BackColor = System.Drawing.Color.Transparent;
+            this.txtMaxTemp.Location = new System.Drawing.Point(148, 234);
+            this.txtMaxTemp.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtMaxTemp.Name = "txtMaxTemp";
+            this.txtMaxTemp.Size = new System.Drawing.Size(115, 26);
+            this.txtMaxTemp.TabIndex = 13;
+            this.txtMaxTemp.Text = "25.0";
+            // 
+            // txtMinTemp
+            // 
+            this.txtMinTemp.BackColor = System.Drawing.Color.Transparent;
+            this.txtMinTemp.Location = new System.Drawing.Point(20, 234);
+            this.txtMinTemp.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtMinTemp.Name = "txtMinTemp";
+            this.txtMinTemp.Size = new System.Drawing.Size(115, 26);
+            this.txtMinTemp.TabIndex = 11;
+            this.txtMinTemp.Text = "23.0";
+            // 
+            // txtDateRun
+            // 
+            this.txtDateRun.BackColor = System.Drawing.Color.Transparent;
+            this.txtDateRun.Location = new System.Drawing.Point(276, 146);
+            this.txtDateRun.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtDateRun.Name = "txtDateRun";
+            this.txtDateRun.ReadOnly = true;
+            this.txtDateRun.Size = new System.Drawing.Size(242, 26);
+            this.txtDateRun.TabIndex = 9;
+            // 
+            // txtOperator
+            // 
+            this.txtOperator.BackColor = System.Drawing.Color.Transparent;
+            this.txtOperator.Location = new System.Drawing.Point(276, 320);
+            this.txtOperator.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtOperator.Name = "txtOperator";
+            this.txtOperator.Size = new System.Drawing.Size(242, 26);
+            this.txtOperator.TabIndex = 7;
+            // 
+            // txtSupervisor
+            // 
+            this.txtSupervisor.BackColor = System.Drawing.Color.Transparent;
+            this.txtSupervisor.Location = new System.Drawing.Point(20, 320);
+            this.txtSupervisor.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtSupervisor.Name = "txtSupervisor";
+            this.txtSupervisor.Size = new System.Drawing.Size(242, 26);
+            this.txtSupervisor.TabIndex = 5;
+            // 
+            // txtSequenceName
+            // 
+            this.txtSequenceName.BackColor = System.Drawing.Color.Transparent;
+            this.txtSequenceName.Location = new System.Drawing.Point(20, 54);
+            this.txtSequenceName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtSequenceName.Name = "txtSequenceName";
+            this.txtSequenceName.Size = new System.Drawing.Size(500, 26);
+            this.txtSequenceName.TabIndex = 3;
+            // 
+            // txtStatus
+            // 
+            this.txtStatus.BackColor = System.Drawing.Color.Transparent;
+            this.txtStatus.Location = new System.Drawing.Point(20, 146);
+            this.txtStatus.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtStatus.Name = "txtStatus";
+            this.txtStatus.ReadOnly = true;
+            this.txtStatus.Size = new System.Drawing.Size(242, 26);
+            this.txtStatus.TabIndex = 1;
+            this.txtStatus.Text = "New Run";
             // 
             // frmTestRun
             // 

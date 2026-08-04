@@ -3157,6 +3157,11 @@ namespace CabconPMP.UI
                 Log($"[Finally Action] 'Finally' checklist validation running for step: {step.Name}");
             }
         }
+
+        private void lblSequenceName_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
     public class MeterAllocationRow
