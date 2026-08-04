@@ -808,5 +808,10 @@ namespace CabconPMP.UI
         {
 
         }
+
+        private void tabParameters_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

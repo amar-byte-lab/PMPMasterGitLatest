@@ -205,7 +205,7 @@ namespace CabconPMP.UI
             // btnSave
             // 
             this.btnSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSave.Location = new System.Drawing.Point(1003, 620);
+            this.btnSave.Location = new System.Drawing.Point(1033, 707);
             this.btnSave.Margin = new System.Windows.Forms.Padding(4);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(116, 40);
@@ -221,7 +221,7 @@ namespace CabconPMP.UI
             this.lstSteps.Location = new System.Drawing.Point(15, 100);
             this.lstSteps.Margin = new System.Windows.Forms.Padding(4);
             this.lstSteps.Name = "lstSteps";
-            this.lstSteps.Size = new System.Drawing.Size(256, 424);
+            this.lstSteps.Size = new System.Drawing.Size(301, 504);
             this.lstSteps.TabIndex = 8;
             this.lstSteps.SelectedIndexChanged += new System.EventHandler(this.lstSteps_SelectedIndexChanged);
             // 
@@ -238,7 +238,7 @@ namespace CabconPMP.UI
             // 
             // btnAddStep
             // 
-            this.btnAddStep.Location = new System.Drawing.Point(15, 540);
+            this.btnAddStep.Location = new System.Drawing.Point(13, 621);
             this.btnAddStep.Margin = new System.Windows.Forms.Padding(4);
             this.btnAddStep.Name = "btnAddStep";
             this.btnAddStep.Size = new System.Drawing.Size(116, 33);
@@ -249,7 +249,7 @@ namespace CabconPMP.UI
             // 
             // btnDeleteStep
             // 
-            this.btnDeleteStep.Location = new System.Drawing.Point(157, 540);
+            this.btnDeleteStep.Location = new System.Drawing.Point(190, 621);
             this.btnDeleteStep.Margin = new System.Windows.Forms.Padding(4);
             this.btnDeleteStep.Name = "btnDeleteStep";
             this.btnDeleteStep.Size = new System.Drawing.Size(116, 33);
@@ -260,7 +260,7 @@ namespace CabconPMP.UI
             // 
             // btnMoveUp
             // 
-            this.btnMoveUp.Location = new System.Drawing.Point(15, 581);
+            this.btnMoveUp.Location = new System.Drawing.Point(13, 662);
             this.btnMoveUp.Margin = new System.Windows.Forms.Padding(4);
             this.btnMoveUp.Name = "btnMoveUp";
             this.btnMoveUp.Size = new System.Drawing.Size(116, 33);
@@ -271,7 +271,7 @@ namespace CabconPMP.UI
             // 
             // btnMoveDown
             // 
-            this.btnMoveDown.Location = new System.Drawing.Point(157, 581);
+            this.btnMoveDown.Location = new System.Drawing.Point(190, 666);
             this.btnMoveDown.Margin = new System.Windows.Forms.Padding(4);
             this.btnMoveDown.Name = "btnMoveDown";
             this.btnMoveDown.Size = new System.Drawing.Size(116, 33);
@@ -286,17 +286,17 @@ namespace CabconPMP.UI
             this.tabControlStepDetails.Controls.Add(this.tabType);
             this.tabControlStepDetails.Controls.Add(this.tabDuration);
             this.tabControlStepDetails.Controls.Add(this.tabControls);
-            this.tabControlStepDetails.Location = new System.Drawing.Point(296, 73);
+            this.tabControlStepDetails.Location = new System.Drawing.Point(346, 73);
             this.tabControlStepDetails.Margin = new System.Windows.Forms.Padding(4);
             this.tabControlStepDetails.Name = "tabControlStepDetails";
             this.tabControlStepDetails.SelectedIndex = 0;
-            this.tabControlStepDetails.Size = new System.Drawing.Size(823, 541);
+            this.tabControlStepDetails.Size = new System.Drawing.Size(949, 626);
             this.tabControlStepDetails.TabIndex = 14;
             // 
             // tabParameters
             // 
             this.tabParameters.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tabParameters.BackgroundImage")));
-            this.tabParameters.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.tabParameters.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.tabParameters.Controls.Add(this.txtStepName);
             this.tabParameters.Controls.Add(this.lblStepName);
             this.tabParameters.Controls.Add(this.grpRotation);
@@ -326,10 +326,11 @@ namespace CabconPMP.UI
             this.tabParameters.Margin = new System.Windows.Forms.Padding(4);
             this.tabParameters.Name = "tabParameters";
             this.tabParameters.Padding = new System.Windows.Forms.Padding(4);
-            this.tabParameters.Size = new System.Drawing.Size(815, 500);
+            this.tabParameters.Size = new System.Drawing.Size(941, 593);
             this.tabParameters.TabIndex = 0;
             this.tabParameters.Text = "Test parameters";
             this.tabParameters.UseVisualStyleBackColor = true;
+            this.tabParameters.Click += new System.EventHandler(this.tabParameters_Click);
             // 
             // txtStepName
             // 
@@ -337,7 +338,7 @@ namespace CabconPMP.UI
             this.txtStepName.Location = new System.Drawing.Point(129, 20);
             this.txtStepName.Margin = new System.Windows.Forms.Padding(4);
             this.txtStepName.Name = "txtStepName";
-            this.txtStepName.Size = new System.Drawing.Size(655, 26);
+            this.txtStepName.Size = new System.Drawing.Size(773, 26);
             this.txtStepName.TabIndex = 24;
             this.txtStepName.TextChanged += new System.EventHandler(this.DetailControl_Changed);
             // 
@@ -355,7 +356,7 @@ namespace CabconPMP.UI
             // 
             this.grpRotation.Controls.Add(this.rbL132);
             this.grpRotation.Controls.Add(this.rbL123);
-            this.grpRotation.Location = new System.Drawing.Point(482, 367);
+            this.grpRotation.Location = new System.Drawing.Point(652, 425);
             this.grpRotation.Margin = new System.Windows.Forms.Padding(4);
             this.grpRotation.Name = "grpRotation";
             this.grpRotation.Padding = new System.Windows.Forms.Padding(4);
@@ -401,17 +402,17 @@ namespace CabconPMP.UI
             "60",
             "45",
             "55"});
-            this.cmbFreq.Location = new System.Drawing.Point(309, 400);
+            this.cmbFreq.Location = new System.Drawing.Point(334, 473);
             this.cmbFreq.Margin = new System.Windows.Forms.Padding(4);
             this.cmbFreq.Name = "cmbFreq";
-            this.cmbFreq.Size = new System.Drawing.Size(127, 27);
+            this.cmbFreq.Size = new System.Drawing.Size(156, 27);
             this.cmbFreq.TabIndex = 21;
             this.cmbFreq.TextChanged += new System.EventHandler(this.DetailControl_Changed);
             // 
             // lblStepFreq
             // 
             this.lblStepFreq.AutoSize = true;
-            this.lblStepFreq.Location = new System.Drawing.Point(257, 404);
+            this.lblStepFreq.Location = new System.Drawing.Point(380, 435);
             this.lblStepFreq.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblStepFreq.Name = "lblStepFreq";
             this.lblStepFreq.Size = new System.Drawing.Size(46, 20);
@@ -428,17 +429,17 @@ namespace CabconPMP.UI
             "Sine wave",
             "Harmonics",
             "Triangle"});
-            this.cmbWaveform.Location = new System.Drawing.Point(51, 400);
+            this.cmbWaveform.Location = new System.Drawing.Point(26, 477);
             this.cmbWaveform.Margin = new System.Windows.Forms.Padding(4);
             this.cmbWaveform.Name = "cmbWaveform";
-            this.cmbWaveform.Size = new System.Drawing.Size(179, 27);
+            this.cmbWaveform.Size = new System.Drawing.Size(204, 27);
             this.cmbWaveform.TabIndex = 19;
             this.cmbWaveform.SelectedIndexChanged += new System.EventHandler(this.DetailControl_Changed);
             // 
             // lblWaveform
             // 
             this.lblWaveform.AutoSize = true;
-            this.lblWaveform.Location = new System.Drawing.Point(51, 367);
+            this.lblWaveform.Location = new System.Drawing.Point(68, 440);
             this.lblWaveform.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblWaveform.Name = "lblWaveform";
             this.lblWaveform.Size = new System.Drawing.Size(85, 20);
@@ -458,17 +459,17 @@ namespace CabconPMP.UI
             "0.5C",
             "0.25L",
             "0.0"});
-            this.cmbPFValue.Location = new System.Drawing.Point(437, 287);
+            this.cmbPFValue.Location = new System.Drawing.Point(652, 311);
             this.cmbPFValue.Margin = new System.Windows.Forms.Padding(4);
             this.cmbPFValue.Name = "cmbPFValue";
-            this.cmbPFValue.Size = new System.Drawing.Size(140, 27);
+            this.cmbPFValue.Size = new System.Drawing.Size(102, 27);
             this.cmbPFValue.TabIndex = 17;
             this.cmbPFValue.TextChanged += new System.EventHandler(this.DetailControl_Changed);
             // 
             // lblPFValue
             // 
             this.lblPFValue.AutoSize = true;
-            this.lblPFValue.Location = new System.Drawing.Point(437, 263);
+            this.lblPFValue.Location = new System.Drawing.Point(666, 274);
             this.lblPFValue.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPFValue.Name = "lblPFValue";
             this.lblPFValue.Size = new System.Drawing.Size(74, 20);
@@ -479,7 +480,7 @@ namespace CabconPMP.UI
             // 
             this.grpLagLead.Controls.Add(this.rbLeading);
             this.grpLagLead.Controls.Add(this.rbLagging);
-            this.grpLagLead.Location = new System.Drawing.Point(309, 240);
+            this.grpLagLead.Location = new System.Drawing.Point(337, 304);
             this.grpLagLead.Margin = new System.Windows.Forms.Padding(4);
             this.grpLagLead.Name = "grpLagLead";
             this.grpLagLead.Padding = new System.Windows.Forms.Padding(4);
@@ -517,7 +518,7 @@ namespace CabconPMP.UI
             // 
             this.grpConsDeliv.Controls.Add(this.rbDelivery);
             this.grpConsDeliv.Controls.Add(this.rbConsumption);
-            this.grpConsDeliv.Location = new System.Drawing.Point(167, 240);
+            this.grpConsDeliv.Location = new System.Drawing.Point(157, 324);
             this.grpConsDeliv.Margin = new System.Windows.Forms.Padding(4);
             this.grpConsDeliv.Name = "grpConsDeliv";
             this.grpConsDeliv.Padding = new System.Windows.Forms.Padding(4);
@@ -560,7 +561,7 @@ namespace CabconPMP.UI
             this.cmbPFType.Items.AddRange(new object[] {
             "cos phi",
             "sin phi"});
-            this.cmbPFType.Location = new System.Drawing.Point(26, 287);
+            this.cmbPFType.Location = new System.Drawing.Point(26, 304);
             this.cmbPFType.Margin = new System.Windows.Forms.Padding(4);
             this.cmbPFType.Name = "cmbPFType";
             this.cmbPFType.Size = new System.Drawing.Size(127, 27);
@@ -570,7 +571,7 @@ namespace CabconPMP.UI
             // lblPFType
             // 
             this.lblPFType.AutoSize = true;
-            this.lblPFType.Location = new System.Drawing.Point(26, 263);
+            this.lblPFType.Location = new System.Drawing.Point(46, 271);
             this.lblPFType.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPFType.Name = "lblPFType";
             this.lblPFType.Size = new System.Drawing.Size(67, 20);
@@ -580,7 +581,7 @@ namespace CabconPMP.UI
             // lblStepIC
             // 
             this.lblStepIC.AutoSize = true;
-            this.lblStepIC.Location = new System.Drawing.Point(540, 164);
+            this.lblStepIC.Location = new System.Drawing.Point(686, 174);
             this.lblStepIC.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblStepIC.Name = "lblStepIC";
             this.lblStepIC.Size = new System.Drawing.Size(25, 20);
@@ -600,17 +601,17 @@ namespace CabconPMP.UI
             "10",
             "5",
             "0"});
-            this.cmbIC.Location = new System.Drawing.Point(540, 187);
+            this.cmbIC.Location = new System.Drawing.Point(653, 203);
             this.cmbIC.Margin = new System.Windows.Forms.Padding(4);
             this.cmbIC.Name = "cmbIC";
-            this.cmbIC.Size = new System.Drawing.Size(102, 27);
+            this.cmbIC.Size = new System.Drawing.Size(101, 27);
             this.cmbIC.TabIndex = 10;
             this.cmbIC.TextChanged += new System.EventHandler(this.DetailControl_Changed);
             // 
             // lblStepIB
             // 
             this.lblStepIB.AutoSize = true;
-            this.lblStepIB.Location = new System.Drawing.Point(283, 164);
+            this.lblStepIB.Location = new System.Drawing.Point(384, 173);
             this.lblStepIB.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblStepIB.Name = "lblStepIB";
             this.lblStepIB.Size = new System.Drawing.Size(25, 20);
@@ -630,17 +631,17 @@ namespace CabconPMP.UI
             "10",
             "5",
             "0"});
-            this.cmbIB.Location = new System.Drawing.Point(283, 187);
+            this.cmbIB.Location = new System.Drawing.Point(353, 204);
             this.cmbIB.Margin = new System.Windows.Forms.Padding(4);
             this.cmbIB.Name = "cmbIB";
-            this.cmbIB.Size = new System.Drawing.Size(102, 27);
+            this.cmbIB.Size = new System.Drawing.Size(100, 27);
             this.cmbIB.TabIndex = 8;
             this.cmbIB.TextChanged += new System.EventHandler(this.DetailControl_Changed);
             // 
             // lblStepIA
             // 
             this.lblStepIA.AutoSize = true;
-            this.lblStepIA.Location = new System.Drawing.Point(26, 164);
+            this.lblStepIA.Location = new System.Drawing.Point(69, 176);
             this.lblStepIA.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblStepIA.Name = "lblStepIA";
             this.lblStepIA.Size = new System.Drawing.Size(25, 20);
@@ -660,17 +661,17 @@ namespace CabconPMP.UI
             "10",
             "5",
             "0"});
-            this.cmbIA.Location = new System.Drawing.Point(26, 187);
+            this.cmbIA.Location = new System.Drawing.Point(26, 207);
             this.cmbIA.Margin = new System.Windows.Forms.Padding(4);
             this.cmbIA.Name = "cmbIA";
-            this.cmbIA.Size = new System.Drawing.Size(102, 27);
+            this.cmbIA.Size = new System.Drawing.Size(127, 27);
             this.cmbIA.TabIndex = 6;
             this.cmbIA.TextChanged += new System.EventHandler(this.DetailControl_Changed);
             // 
             // lblStepUC
             // 
             this.lblStepUC.AutoSize = true;
-            this.lblStepUC.Location = new System.Drawing.Point(540, 77);
+            this.lblStepUC.Location = new System.Drawing.Point(682, 86);
             this.lblStepUC.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblStepUC.Name = "lblStepUC";
             this.lblStepUC.Size = new System.Drawing.Size(32, 20);
@@ -686,7 +687,7 @@ namespace CabconPMP.UI
             this.cmbUC.Items.AddRange(new object[] {
             "100",
             "0"});
-            this.cmbUC.Location = new System.Drawing.Point(540, 100);
+            this.cmbUC.Location = new System.Drawing.Point(652, 120);
             this.cmbUC.Margin = new System.Windows.Forms.Padding(4);
             this.cmbUC.Name = "cmbUC";
             this.cmbUC.Size = new System.Drawing.Size(102, 27);
@@ -696,7 +697,7 @@ namespace CabconPMP.UI
             // lblStepUB
             // 
             this.lblStepUB.AutoSize = true;
-            this.lblStepUB.Location = new System.Drawing.Point(283, 77);
+            this.lblStepUB.Location = new System.Drawing.Point(376, 83);
             this.lblStepUB.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblStepUB.Name = "lblStepUB";
             this.lblStepUB.Size = new System.Drawing.Size(32, 20);
@@ -712,7 +713,7 @@ namespace CabconPMP.UI
             this.cmbUB.Items.AddRange(new object[] {
             "100",
             "0"});
-            this.cmbUB.Location = new System.Drawing.Point(283, 100);
+            this.cmbUB.Location = new System.Drawing.Point(351, 115);
             this.cmbUB.Margin = new System.Windows.Forms.Padding(4);
             this.cmbUB.Name = "cmbUB";
             this.cmbUB.Size = new System.Drawing.Size(102, 27);
@@ -722,7 +723,7 @@ namespace CabconPMP.UI
             // lblStepUA
             // 
             this.lblStepUA.AutoSize = true;
-            this.lblStepUA.Location = new System.Drawing.Point(26, 77);
+            this.lblStepUA.Location = new System.Drawing.Point(62, 85);
             this.lblStepUA.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblStepUA.Name = "lblStepUA";
             this.lblStepUA.Size = new System.Drawing.Size(32, 20);
@@ -738,10 +739,10 @@ namespace CabconPMP.UI
             this.cmbUA.Items.AddRange(new object[] {
             "100",
             "0"});
-            this.cmbUA.Location = new System.Drawing.Point(26, 100);
+            this.cmbUA.Location = new System.Drawing.Point(26, 115);
             this.cmbUA.Margin = new System.Windows.Forms.Padding(4);
             this.cmbUA.Name = "cmbUA";
-            this.cmbUA.Size = new System.Drawing.Size(102, 27);
+            this.cmbUA.Size = new System.Drawing.Size(127, 27);
             this.cmbUA.TabIndex = 1;
             this.cmbUA.TextChanged += new System.EventHandler(this.DetailControl_Changed);
             // 
@@ -762,7 +763,7 @@ namespace CabconPMP.UI
             this.tabType.Margin = new System.Windows.Forms.Padding(4);
             this.tabType.Name = "tabType";
             this.tabType.Padding = new System.Windows.Forms.Padding(4);
-            this.tabType.Size = new System.Drawing.Size(815, 500);
+            this.tabType.Size = new System.Drawing.Size(941, 593);
             this.tabType.TabIndex = 1;
             this.tabType.Text = "Test type";
             this.tabType.UseVisualStyleBackColor = true;
@@ -772,7 +773,7 @@ namespace CabconPMP.UI
             this.grpImpExp.Controls.Add(this.chkImport2);
             this.grpImpExp.Controls.Add(this.chkExport);
             this.grpImpExp.Controls.Add(this.chkImport);
-            this.grpImpExp.Location = new System.Drawing.Point(630, 247);
+            this.grpImpExp.Location = new System.Drawing.Point(757, 260);
             this.grpImpExp.Margin = new System.Windows.Forms.Padding(4);
             this.grpImpExp.Name = "grpImpExp";
             this.grpImpExp.Padding = new System.Windows.Forms.Padding(4);
@@ -822,7 +823,7 @@ namespace CabconPMP.UI
             this.grpStoring.Controls.Add(this.rbMean);
             this.grpStoring.Controls.Add(this.rbLastVal);
             this.grpStoring.Controls.Add(this.rbStoreNone);
-            this.grpStoring.Location = new System.Drawing.Point(630, 20);
+            this.grpStoring.Location = new System.Drawing.Point(757, 26);
             this.grpStoring.Margin = new System.Windows.Forms.Padding(4);
             this.grpStoring.Name = "grpStoring";
             this.grpStoring.Padding = new System.Windows.Forms.Padding(4);
@@ -873,7 +874,7 @@ namespace CabconPMP.UI
             // 
             this.grpChannel.Controls.Add(this.cmbChannelNo);
             this.grpChannel.Controls.Add(this.lblChannelNo);
-            this.grpChannel.Location = new System.Drawing.Point(360, 367);
+            this.grpChannel.Location = new System.Drawing.Point(456, 407);
             this.grpChannel.Margin = new System.Windows.Forms.Padding(4);
             this.grpChannel.Name = "grpChannel";
             this.grpChannel.Padding = new System.Windows.Forms.Padding(4);
@@ -920,7 +921,7 @@ namespace CabconPMP.UI
             this.grpErrorDial.Controls.Add(this.lblLLimit);
             this.grpErrorDial.Controls.Add(this.cmbULimit);
             this.grpErrorDial.Controls.Add(this.lblULimit);
-            this.grpErrorDial.Location = new System.Drawing.Point(26, 220);
+            this.grpErrorDial.Location = new System.Drawing.Point(127, 249);
             this.grpErrorDial.Margin = new System.Windows.Forms.Padding(4);
             this.grpErrorDial.Name = "grpErrorDial";
             this.grpErrorDial.Padding = new System.Windows.Forms.Padding(4);
@@ -1054,7 +1055,7 @@ namespace CabconPMP.UI
             // 
             this.grpStartCreep.Controls.Add(this.cmbNumPulsesSC);
             this.grpStartCreep.Controls.Add(this.lblNumPulsesSC);
-            this.grpStartCreep.Location = new System.Drawing.Point(26, 87);
+            this.grpStartCreep.Location = new System.Drawing.Point(129, 105);
             this.grpStartCreep.Margin = new System.Windows.Forms.Padding(4);
             this.grpStartCreep.Name = "grpStartCreep";
             this.grpStartCreep.Padding = new System.Windows.Forms.Padding(4);
@@ -1094,7 +1095,7 @@ namespace CabconPMP.UI
             // lblMeasurement
             // 
             this.lblMeasurement.AutoSize = true;
-            this.lblMeasurement.Location = new System.Drawing.Point(360, 24);
+            this.lblMeasurement.Location = new System.Drawing.Point(380, 24);
             this.lblMeasurement.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMeasurement.Name = "lblMeasurement";
             this.lblMeasurement.Size = new System.Drawing.Size(107, 20);
@@ -1121,10 +1122,10 @@ namespace CabconPMP.UI
             "Active (P)",
             "Reactive (Q)",
             "Apparent (S)"});
-            this.cmbMeasurement.Location = new System.Drawing.Point(469, 20);
+            this.cmbMeasurement.Location = new System.Drawing.Point(490, 20);
             this.cmbMeasurement.Margin = new System.Windows.Forms.Padding(4);
             this.cmbMeasurement.Name = "cmbMeasurement";
-            this.cmbMeasurement.Size = new System.Drawing.Size(140, 27);
+            this.cmbMeasurement.Size = new System.Drawing.Size(202, 27);
             this.cmbMeasurement.TabIndex = 3;
             this.cmbMeasurement.SelectedIndexChanged += new System.EventHandler(this.DetailControl_Changed);
             // 
@@ -1155,7 +1156,7 @@ namespace CabconPMP.UI
             this.tabDuration.Location = new System.Drawing.Point(4, 29);
             this.tabDuration.Margin = new System.Windows.Forms.Padding(4);
             this.tabDuration.Name = "tabDuration";
-            this.tabDuration.Size = new System.Drawing.Size(815, 500);
+            this.tabDuration.Size = new System.Drawing.Size(941, 593);
             this.tabDuration.TabIndex = 2;
             this.tabDuration.Text = "Test duration";
             this.tabDuration.UseVisualStyleBackColor = true;
@@ -1284,7 +1285,7 @@ namespace CabconPMP.UI
             this.tabControls.Location = new System.Drawing.Point(4, 29);
             this.tabControls.Margin = new System.Windows.Forms.Padding(4);
             this.tabControls.Name = "tabControls";
-            this.tabControls.Size = new System.Drawing.Size(815, 508);
+            this.tabControls.Size = new System.Drawing.Size(941, 593);
             this.tabControls.TabIndex = 3;
             this.tabControls.Text = "Control functions";
             this.tabControls.UseVisualStyleBackColor = true;
@@ -1292,7 +1293,7 @@ namespace CabconPMP.UI
             // chkWithAmp
             // 
             this.chkWithAmp.AutoSize = true;
-            this.chkWithAmp.Location = new System.Drawing.Point(309, 453);
+            this.chkWithAmp.Location = new System.Drawing.Point(301, 464);
             this.chkWithAmp.Margin = new System.Windows.Forms.Padding(4);
             this.chkWithAmp.Name = "chkWithAmp";
             this.chkWithAmp.Size = new System.Drawing.Size(61, 24);
@@ -1371,17 +1372,17 @@ namespace CabconPMP.UI
             // 
             this.lstAfterCmds.FormattingEnabled = true;
             this.lstAfterCmds.ItemHeight = 20;
-            this.lstAfterCmds.Location = new System.Drawing.Point(373, 347);
+            this.lstAfterCmds.Location = new System.Drawing.Point(373, 387);
             this.lstAfterCmds.Margin = new System.Windows.Forms.Padding(4);
             this.lstAfterCmds.Name = "lstAfterCmds";
-            this.lstAfterCmds.Size = new System.Drawing.Size(417, 124);
+            this.lstAfterCmds.Size = new System.Drawing.Size(549, 164);
             this.lstAfterCmds.TabIndex = 9;
             // 
             // lblAfterCmds
             // 
             this.lblAfterCmds.AutoSize = true;
             this.lblAfterCmds.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAfterCmds.Location = new System.Drawing.Point(373, 323);
+            this.lblAfterCmds.Location = new System.Drawing.Point(373, 354);
             this.lblAfterCmds.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblAfterCmds.Name = "lblAfterCmds";
             this.lblAfterCmds.Size = new System.Drawing.Size(82, 22);
@@ -1393,17 +1394,17 @@ namespace CabconPMP.UI
             // 
             this.lstDuringCmds.FormattingEnabled = true;
             this.lstDuringCmds.ItemHeight = 20;
-            this.lstDuringCmds.Location = new System.Drawing.Point(373, 187);
+            this.lstDuringCmds.Location = new System.Drawing.Point(373, 207);
             this.lstDuringCmds.Margin = new System.Windows.Forms.Padding(4);
             this.lstDuringCmds.Name = "lstDuringCmds";
-            this.lstDuringCmds.Size = new System.Drawing.Size(417, 124);
+            this.lstDuringCmds.Size = new System.Drawing.Size(549, 144);
             this.lstDuringCmds.TabIndex = 7;
             // 
             // lblDuringCmds
             // 
             this.lblDuringCmds.AutoSize = true;
             this.lblDuringCmds.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDuringCmds.Location = new System.Drawing.Point(373, 163);
+            this.lblDuringCmds.Location = new System.Drawing.Point(373, 177);
             this.lblDuringCmds.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDuringCmds.Name = "lblDuringCmds";
             this.lblDuringCmds.Size = new System.Drawing.Size(97, 22);
@@ -1417,7 +1418,7 @@ namespace CabconPMP.UI
             this.lstBeforeCmds.Location = new System.Drawing.Point(373, 27);
             this.lstBeforeCmds.Margin = new System.Windows.Forms.Padding(4);
             this.lstBeforeCmds.Name = "lstBeforeCmds";
-            this.lstBeforeCmds.Size = new System.Drawing.Size(417, 124);
+            this.lstBeforeCmds.Size = new System.Drawing.Size(549, 144);
             this.lstBeforeCmds.TabIndex = 5;
             // 
             // lblBeforeCmds
@@ -1434,10 +1435,10 @@ namespace CabconPMP.UI
             // btnBrowse
             // 
             this.btnBrowse.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnBrowse.Location = new System.Drawing.Point(19, 432);
+            this.btnBrowse.Location = new System.Drawing.Point(19, 500);
             this.btnBrowse.Margin = new System.Windows.Forms.Padding(4);
             this.btnBrowse.Name = "btnBrowse";
-            this.btnBrowse.Size = new System.Drawing.Size(270, 39);
+            this.btnBrowse.Size = new System.Drawing.Size(270, 52);
             this.btnBrowse.TabIndex = 3;
             this.btnBrowse.Text = "Browse ...";
             this.btnBrowse.UseVisualStyleBackColor = true;
@@ -1512,7 +1513,7 @@ namespace CabconPMP.UI
             this.txtControlCommand.Margin = new System.Windows.Forms.Padding(4);
             this.txtControlCommand.Multiline = true;
             this.txtControlCommand.Name = "txtControlCommand";
-            this.txtControlCommand.Size = new System.Drawing.Size(269, 245);
+            this.txtControlCommand.Size = new System.Drawing.Size(269, 305);
             this.txtControlCommand.TabIndex = 2;
             // 
             // txtProcedureName
@@ -1542,7 +1543,7 @@ namespace CabconPMP.UI
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.ClientSize = new System.Drawing.Size(1137, 675);
+            this.ClientSize = new System.Drawing.Size(1348, 794);
             this.Controls.Add(this.tabControlStepDetails);
             this.Controls.Add(this.btnMoveDown);
             this.Controls.Add(this.btnMoveUp);
@@ -1559,6 +1560,7 @@ namespace CabconPMP.UI
             this.Controls.Add(this.cmbProcedures);
             this.Controls.Add(this.lblSelectProc);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "frmProcedure";

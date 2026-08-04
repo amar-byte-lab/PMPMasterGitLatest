@@ -816,6 +816,7 @@ namespace CabconPMP.UI
             this.Controls.Add(this.tabControlMtr);
             this.Controls.Add(this.dgvMeterTypes);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "frmMeterType";
