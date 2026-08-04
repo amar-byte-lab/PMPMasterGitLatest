@@ -121,7 +121,7 @@
             // 
             this.configurationToolStripMenuItem.Enabled = false;
             this.configurationToolStripMenuItem.Name = "configurationToolStripMenuItem";
-            this.configurationToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.configurationToolStripMenuItem.Size = new System.Drawing.Size(241, 34);
             this.configurationToolStripMenuItem.Text = "Configuration";
             this.configurationToolStripMenuItem.Visible = false;
             this.configurationToolStripMenuItem.Click += new System.EventHandler(this.selectProceduresToolStripMenuItem_Click);
@@ -129,21 +129,21 @@
             // calibrateToolStripMenuItem
             // 
             this.calibrateToolStripMenuItem.Name = "calibrateToolStripMenuItem";
-            this.calibrateToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.calibrateToolStripMenuItem.Size = new System.Drawing.Size(241, 34);
             this.calibrateToolStripMenuItem.Text = "Calibrate";
             this.calibrateToolStripMenuItem.Click += new System.EventHandler(this.calibrateToolStripMenuItem_Click);
             // 
             // addProceduresToolStripMenuItem
             // 
             this.addProceduresToolStripMenuItem.Name = "addProceduresToolStripMenuItem";
-            this.addProceduresToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.addProceduresToolStripMenuItem.Size = new System.Drawing.Size(241, 34);
             this.addProceduresToolStripMenuItem.Text = "Add Procedures";
             this.addProceduresToolStripMenuItem.Click += new System.EventHandler(this.addProceduresToolStripMenuItem_Click);
             // 
             // meterTypeToolStripMenuItem
             // 
             this.meterTypeToolStripMenuItem.Name = "meterTypeToolStripMenuItem";
-            this.meterTypeToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.meterTypeToolStripMenuItem.Size = new System.Drawing.Size(241, 34);
             this.meterTypeToolStripMenuItem.Text = "Meter Type";
             this.meterTypeToolStripMenuItem.Click += new System.EventHandler(this.meterTypeToolStripMenuItem_Click);
             // 
@@ -161,7 +161,7 @@
             // tsm_Association
             // 
             this.tsm_Association.Name = "tsm_Association";
-            this.tsm_Association.Size = new System.Drawing.Size(270, 34);
+            this.tsm_Association.Size = new System.Drawing.Size(259, 34);
             this.tsm_Association.Text = "Association";
             this.tsm_Association.Click += new System.EventHandler(this.tsm_Association_Click);
             // 
@@ -169,7 +169,7 @@
             // 
             this.tsm_userManagement.Enabled = false;
             this.tsm_userManagement.Name = "tsm_userManagement";
-            this.tsm_userManagement.Size = new System.Drawing.Size(270, 34);
+            this.tsm_userManagement.Size = new System.Drawing.Size(259, 34);
             this.tsm_userManagement.Text = "User Management";
             this.tsm_userManagement.Visible = false;
             this.tsm_userManagement.Click += new System.EventHandler(this.userManagementToolStripMenuItem_Click);
@@ -178,7 +178,7 @@
             // 
             this.tsm_changePassword.Enabled = false;
             this.tsm_changePassword.Name = "tsm_changePassword";
-            this.tsm_changePassword.Size = new System.Drawing.Size(270, 34);
+            this.tsm_changePassword.Size = new System.Drawing.Size(259, 34);
             this.tsm_changePassword.Text = "Change Password";
             this.tsm_changePassword.Visible = false;
             this.tsm_changePassword.Click += new System.EventHandler(this.changePasswordToolStripMenuItem_Click);
@@ -186,7 +186,7 @@
             // tsm_ServerSettings
             // 
             this.tsm_ServerSettings.Name = "tsm_ServerSettings";
-            this.tsm_ServerSettings.Size = new System.Drawing.Size(270, 34);
+            this.tsm_ServerSettings.Size = new System.Drawing.Size(259, 34);
             this.tsm_ServerSettings.Text = "Server Settings";
             this.tsm_ServerSettings.Click += new System.EventHandler(this.tsm_ServerSettings_Click);
             // 

@@ -290,7 +290,7 @@ namespace CabconPMP.UI
             this.tabControlStepDetails.Margin = new System.Windows.Forms.Padding(4);
             this.tabControlStepDetails.Name = "tabControlStepDetails";
             this.tabControlStepDetails.SelectedIndex = 0;
-            this.tabControlStepDetails.Size = new System.Drawing.Size(823, 533);
+            this.tabControlStepDetails.Size = new System.Drawing.Size(823, 541);
             this.tabControlStepDetails.TabIndex = 14;
             // 
             // tabParameters
@@ -1263,7 +1263,7 @@ namespace CabconPMP.UI
             // tabControls
             // 
             this.tabControls.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tabControls.BackgroundImage")));
-            this.tabControls.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.tabControls.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.tabControls.Controls.Add(this.chkWithAmp);
             this.tabControls.Controls.Add(this.btnDelAfter);
             this.tabControls.Controls.Add(this.btnAddAfter);
@@ -1284,7 +1284,7 @@ namespace CabconPMP.UI
             this.tabControls.Location = new System.Drawing.Point(4, 29);
             this.tabControls.Margin = new System.Windows.Forms.Padding(4);
             this.tabControls.Name = "tabControls";
-            this.tabControls.Size = new System.Drawing.Size(815, 500);
+            this.tabControls.Size = new System.Drawing.Size(815, 508);
             this.tabControls.TabIndex = 3;
             this.tabControls.Text = "Control functions";
             this.tabControls.UseVisualStyleBackColor = true;

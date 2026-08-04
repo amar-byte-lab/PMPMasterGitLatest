@@ -3185,6 +3185,11 @@ namespace CabconPMP.UI
         {
 
         }
+
+        private void lblWhatMeter_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
     public class MeterAllocationRow
