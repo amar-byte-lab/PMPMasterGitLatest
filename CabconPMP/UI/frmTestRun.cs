@@ -90,6 +90,19 @@ namespace CabconPMP.UI
             tabControl1.ItemSize = new System.Drawing.Size(120, 35);
             tabControl1.SizeMode = TabSizeMode.Fixed;
             tabControl1.DrawItem += TabControl1_DrawItem;
+
+            // Apply the background image from tabCommon to all other tabs
+            if (tabCommon.BackgroundImage != null)
+            {
+                foreach (TabPage tp in tabControl1.TabPages)
+                {
+                    if (tp != tabCommon)
+                    {
+                        tp.BackgroundImage = tabCommon.BackgroundImage;
+                        tp.BackgroundImageLayout = ImageLayout.Stretch;
+                    }
+                }
+            }
         }
 
         private void TabControl1_DrawItem(object sender, DrawItemEventArgs e)
@@ -162,7 +175,7 @@ namespace CabconPMP.UI
                 }
                 else if (c is System.Windows.Forms.TabPage tp)
                 {
-                    tp.BackColor = System.Drawing.Color.White;
+                    tp.BackColor = System.Drawing.Color.Transparent;
                 }
 
                 if (c.HasChildren)
@@ -3159,6 +3172,16 @@ namespace CabconPMP.UI
         }
 
         private void lblSequenceName_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblContractNo_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lstDisplatAutoSelected_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

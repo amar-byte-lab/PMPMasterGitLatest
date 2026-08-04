@@ -322,6 +322,9 @@
     <Compile Include="TransparentTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="TransparentComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="PMPDataSet.cs">
       <DependentUpon>PMPDataSet.xsd</DependentUpon>
     </Compile>

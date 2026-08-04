@@ -51,6 +51,18 @@ namespace CabconPMP
             // Enable high-quality ClearType text rendering
             e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
 
+            // Draw a permanent subtle border so it always looks like an input box
+            using (Pen borderPen = new Pen(Color.FromArgb(160, 160, 160)))
+            {
+                e.Graphics.DrawRectangle(borderPen, 0, 0, this.Width - 1, this.Height - 1);
+            }
+
+            // Draw a very subtle semi-transparent background to make text readable against complex images
+            using (SolidBrush bgBrush = new SolidBrush(Color.FromArgb(40, 255, 255, 255)))
+            {
+                e.Graphics.FillRectangle(bgBrush, 1, 1, this.Width - 2, this.Height - 2);
+            }
+
             // Draw text
             if (this.SelectedIndex >= 0)
             {
