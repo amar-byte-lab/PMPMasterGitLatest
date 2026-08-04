@@ -803,5 +803,10 @@ namespace CabconPMP.UI
                 return "c0.00";
             }
         }
+
+        private void lblAfterCmds_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
