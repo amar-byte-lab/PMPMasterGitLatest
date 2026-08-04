@@ -327,6 +327,22 @@ namespace CabconPMP
         private void SM110frmMain_Load(object sender, EventArgs e)
         {
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+
+            // Add Software Version Label
+            Label lblVersion = new Label();
+            lblVersion.Text = "Version " + Application.ProductVersion;
+            lblVersion.ForeColor = Color.Black;
+            lblVersion.BackColor = Color.Transparent;
+            lblVersion.Font = new Font("Segoe UI", 20f, FontStyle.Bold);
+            lblVersion.AutoSize = true;
+            
+            // Add to picture box so it inherits the background image transparency
+            pcbBackgroundImage.Controls.Add(lblVersion);
+            
+            // Position at bottom right
+            lblVersion.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            lblVersion.Location = new Point(pcbBackgroundImage.Width - lblVersion.PreferredWidth - 20, pcbBackgroundImage.Height - lblVersion.PreferredHeight - 20);
+
             // getUserIndex = StaticVariables.ApplicationUserType.IndexOf(objetyusermgt.LogType);
             // objetyusermgt.LoginTypeIndex = (byte)getUserIndex;
             // DisplayMainStatus();

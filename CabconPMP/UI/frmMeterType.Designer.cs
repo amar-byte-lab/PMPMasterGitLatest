@@ -23,25 +23,38 @@ namespace CabconPMP.UI
             this.tabControlMtr = new System.Windows.Forms.TabControl();
             this.tabGeneral = new System.Windows.Forms.TabPage();
             this.grpAccuracy = new System.Windows.Forms.GroupBox();
+            this.cmbAccS = new CabconPMP.TransparentComboBox();
             this.chkAccS = new System.Windows.Forms.CheckBox();
+            this.cmbAccQ = new CabconPMP.TransparentComboBox();
             this.chkAccQ = new System.Windows.Forms.CheckBox();
+            this.cmbAccP = new CabconPMP.TransparentComboBox();
             this.chkAccP = new System.Windows.Forms.CheckBox();
             this.grpPrincipal = new System.Windows.Forms.GroupBox();
             this.rbElectronic = new System.Windows.Forms.RadioButton();
             this.rbInduction = new System.Windows.Forms.RadioButton();
+            this.txtComment = new CabconPMP.TransparentTextBox();
             this.lblComment = new System.Windows.Forms.Label();
+            this.txtApprovalNo = new CabconPMP.TransparentTextBox();
             this.lblApprovalNo = new System.Windows.Forms.Label();
+            this.txtManufacturer = new CabconPMP.TransparentTextBox();
             this.lblManufacturer = new System.Windows.Forms.Label();
+            this.txtName = new CabconPMP.TransparentTextBox();
             this.lblMtrName = new System.Windows.Forms.Label();
+            this.cmbConnectMode = new CabconPMP.TransparentComboBox();
             this.lblConnectMode = new System.Windows.Forms.Label();
+            this.cmbLineType = new CabconPMP.TransparentComboBox();
             this.lblLineType = new System.Windows.Forms.Label();
             this.tabElectrical = new System.Windows.Forms.TabPage();
             this.grpConstants = new System.Windows.Forms.GroupBox();
             this.btnRemoveConst = new System.Windows.Forms.Button();
             this.btnAddConst = new System.Windows.Forms.Button();
+            this.cmbUnit = new CabconPMP.TransparentComboBox();
             this.lblUnit = new System.Windows.Forms.Label();
+            this.txtConst = new CabconPMP.TransparentTextBox();
             this.lblConst = new System.Windows.Forms.Label();
+            this.cmbMeas = new CabconPMP.TransparentComboBox();
             this.lblMeas = new System.Windows.Forms.Label();
+            this.cmbChan = new CabconPMP.TransparentComboBox();
             this.lblChan = new System.Windows.Forms.Label();
             this.dgvConstants = new System.Windows.Forms.DataGridView();
             this.colChan = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -59,19 +72,6 @@ namespace CabconPMP.UI
             this.lblUb = new System.Windows.Forms.Label();
             this.btnNew = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
-            this.cmbAccS = new CabconPMP.TransparentComboBox();
-            this.cmbAccQ = new CabconPMP.TransparentComboBox();
-            this.cmbAccP = new CabconPMP.TransparentComboBox();
-            this.txtComment = new CabconPMP.TransparentTextBox();
-            this.txtApprovalNo = new CabconPMP.TransparentTextBox();
-            this.txtManufacturer = new CabconPMP.TransparentTextBox();
-            this.txtName = new CabconPMP.TransparentTextBox();
-            this.cmbConnectMode = new CabconPMP.TransparentComboBox();
-            this.cmbLineType = new CabconPMP.TransparentComboBox();
-            this.cmbUnit = new CabconPMP.TransparentComboBox();
-            this.txtConst = new CabconPMP.TransparentTextBox();
-            this.cmbMeas = new CabconPMP.TransparentComboBox();
-            this.cmbChan = new CabconPMP.TransparentComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMeterTypes)).BeginInit();
             this.tabControlMtr.SuspendLayout();
             this.tabGeneral.SuspendLayout();
@@ -96,7 +96,7 @@ namespace CabconPMP.UI
             this.dgvMeterTypes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colName});
             this.dgvMeterTypes.Location = new System.Drawing.Point(15, 16);
-            this.dgvMeterTypes.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dgvMeterTypes.Margin = new System.Windows.Forms.Padding(4);
             this.dgvMeterTypes.MultiSelect = false;
             this.dgvMeterTypes.Name = "dgvMeterTypes";
             this.dgvMeterTypes.ReadOnly = true;
@@ -121,7 +121,7 @@ namespace CabconPMP.UI
             this.tabControlMtr.Controls.Add(this.tabGeneral);
             this.tabControlMtr.Controls.Add(this.tabElectrical);
             this.tabControlMtr.Location = new System.Drawing.Point(366, 16);
-            this.tabControlMtr.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabControlMtr.Margin = new System.Windows.Forms.Padding(4);
             this.tabControlMtr.Name = "tabControlMtr";
             this.tabControlMtr.SelectedIndex = 0;
             this.tabControlMtr.Size = new System.Drawing.Size(954, 640);
@@ -146,9 +146,9 @@ namespace CabconPMP.UI
             this.tabGeneral.Controls.Add(this.cmbLineType);
             this.tabGeneral.Controls.Add(this.lblLineType);
             this.tabGeneral.Location = new System.Drawing.Point(4, 29);
-            this.tabGeneral.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabGeneral.Margin = new System.Windows.Forms.Padding(4);
             this.tabGeneral.Name = "tabGeneral";
-            this.tabGeneral.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabGeneral.Padding = new System.Windows.Forms.Padding(4);
             this.tabGeneral.Size = new System.Drawing.Size(946, 607);
             this.tabGeneral.TabIndex = 0;
             this.tabGeneral.Text = "General Feature";
@@ -163,42 +163,93 @@ namespace CabconPMP.UI
             this.grpAccuracy.Controls.Add(this.cmbAccP);
             this.grpAccuracy.Controls.Add(this.chkAccP);
             this.grpAccuracy.Location = new System.Drawing.Point(379, 100);
-            this.grpAccuracy.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.grpAccuracy.Margin = new System.Windows.Forms.Padding(4);
             this.grpAccuracy.Name = "grpAccuracy";
-            this.grpAccuracy.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.grpAccuracy.Padding = new System.Windows.Forms.Padding(4);
             this.grpAccuracy.Size = new System.Drawing.Size(334, 167);
             this.grpAccuracy.TabIndex = 13;
             this.grpAccuracy.TabStop = false;
             this.grpAccuracy.Text = "Class of accuracy";
             this.grpAccuracy.Enter += new System.EventHandler(this.grpAccuracy_Enter);
             // 
+            // cmbAccS
+            // 
+            this.cmbAccS.BackColor = System.Drawing.Color.Transparent;
+            this.cmbAccS.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbAccS.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbAccS.FormattingEnabled = true;
+            this.cmbAccS.Items.AddRange(new object[] {
+            "0.2",
+            "0.5",
+            "1.0",
+            "2.0"});
+            this.cmbAccS.Location = new System.Drawing.Point(90, 120);
+            this.cmbAccS.Margin = new System.Windows.Forms.Padding(4);
+            this.cmbAccS.Name = "cmbAccS";
+            this.cmbAccS.Size = new System.Drawing.Size(217, 27);
+            this.cmbAccS.TabIndex = 5;
+            // 
             // chkAccS
             // 
             this.chkAccS.AutoSize = true;
             this.chkAccS.Location = new System.Drawing.Point(26, 123);
-            this.chkAccS.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkAccS.Margin = new System.Windows.Forms.Padding(4);
             this.chkAccS.Name = "chkAccS";
             this.chkAccS.Size = new System.Drawing.Size(46, 24);
             this.chkAccS.TabIndex = 4;
             this.chkAccS.Text = "S";
             this.chkAccS.UseVisualStyleBackColor = true;
             // 
+            // cmbAccQ
+            // 
+            this.cmbAccQ.BackColor = System.Drawing.Color.Transparent;
+            this.cmbAccQ.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbAccQ.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbAccQ.FormattingEnabled = true;
+            this.cmbAccQ.Items.AddRange(new object[] {
+            "0.2",
+            "0.5",
+            "1.0",
+            "2.0"});
+            this.cmbAccQ.Location = new System.Drawing.Point(90, 73);
+            this.cmbAccQ.Margin = new System.Windows.Forms.Padding(4);
+            this.cmbAccQ.Name = "cmbAccQ";
+            this.cmbAccQ.Size = new System.Drawing.Size(217, 27);
+            this.cmbAccQ.TabIndex = 3;
+            // 
             // chkAccQ
             // 
             this.chkAccQ.AutoSize = true;
             this.chkAccQ.Location = new System.Drawing.Point(26, 76);
-            this.chkAccQ.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkAccQ.Margin = new System.Windows.Forms.Padding(4);
             this.chkAccQ.Name = "chkAccQ";
             this.chkAccQ.Size = new System.Drawing.Size(47, 24);
             this.chkAccQ.TabIndex = 2;
             this.chkAccQ.Text = "Q";
             this.chkAccQ.UseVisualStyleBackColor = true;
             // 
+            // cmbAccP
+            // 
+            this.cmbAccP.BackColor = System.Drawing.Color.Transparent;
+            this.cmbAccP.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbAccP.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbAccP.FormattingEnabled = true;
+            this.cmbAccP.Items.AddRange(new object[] {
+            "0.2",
+            "0.5",
+            "1.0",
+            "2.0"});
+            this.cmbAccP.Location = new System.Drawing.Point(90, 27);
+            this.cmbAccP.Margin = new System.Windows.Forms.Padding(4);
+            this.cmbAccP.Name = "cmbAccP";
+            this.cmbAccP.Size = new System.Drawing.Size(217, 27);
+            this.cmbAccP.TabIndex = 1;
+            // 
             // chkAccP
             // 
             this.chkAccP.AutoSize = true;
             this.chkAccP.Location = new System.Drawing.Point(26, 29);
-            this.chkAccP.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkAccP.Margin = new System.Windows.Forms.Padding(4);
             this.chkAccP.Name = "chkAccP";
             this.chkAccP.Size = new System.Drawing.Size(45, 24);
             this.chkAccP.TabIndex = 0;
@@ -210,9 +261,9 @@ namespace CabconPMP.UI
             this.grpPrincipal.Controls.Add(this.rbElectronic);
             this.grpPrincipal.Controls.Add(this.rbInduction);
             this.grpPrincipal.Location = new System.Drawing.Point(26, 100);
-            this.grpPrincipal.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.grpPrincipal.Margin = new System.Windows.Forms.Padding(4);
             this.grpPrincipal.Name = "grpPrincipal";
-            this.grpPrincipal.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.grpPrincipal.Padding = new System.Windows.Forms.Padding(4);
             this.grpPrincipal.Size = new System.Drawing.Size(334, 167);
             this.grpPrincipal.TabIndex = 12;
             this.grpPrincipal.TabStop = false;
@@ -223,7 +274,7 @@ namespace CabconPMP.UI
             this.rbElectronic.AutoSize = true;
             this.rbElectronic.Checked = true;
             this.rbElectronic.Location = new System.Drawing.Point(32, 80);
-            this.rbElectronic.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rbElectronic.Margin = new System.Windows.Forms.Padding(4);
             this.rbElectronic.Name = "rbElectronic";
             this.rbElectronic.Size = new System.Drawing.Size(104, 24);
             this.rbElectronic.TabIndex = 1;
@@ -235,12 +286,22 @@ namespace CabconPMP.UI
             // 
             this.rbInduction.AutoSize = true;
             this.rbInduction.Location = new System.Drawing.Point(32, 40);
-            this.rbInduction.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rbInduction.Margin = new System.Windows.Forms.Padding(4);
             this.rbInduction.Name = "rbInduction";
             this.rbInduction.Size = new System.Drawing.Size(100, 24);
             this.rbInduction.TabIndex = 0;
             this.rbInduction.Text = "Induction";
             this.rbInduction.UseVisualStyleBackColor = true;
+            // 
+            // txtComment
+            // 
+            this.txtComment.BackColor = System.Drawing.Color.Transparent;
+            this.txtComment.Location = new System.Drawing.Point(379, 307);
+            this.txtComment.Margin = new System.Windows.Forms.Padding(4);
+            this.txtComment.Multiline = true;
+            this.txtComment.Name = "txtComment";
+            this.txtComment.Size = new System.Drawing.Size(455, 242);
+            this.txtComment.TabIndex = 11;
             // 
             // lblComment
             // 
@@ -253,6 +314,15 @@ namespace CabconPMP.UI
             this.lblComment.TabIndex = 10;
             this.lblComment.Text = "Comment:";
             // 
+            // txtApprovalNo
+            // 
+            this.txtApprovalNo.BackColor = System.Drawing.Color.Transparent;
+            this.txtApprovalNo.Location = new System.Drawing.Point(26, 487);
+            this.txtApprovalNo.Margin = new System.Windows.Forms.Padding(4);
+            this.txtApprovalNo.Name = "txtApprovalNo";
+            this.txtApprovalNo.Size = new System.Drawing.Size(320, 26);
+            this.txtApprovalNo.TabIndex = 9;
+            // 
             // lblApprovalNo
             // 
             this.lblApprovalNo.AutoSize = true;
@@ -263,6 +333,15 @@ namespace CabconPMP.UI
             this.lblApprovalNo.Size = new System.Drawing.Size(146, 22);
             this.lblApprovalNo.TabIndex = 8;
             this.lblApprovalNo.Text = "Approval number";
+            // 
+            // txtManufacturer
+            // 
+            this.txtManufacturer.BackColor = System.Drawing.Color.Transparent;
+            this.txtManufacturer.Location = new System.Drawing.Point(26, 413);
+            this.txtManufacturer.Margin = new System.Windows.Forms.Padding(4);
+            this.txtManufacturer.Name = "txtManufacturer";
+            this.txtManufacturer.Size = new System.Drawing.Size(320, 26);
+            this.txtManufacturer.TabIndex = 7;
             // 
             // lblManufacturer
             // 
@@ -275,6 +354,15 @@ namespace CabconPMP.UI
             this.lblManufacturer.TabIndex = 6;
             this.lblManufacturer.Text = "Manufacturer";
             // 
+            // txtName
+            // 
+            this.txtName.BackColor = System.Drawing.Color.Transparent;
+            this.txtName.Location = new System.Drawing.Point(26, 340);
+            this.txtName.Margin = new System.Windows.Forms.Padding(4);
+            this.txtName.Name = "txtName";
+            this.txtName.Size = new System.Drawing.Size(320, 26);
+            this.txtName.TabIndex = 5;
+            // 
             // lblMtrName
             // 
             this.lblMtrName.AutoSize = true;
@@ -286,6 +374,23 @@ namespace CabconPMP.UI
             this.lblMtrName.TabIndex = 4;
             this.lblMtrName.Text = "Meter type";
             // 
+            // cmbConnectMode
+            // 
+            this.cmbConnectMode.BackColor = System.Drawing.Color.Transparent;
+            this.cmbConnectMode.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbConnectMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbConnectMode.FormattingEnabled = true;
+            this.cmbConnectMode.Items.AddRange(new object[] {
+            "Direct",
+            "CT",
+            "PT",
+            "CT/PT"});
+            this.cmbConnectMode.Location = new System.Drawing.Point(379, 47);
+            this.cmbConnectMode.Margin = new System.Windows.Forms.Padding(4);
+            this.cmbConnectMode.Name = "cmbConnectMode";
+            this.cmbConnectMode.Size = new System.Drawing.Size(333, 27);
+            this.cmbConnectMode.TabIndex = 3;
+            // 
             // lblConnectMode
             // 
             this.lblConnectMode.AutoSize = true;
@@ -296,6 +401,22 @@ namespace CabconPMP.UI
             this.lblConnectMode.Size = new System.Drawing.Size(147, 22);
             this.lblConnectMode.TabIndex = 2;
             this.lblConnectMode.Text = "Meter connection";
+            // 
+            // cmbLineType
+            // 
+            this.cmbLineType.BackColor = System.Drawing.Color.Transparent;
+            this.cmbLineType.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbLineType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbLineType.FormattingEnabled = true;
+            this.cmbLineType.Items.AddRange(new object[] {
+            "Single-phase",
+            "3-phase 3-wire",
+            "3-phase 4-wire"});
+            this.cmbLineType.Location = new System.Drawing.Point(26, 47);
+            this.cmbLineType.Margin = new System.Windows.Forms.Padding(4);
+            this.cmbLineType.Name = "cmbLineType";
+            this.cmbLineType.Size = new System.Drawing.Size(333, 27);
+            this.cmbLineType.TabIndex = 1;
             // 
             // lblLineType
             // 
@@ -315,9 +436,9 @@ namespace CabconPMP.UI
             this.tabElectrical.Controls.Add(this.grpConstants);
             this.tabElectrical.Controls.Add(this.grpNominal);
             this.tabElectrical.Location = new System.Drawing.Point(4, 29);
-            this.tabElectrical.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabElectrical.Margin = new System.Windows.Forms.Padding(4);
             this.tabElectrical.Name = "tabElectrical";
-            this.tabElectrical.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabElectrical.Padding = new System.Windows.Forms.Padding(4);
             this.tabElectrical.Size = new System.Drawing.Size(946, 607);
             this.tabElectrical.TabIndex = 1;
             this.tabElectrical.Text = "Electrical Data";
@@ -337,9 +458,9 @@ namespace CabconPMP.UI
             this.grpConstants.Controls.Add(this.lblChan);
             this.grpConstants.Controls.Add(this.dgvConstants);
             this.grpConstants.Location = new System.Drawing.Point(19, 144);
-            this.grpConstants.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.grpConstants.Margin = new System.Windows.Forms.Padding(4);
             this.grpConstants.Name = "grpConstants";
-            this.grpConstants.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.grpConstants.Padding = new System.Windows.Forms.Padding(4);
             this.grpConstants.Size = new System.Drawing.Size(883, 423);
             this.grpConstants.TabIndex = 1;
             this.grpConstants.TabStop = false;
@@ -349,7 +470,7 @@ namespace CabconPMP.UI
             // 
             this.btnRemoveConst.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRemoveConst.Location = new System.Drawing.Point(219, 300);
-            this.btnRemoveConst.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnRemoveConst.Margin = new System.Windows.Forms.Padding(4);
             this.btnRemoveConst.Name = "btnRemoveConst";
             this.btnRemoveConst.Size = new System.Drawing.Size(103, 47);
             this.btnRemoveConst.TabIndex = 10;
@@ -361,7 +482,7 @@ namespace CabconPMP.UI
             // 
             this.btnAddConst.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAddConst.Location = new System.Drawing.Point(96, 300);
-            this.btnAddConst.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnAddConst.Margin = new System.Windows.Forms.Padding(4);
             this.btnAddConst.Name = "btnAddConst";
             this.btnAddConst.Size = new System.Drawing.Size(103, 47);
             this.btnAddConst.TabIndex = 9;
@@ -369,44 +490,105 @@ namespace CabconPMP.UI
             this.btnAddConst.UseVisualStyleBackColor = true;
             this.btnAddConst.Click += new System.EventHandler(this.btnAddConst_Click);
             // 
+            // cmbUnit
+            // 
+            this.cmbUnit.BackColor = System.Drawing.Color.Transparent;
+            this.cmbUnit.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbUnit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbUnit.FormattingEnabled = true;
+            this.cmbUnit.Items.AddRange(new object[] {
+            "imp/kWh",
+            "imp/kVARh",
+            "imp/kVAh",
+            "Wh/imp",
+            "VARh/imp",
+            "VAh/imp"});
+            this.cmbUnit.Location = new System.Drawing.Point(149, 233);
+            this.cmbUnit.Margin = new System.Windows.Forms.Padding(4);
+            this.cmbUnit.Name = "cmbUnit";
+            this.cmbUnit.Size = new System.Drawing.Size(192, 27);
+            this.cmbUnit.TabIndex = 8;
+            // 
             // lblUnit
             // 
             this.lblUnit.AutoSize = true;
             this.lblUnit.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUnit.Location = new System.Drawing.Point(26, 237);
+            this.lblUnit.Location = new System.Drawing.Point(21, 237);
             this.lblUnit.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblUnit.Name = "lblUnit";
             this.lblUnit.Size = new System.Drawing.Size(42, 22);
             this.lblUnit.TabIndex = 7;
             this.lblUnit.Text = "Unit";
             // 
+            // txtConst
+            // 
+            this.txtConst.BackColor = System.Drawing.Color.Transparent;
+            this.txtConst.Location = new System.Drawing.Point(149, 173);
+            this.txtConst.Margin = new System.Windows.Forms.Padding(4);
+            this.txtConst.Name = "txtConst";
+            this.txtConst.Size = new System.Drawing.Size(192, 26);
+            this.txtConst.TabIndex = 6;
+            this.txtConst.Text = "1000";
+            // 
             // lblConst
             // 
             this.lblConst.AutoSize = true;
             this.lblConst.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblConst.Location = new System.Drawing.Point(26, 177);
+            this.lblConst.Location = new System.Drawing.Point(21, 177);
             this.lblConst.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblConst.Name = "lblConst";
             this.lblConst.Size = new System.Drawing.Size(82, 22);
             this.lblConst.TabIndex = 5;
             this.lblConst.Text = "Constant";
             // 
+            // cmbMeas
+            // 
+            this.cmbMeas.BackColor = System.Drawing.Color.Transparent;
+            this.cmbMeas.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbMeas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbMeas.FormattingEnabled = true;
+            this.cmbMeas.Items.AddRange(new object[] {
+            "Active (P)",
+            "Reactive (Q)",
+            "Apparent (S)"});
+            this.cmbMeas.Location = new System.Drawing.Point(149, 113);
+            this.cmbMeas.Margin = new System.Windows.Forms.Padding(4);
+            this.cmbMeas.Name = "cmbMeas";
+            this.cmbMeas.Size = new System.Drawing.Size(192, 27);
+            this.cmbMeas.TabIndex = 4;
+            // 
             // lblMeas
             // 
             this.lblMeas.AutoSize = true;
             this.lblMeas.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMeas.Location = new System.Drawing.Point(26, 117);
+            this.lblMeas.Location = new System.Drawing.Point(21, 117);
             this.lblMeas.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMeas.Name = "lblMeas";
             this.lblMeas.Size = new System.Drawing.Size(118, 22);
             this.lblMeas.TabIndex = 3;
             this.lblMeas.Text = "Measurement";
             // 
+            // cmbChan
+            // 
+            this.cmbChan.BackColor = System.Drawing.Color.Transparent;
+            this.cmbChan.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbChan.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbChan.FormattingEnabled = true;
+            this.cmbChan.Items.AddRange(new object[] {
+            "Channel 1",
+            "Channel 2",
+            "Channel 3"});
+            this.cmbChan.Location = new System.Drawing.Point(149, 53);
+            this.cmbChan.Margin = new System.Windows.Forms.Padding(4);
+            this.cmbChan.Name = "cmbChan";
+            this.cmbChan.Size = new System.Drawing.Size(192, 27);
+            this.cmbChan.TabIndex = 2;
+            // 
             // lblChan
             // 
             this.lblChan.AutoSize = true;
             this.lblChan.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblChan.Location = new System.Drawing.Point(26, 57);
+            this.lblChan.Location = new System.Drawing.Point(21, 57);
             this.lblChan.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblChan.Name = "lblChan";
             this.lblChan.Size = new System.Drawing.Size(77, 22);
@@ -425,7 +607,7 @@ namespace CabconPMP.UI
             this.colConst,
             this.colUnit});
             this.dgvConstants.Location = new System.Drawing.Point(379, 40);
-            this.dgvConstants.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dgvConstants.Margin = new System.Windows.Forms.Padding(4);
             this.dgvConstants.Name = "dgvConstants";
             this.dgvConstants.ReadOnly = true;
             this.dgvConstants.RowHeadersVisible = false;
@@ -451,6 +633,7 @@ namespace CabconPMP.UI
             this.colMeas.MinimumWidth = 8;
             this.colMeas.Name = "colMeas";
             this.colMeas.ReadOnly = true;
+            this.colMeas.Width = 150;
             // 
             // colConst
             // 
@@ -459,6 +642,7 @@ namespace CabconPMP.UI
             this.colConst.MinimumWidth = 8;
             this.colConst.Name = "colConst";
             this.colConst.ReadOnly = true;
+            this.colConst.Width = 150;
             // 
             // colUnit
             // 
@@ -480,18 +664,18 @@ namespace CabconPMP.UI
             this.grpNominal.Controls.Add(this.numUb);
             this.grpNominal.Controls.Add(this.lblUb);
             this.grpNominal.Location = new System.Drawing.Point(19, 20);
-            this.grpNominal.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.grpNominal.Margin = new System.Windows.Forms.Padding(4);
             this.grpNominal.Name = "grpNominal";
-            this.grpNominal.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.grpNominal.Size = new System.Drawing.Size(701, 120);
+            this.grpNominal.Padding = new System.Windows.Forms.Padding(4);
+            this.grpNominal.Size = new System.Drawing.Size(901, 120);
             this.grpNominal.TabIndex = 0;
             this.grpNominal.TabStop = false;
             this.grpNominal.Text = "Nominal values";
             // 
             // numFreq
             // 
-            this.numFreq.Location = new System.Drawing.Point(514, 51);
-            this.numFreq.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numFreq.Location = new System.Drawing.Point(779, 49);
+            this.numFreq.Margin = new System.Windows.Forms.Padding(4);
             this.numFreq.Minimum = new decimal(new int[] {
             10,
             0,
@@ -509,7 +693,7 @@ namespace CabconPMP.UI
             // lblFreq
             // 
             this.lblFreq.AutoSize = true;
-            this.lblFreq.Location = new System.Drawing.Point(456, 55);
+            this.lblFreq.Location = new System.Drawing.Point(673, 49);
             this.lblFreq.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblFreq.Name = "lblFreq";
             this.lblFreq.Size = new System.Drawing.Size(55, 20);
@@ -519,8 +703,8 @@ namespace CabconPMP.UI
             // numImax
             // 
             this.numImax.DecimalPlaces = 1;
-            this.numImax.Location = new System.Drawing.Point(347, 51);
-            this.numImax.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numImax.Location = new System.Drawing.Point(513, 49);
+            this.numImax.Margin = new System.Windows.Forms.Padding(4);
             this.numImax.Maximum = new decimal(new int[] {
             200,
             0,
@@ -538,7 +722,7 @@ namespace CabconPMP.UI
             // lblImax
             // 
             this.lblImax.AutoSize = true;
-            this.lblImax.Location = new System.Drawing.Point(289, 55);
+            this.lblImax.Location = new System.Drawing.Point(428, 51);
             this.lblImax.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblImax.Name = "lblImax";
             this.lblImax.Size = new System.Drawing.Size(50, 20);
@@ -548,8 +732,8 @@ namespace CabconPMP.UI
             // numIb
             // 
             this.numIb.DecimalPlaces = 2;
-            this.numIb.Location = new System.Drawing.Point(186, 51);
-            this.numIb.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numIb.Location = new System.Drawing.Point(291, 49);
+            this.numIb.Margin = new System.Windows.Forms.Padding(4);
             this.numIb.Name = "numIb";
             this.numIb.Size = new System.Drawing.Size(84, 26);
             this.numIb.TabIndex = 3;
@@ -562,7 +746,7 @@ namespace CabconPMP.UI
             // lblIb
             // 
             this.lblIb.AutoSize = true;
-            this.lblIb.Location = new System.Drawing.Point(141, 55);
+            this.lblIb.Location = new System.Drawing.Point(219, 55);
             this.lblIb.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblIb.Name = "lblIb";
             this.lblIb.Size = new System.Drawing.Size(46, 20);
@@ -572,8 +756,8 @@ namespace CabconPMP.UI
             // numUb
             // 
             this.numUb.DecimalPlaces = 1;
-            this.numUb.Location = new System.Drawing.Point(45, 51);
-            this.numUb.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numUb.Location = new System.Drawing.Point(78, 51);
+            this.numUb.Margin = new System.Windows.Forms.Padding(4);
             this.numUb.Maximum = new decimal(new int[] {
             500,
             0,
@@ -602,7 +786,7 @@ namespace CabconPMP.UI
             // 
             this.btnNew.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnNew.Location = new System.Drawing.Point(724, 681);
-            this.btnNew.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnNew.Margin = new System.Windows.Forms.Padding(4);
             this.btnNew.Name = "btnNew";
             this.btnNew.Size = new System.Drawing.Size(116, 40);
             this.btnNew.TabIndex = 2;
@@ -614,195 +798,13 @@ namespace CabconPMP.UI
             // 
             this.btnSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSave.Location = new System.Drawing.Point(859, 681);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(4);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(116, 40);
             this.btnSave.TabIndex = 3;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // cmbAccS
-            // 
-            this.cmbAccS.BackColor = System.Drawing.Color.Transparent;
-            this.cmbAccS.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbAccS.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbAccS.FormattingEnabled = true;
-            this.cmbAccS.Items.AddRange(new object[] {
-            "0.2",
-            "0.5",
-            "1.0",
-            "2.0"});
-            this.cmbAccS.Location = new System.Drawing.Point(90, 120);
-            this.cmbAccS.Margin = new System.Windows.Forms.Padding(4);
-            this.cmbAccS.Name = "cmbAccS";
-            this.cmbAccS.Size = new System.Drawing.Size(217, 27);
-            this.cmbAccS.TabIndex = 5;
-            // 
-            // cmbAccQ
-            // 
-            this.cmbAccQ.BackColor = System.Drawing.Color.Transparent;
-            this.cmbAccQ.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbAccQ.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbAccQ.FormattingEnabled = true;
-            this.cmbAccQ.Items.AddRange(new object[] {
-            "0.2",
-            "0.5",
-            "1.0",
-            "2.0"});
-            this.cmbAccQ.Location = new System.Drawing.Point(90, 73);
-            this.cmbAccQ.Margin = new System.Windows.Forms.Padding(4);
-            this.cmbAccQ.Name = "cmbAccQ";
-            this.cmbAccQ.Size = new System.Drawing.Size(217, 27);
-            this.cmbAccQ.TabIndex = 3;
-            // 
-            // cmbAccP
-            // 
-            this.cmbAccP.BackColor = System.Drawing.Color.Transparent;
-            this.cmbAccP.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbAccP.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbAccP.FormattingEnabled = true;
-            this.cmbAccP.Items.AddRange(new object[] {
-            "0.2",
-            "0.5",
-            "1.0",
-            "2.0"});
-            this.cmbAccP.Location = new System.Drawing.Point(90, 27);
-            this.cmbAccP.Margin = new System.Windows.Forms.Padding(4);
-            this.cmbAccP.Name = "cmbAccP";
-            this.cmbAccP.Size = new System.Drawing.Size(217, 27);
-            this.cmbAccP.TabIndex = 1;
-            // 
-            // txtComment
-            // 
-            this.txtComment.BackColor = System.Drawing.Color.Transparent;
-            this.txtComment.Location = new System.Drawing.Point(379, 307);
-            this.txtComment.Margin = new System.Windows.Forms.Padding(4);
-            this.txtComment.Multiline = true;
-            this.txtComment.Name = "txtComment";
-            this.txtComment.Size = new System.Drawing.Size(455, 242);
-            this.txtComment.TabIndex = 11;
-            // 
-            // txtApprovalNo
-            // 
-            this.txtApprovalNo.BackColor = System.Drawing.Color.Transparent;
-            this.txtApprovalNo.Location = new System.Drawing.Point(26, 487);
-            this.txtApprovalNo.Margin = new System.Windows.Forms.Padding(4);
-            this.txtApprovalNo.Name = "txtApprovalNo";
-            this.txtApprovalNo.Size = new System.Drawing.Size(320, 26);
-            this.txtApprovalNo.TabIndex = 9;
-            // 
-            // txtManufacturer
-            // 
-            this.txtManufacturer.BackColor = System.Drawing.Color.Transparent;
-            this.txtManufacturer.Location = new System.Drawing.Point(26, 413);
-            this.txtManufacturer.Margin = new System.Windows.Forms.Padding(4);
-            this.txtManufacturer.Name = "txtManufacturer";
-            this.txtManufacturer.Size = new System.Drawing.Size(320, 26);
-            this.txtManufacturer.TabIndex = 7;
-            // 
-            // txtName
-            // 
-            this.txtName.BackColor = System.Drawing.Color.Transparent;
-            this.txtName.Location = new System.Drawing.Point(26, 340);
-            this.txtName.Margin = new System.Windows.Forms.Padding(4);
-            this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(320, 26);
-            this.txtName.TabIndex = 5;
-            // 
-            // cmbConnectMode
-            // 
-            this.cmbConnectMode.BackColor = System.Drawing.Color.Transparent;
-            this.cmbConnectMode.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbConnectMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbConnectMode.FormattingEnabled = true;
-            this.cmbConnectMode.Items.AddRange(new object[] {
-            "Direct",
-            "CT",
-            "PT",
-            "CT/PT"});
-            this.cmbConnectMode.Location = new System.Drawing.Point(379, 47);
-            this.cmbConnectMode.Margin = new System.Windows.Forms.Padding(4);
-            this.cmbConnectMode.Name = "cmbConnectMode";
-            this.cmbConnectMode.Size = new System.Drawing.Size(333, 27);
-            this.cmbConnectMode.TabIndex = 3;
-            // 
-            // cmbLineType
-            // 
-            this.cmbLineType.BackColor = System.Drawing.Color.Transparent;
-            this.cmbLineType.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbLineType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbLineType.FormattingEnabled = true;
-            this.cmbLineType.Items.AddRange(new object[] {
-            "Single-phase",
-            "3-phase 3-wire",
-            "3-phase 4-wire"});
-            this.cmbLineType.Location = new System.Drawing.Point(26, 47);
-            this.cmbLineType.Margin = new System.Windows.Forms.Padding(4);
-            this.cmbLineType.Name = "cmbLineType";
-            this.cmbLineType.Size = new System.Drawing.Size(333, 27);
-            this.cmbLineType.TabIndex = 1;
-            // 
-            // cmbUnit
-            // 
-            this.cmbUnit.BackColor = System.Drawing.Color.Transparent;
-            this.cmbUnit.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbUnit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbUnit.FormattingEnabled = true;
-            this.cmbUnit.Items.AddRange(new object[] {
-            "imp/kWh",
-            "imp/kVARh",
-            "imp/kVAh",
-            "Wh/imp",
-            "VARh/imp",
-            "VAh/imp"});
-            this.cmbUnit.Location = new System.Drawing.Point(129, 233);
-            this.cmbUnit.Margin = new System.Windows.Forms.Padding(4);
-            this.cmbUnit.Name = "cmbUnit";
-            this.cmbUnit.Size = new System.Drawing.Size(192, 27);
-            this.cmbUnit.TabIndex = 8;
-            // 
-            // txtConst
-            // 
-            this.txtConst.BackColor = System.Drawing.Color.Transparent;
-            this.txtConst.Location = new System.Drawing.Point(129, 173);
-            this.txtConst.Margin = new System.Windows.Forms.Padding(4);
-            this.txtConst.Name = "txtConst";
-            this.txtConst.Size = new System.Drawing.Size(192, 26);
-            this.txtConst.TabIndex = 6;
-            this.txtConst.Text = "1000";
-            // 
-            // cmbMeas
-            // 
-            this.cmbMeas.BackColor = System.Drawing.Color.Transparent;
-            this.cmbMeas.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbMeas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbMeas.FormattingEnabled = true;
-            this.cmbMeas.Items.AddRange(new object[] {
-            "Active (P)",
-            "Reactive (Q)",
-            "Apparent (S)"});
-            this.cmbMeas.Location = new System.Drawing.Point(129, 113);
-            this.cmbMeas.Margin = new System.Windows.Forms.Padding(4);
-            this.cmbMeas.Name = "cmbMeas";
-            this.cmbMeas.Size = new System.Drawing.Size(192, 27);
-            this.cmbMeas.TabIndex = 4;
-            // 
-            // cmbChan
-            // 
-            this.cmbChan.BackColor = System.Drawing.Color.Transparent;
-            this.cmbChan.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbChan.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbChan.FormattingEnabled = true;
-            this.cmbChan.Items.AddRange(new object[] {
-            "Channel 1",
-            "Channel 2",
-            "Channel 3"});
-            this.cmbChan.Location = new System.Drawing.Point(129, 53);
-            this.cmbChan.Margin = new System.Windows.Forms.Padding(4);
-            this.cmbChan.Name = "cmbChan";
-            this.cmbChan.Size = new System.Drawing.Size(192, 27);
-            this.cmbChan.TabIndex = 2;
             // 
             // frmMeterType
             // 
@@ -814,7 +816,7 @@ namespace CabconPMP.UI
             this.Controls.Add(this.tabControlMtr);
             this.Controls.Add(this.dgvMeterTypes);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "frmMeterType";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
