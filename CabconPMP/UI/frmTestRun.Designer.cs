@@ -18,9 +18,9 @@ namespace CabconPMP.UI
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmTestRun));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
             this.lblBenchName = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabCommon = new System.Windows.Forms.TabPage();
@@ -526,34 +526,34 @@ namespace CabconPMP.UI
             this.dgvMeters.AllowUserToAddRows = false;
             this.dgvMeters.AllowUserToDeleteRows = false;
             this.dgvMeters.BackgroundColor = System.Drawing.Color.GhostWhite;
-            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMeters.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle22.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle22.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle22.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle22.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle22.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMeters.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle22;
             this.dgvMeters.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle17.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle17.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle17.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMeters.DefaultCellStyle = dataGridViewCellStyle17;
+            dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle23.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle23.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle23.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle23.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle23.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMeters.DefaultCellStyle = dataGridViewCellStyle23;
             this.dgvMeters.Location = new System.Drawing.Point(14, 285);
             this.dgvMeters.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dgvMeters.Name = "dgvMeters";
-            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle18.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle18.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle18.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMeters.RowHeadersDefaultCellStyle = dataGridViewCellStyle18;
+            dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle24.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle24.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle24.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle24.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle24.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMeters.RowHeadersDefaultCellStyle = dataGridViewCellStyle24;
             this.dgvMeters.RowHeadersVisible = false;
             this.dgvMeters.RowHeadersWidth = 62;
             this.dgvMeters.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -1126,7 +1126,7 @@ namespace CabconPMP.UI
             // 
             this.lblWhatMeter.AutoSize = true;
             this.lblWhatMeter.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblWhatMeter.Location = new System.Drawing.Point(14, 611);
+            this.lblWhatMeter.Location = new System.Drawing.Point(27, 763);
             this.lblWhatMeter.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblWhatMeter.Name = "lblWhatMeter";
             this.lblWhatMeter.Size = new System.Drawing.Size(102, 22);
@@ -1137,10 +1137,10 @@ namespace CabconPMP.UI
             // btnReport
             // 
             this.btnReport.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnReport.Location = new System.Drawing.Point(894, 603);
+            this.btnReport.Location = new System.Drawing.Point(911, 747);
             this.btnReport.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnReport.Name = "btnReport";
-            this.btnReport.Size = new System.Drawing.Size(180, 37);
+            this.btnReport.Size = new System.Drawing.Size(193, 63);
             this.btnReport.TabIndex = 2;
             this.btnReport.Text = "Report";
             this.btnReport.UseVisualStyleBackColor = true;
@@ -1148,10 +1148,10 @@ namespace CabconPMP.UI
             // btnExportResults
             // 
             this.btnExportResults.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnExportResults.Location = new System.Drawing.Point(700, 603);
+            this.btnExportResults.Location = new System.Drawing.Point(640, 747);
             this.btnExportResults.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnExportResults.Name = "btnExportResults";
-            this.btnExportResults.Size = new System.Drawing.Size(180, 37);
+            this.btnExportResults.Size = new System.Drawing.Size(240, 63);
             this.btnExportResults.TabIndex = 1;
             this.btnExportResults.Text = "Export Results to Text File";
             this.btnExportResults.UseVisualStyleBackColor = true;
@@ -1166,7 +1166,7 @@ namespace CabconPMP.UI
             this.dgvResults.Name = "dgvResults";
             this.dgvResults.RowHeadersVisible = false;
             this.dgvResults.RowHeadersWidth = 62;
-            this.dgvResults.Size = new System.Drawing.Size(1252, 560);
+            this.dgvResults.Size = new System.Drawing.Size(1252, 699);
             this.dgvResults.TabIndex = 0;
             // 
             // txtComment
@@ -1591,7 +1591,7 @@ namespace CabconPMP.UI
             this.cmbWhatMeter.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cmbWhatMeter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbWhatMeter.FormattingEnabled = true;
-            this.cmbWhatMeter.Location = new System.Drawing.Point(104, 606);
+            this.cmbWhatMeter.Location = new System.Drawing.Point(161, 760);
             this.cmbWhatMeter.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbWhatMeter.Name = "cmbWhatMeter";
             this.cmbWhatMeter.Size = new System.Drawing.Size(192, 27);
