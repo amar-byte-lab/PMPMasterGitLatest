@@ -49,7 +49,7 @@ namespace CabconPMP
             // btnOK
             // 
             this.btnOK.BackColor = System.Drawing.Color.PaleTurquoise;
-            this.btnOK.Location = new System.Drawing.Point(386, 699);
+            this.btnOK.Location = new System.Drawing.Point(435, 699);
             this.btnOK.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(116, 43);

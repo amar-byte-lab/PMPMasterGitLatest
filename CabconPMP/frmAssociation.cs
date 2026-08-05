@@ -39,6 +39,97 @@ namespace CabconPMP
         public Association()
         {
             InitializeComponent(); COMMONENTITY.FormStyleHelper.Apply(this);
+            ApplyModernTabs();
+            ModernizeUI(this);
+        }
+
+        private void ApplyModernTabs()
+        {
+            tabControl1.DrawMode = TabDrawMode.OwnerDrawFixed;
+            tabControl1.ItemSize = new System.Drawing.Size(150, 35);
+            tabControl1.SizeMode = TabSizeMode.Fixed;
+            tabControl1.DrawItem += TabControl1_DrawItem;
+        }
+
+        private void TabControl1_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            TabControl tabCtrl = (TabControl)sender;
+            System.Drawing.Graphics g = e.Graphics;
+            System.Drawing.Rectangle r = tabCtrl.GetTabRect(e.Index);
+            bool isSelected = (e.State == DrawItemState.Selected);
+            
+            // Draw background
+            using (System.Drawing.SolidBrush b = new System.Drawing.SolidBrush(isSelected ? System.Drawing.Color.White : System.Drawing.Color.FromArgb(240, 240, 240)))
+            {
+                g.FillRectangle(b, r);
+            }
+            
+            // Draw accent line for selected tab
+            if (isSelected)
+            {
+                using (System.Drawing.SolidBrush accent = new System.Drawing.SolidBrush(System.Drawing.Color.FromArgb(0, 122, 204)))
+                {
+                    g.FillRectangle(accent, r.Left, r.Top, r.Width, 3);
+                }
+            }
+            
+            // Draw text
+            string tabText = tabCtrl.TabPages[e.Index].Text;
+            System.Drawing.StringFormat sf = new System.Drawing.StringFormat();
+            sf.Alignment = System.Drawing.StringAlignment.Center;
+            sf.LineAlignment = System.Drawing.StringAlignment.Center;
+            using (System.Drawing.Font f = new System.Drawing.Font(tabCtrl.Font, isSelected ? System.Drawing.FontStyle.Bold : System.Drawing.FontStyle.Regular))
+            {
+                using (System.Drawing.SolidBrush textBrush = new System.Drawing.SolidBrush(isSelected ? System.Drawing.Color.FromArgb(0, 122, 204) : System.Drawing.Color.FromArgb(100, 100, 100)))
+                {
+                    g.DrawString(tabText, f, textBrush, r, sf);
+                }
+            }
+        }
+
+        private void ModernizeUI(Control parent)
+        {
+            foreach (Control c in parent.Controls)
+            {
+                if (c is System.Windows.Forms.Button btn)
+                {
+                    btn.FlatStyle = FlatStyle.Flat;
+                    btn.FlatAppearance.BorderSize = 0;
+                    btn.BackColor = System.Drawing.Color.FromArgb(30, 40, 60);
+                    btn.ForeColor = System.Drawing.Color.White;
+                    btn.Font = new System.Drawing.Font(btn.Font, System.Drawing.FontStyle.Bold);
+                }
+                else if (c is System.Windows.Forms.DataGridView dgv)
+                {
+                    dgv.BorderStyle = BorderStyle.None;
+                    dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+                    dgv.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(220, 235, 250);
+                    dgv.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
+                    dgv.BackgroundColor = System.Drawing.Color.White;
+                    dgv.EnableHeadersVisualStyles = false;
+                    dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+                    dgv.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(30, 40, 60);
+                    dgv.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
+                    dgv.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font(dgv.Font, System.Drawing.FontStyle.Bold);
+                }
+                else if (c is System.Windows.Forms.GroupBox gb)
+                {
+                    gb.FlatStyle = FlatStyle.Flat;
+                }
+                else if (c is System.Windows.Forms.Label lbl)
+                {
+                    lbl.BackColor = System.Drawing.Color.Transparent;
+                }
+                else if (c is System.Windows.Forms.TabPage tp)
+                {
+                    tp.BackColor = System.Drawing.Color.Transparent;
+                }
+
+                if (c.HasChildren)
+                {
+                    ModernizeUI(c);
+                }
+            }
         }
 
         private void Association_Load(object sender, EventArgs e)

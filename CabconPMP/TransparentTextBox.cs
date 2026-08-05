@@ -15,7 +15,7 @@ namespace CabconPMP
                           ControlStyles.ResizeRedraw |
                           ControlStyles.UserPaint, true);
 
-            this.BackColor = Color.Transparent;
+            this.BackColor = Color.Transparent; this.BorderStyle = BorderStyle.None;
         }
 
         protected override CreateParams CreateParams

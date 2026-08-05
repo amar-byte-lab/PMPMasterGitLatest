@@ -14,7 +14,7 @@ namespace CabconPMP
                           ControlStyles.ResizeRedraw |
                           ControlStyles.UserPaint, true);
 
-            this.BackColor = Color.Transparent;
+            this.BackColor = Color.Transparent; this.FlatStyle = FlatStyle.Flat;
             this.DrawMode = DrawMode.OwnerDrawFixed;
             this.DropDownStyle = ComboBoxStyle.DropDownList;
         }

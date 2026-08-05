@@ -1,4 +1,4 @@
-﻿namespace CabconPMP
+namespace CabconPMP
 {
     partial class Association
     {
@@ -30,8 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Association));
             this.panelUserInfo = new System.Windows.Forms.Panel();
-            this.txtPDUSize = new System.Windows.Forms.TextBox();
-            this.txtConformanceBlock = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
@@ -40,65 +38,38 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabSerialPort = new System.Windows.Forms.TabPage();
             this.label2 = new System.Windows.Forms.Label();
-            this.cmbSettingCategory = new System.Windows.Forms.ComboBox();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.clbPorts = new System.Windows.Forms.CheckedListBox();
             this.chkPortSelectAll = new System.Windows.Forms.CheckBox();
-            this.cmbSignonBaudRate = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.txtInterFrameTimeout = new System.Windows.Forms.TextBox();
-            this.cmbParity = new System.Windows.Forms.ComboBox();
             this.label23 = new System.Windows.Forms.Label();
-            this.txtResponsTimeout = new System.Windows.Forms.TextBox();
             this.label30 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
-            this.cmbDatabits = new System.Windows.Forms.ComboBox();
-            this.cmbStopBits = new System.Windows.Forms.ComboBox();
             this.label29 = new System.Windows.Forms.Label();
-            this.cmbBaudRate = new System.Windows.Forms.ComboBox();
             this.label25 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
             this.tabHDLC = new System.Windows.Forms.TabPage();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
-            this.txtDLLBufferSize = new System.Windows.Forms.TextBox();
-            this.txtCosemBufferSize = new System.Windows.Forms.TextBox();
             this.label27 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
-            this.cmbWindowSize = new System.Windows.Forms.ComboBox();
-            this.txtInformationSize = new System.Windows.Forms.TextBox();
-            this.txtPhysicalID = new System.Windows.Forms.TextBox();
             this.label36 = new System.Windows.Forms.Label();
-            this.cmbHDLCAddressing = new System.Windows.Forms.ComboBox();
             this.label37 = new System.Windows.Forms.Label();
             this.label38 = new System.Windows.Forms.Label();
             this.label39 = new System.Windows.Forms.Label();
             this.tabAssociation = new System.Windows.Forms.TabPage();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
-            this.txtAuthentication = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.cmbDedicatedKey = new System.Windows.Forms.ComboBox();
             this.lbldedication = new System.Windows.Forms.Label();
-            this.txtEncryKey = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.cmbSecuritysuit = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.txtClientSystem = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.cmbClientType = new System.Windows.Forms.ComboBox();
             this.label45 = new System.Windows.Forms.Label();
-            this.txtServerLAddress = new System.Windows.Forms.TextBox();
-            this.txtServerUAddress = new System.Windows.Forms.TextBox();
             this.label42 = new System.Windows.Forms.Label();
             this.label44 = new System.Windows.Forms.Label();
-            this.txtDLMSVersion = new System.Windows.Forms.TextBox();
-            this.txtMaxPDUSize = new System.Windows.Forms.TextBox();
-            this.txtPassword = new System.Windows.Forms.TextBox();
             this.label33 = new System.Windows.Forms.Label();
             this.label34 = new System.Windows.Forms.Label();
-            this.cmbAuthenticationLevel = new System.Windows.Forms.ComboBox();
             this.label35 = new System.Windows.Forms.Label();
-            this.cmbApplicationContext = new System.Windows.Forms.ComboBox();
             this.label40 = new System.Windows.Forms.Label();
             this.label41 = new System.Windows.Forms.Label();
             this.tabconformanceBlock = new System.Windows.Forms.TabPage();
@@ -128,6 +99,35 @@
             this.Resered2 = new System.Windows.Forms.CheckBox();
             this.chkAttributeWithSet = new System.Windows.Forms.CheckBox();
             this.Resered1 = new System.Windows.Forms.CheckBox();
+            this.cmbSettingCategory = new CabconPMP.TransparentComboBox();
+            this.cmbSignonBaudRate = new CabconPMP.TransparentComboBox();
+            this.txtInterFrameTimeout = new CabconPMP.TransparentTextBox();
+            this.cmbParity = new CabconPMP.TransparentComboBox();
+            this.txtResponsTimeout = new CabconPMP.TransparentTextBox();
+            this.cmbDatabits = new CabconPMP.TransparentComboBox();
+            this.cmbStopBits = new CabconPMP.TransparentComboBox();
+            this.cmbBaudRate = new CabconPMP.TransparentComboBox();
+            this.txtDLLBufferSize = new CabconPMP.TransparentTextBox();
+            this.txtCosemBufferSize = new CabconPMP.TransparentTextBox();
+            this.cmbWindowSize = new CabconPMP.TransparentComboBox();
+            this.txtInformationSize = new CabconPMP.TransparentTextBox();
+            this.txtPhysicalID = new CabconPMP.TransparentTextBox();
+            this.cmbHDLCAddressing = new CabconPMP.TransparentComboBox();
+            this.txtAuthentication = new CabconPMP.TransparentTextBox();
+            this.cmbDedicatedKey = new CabconPMP.TransparentComboBox();
+            this.txtEncryKey = new CabconPMP.TransparentTextBox();
+            this.cmbSecuritysuit = new CabconPMP.TransparentComboBox();
+            this.txtClientSystem = new CabconPMP.TransparentTextBox();
+            this.cmbClientType = new CabconPMP.TransparentComboBox();
+            this.txtServerLAddress = new CabconPMP.TransparentTextBox();
+            this.txtServerUAddress = new CabconPMP.TransparentTextBox();
+            this.txtDLMSVersion = new CabconPMP.TransparentTextBox();
+            this.txtMaxPDUSize = new CabconPMP.TransparentTextBox();
+            this.txtPassword = new CabconPMP.TransparentTextBox();
+            this.cmbAuthenticationLevel = new CabconPMP.TransparentComboBox();
+            this.cmbApplicationContext = new CabconPMP.TransparentComboBox();
+            this.txtPDUSize = new CabconPMP.TransparentTextBox();
+            this.txtConformanceBlock = new CabconPMP.TransparentTextBox();
             this.panelUserInfo.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabSerialPort.SuspendLayout();
@@ -154,26 +154,6 @@
             this.panelUserInfo.Size = new System.Drawing.Size(501, 168);
             this.panelUserInfo.TabIndex = 1;
             this.panelUserInfo.Visible = false;
-            // 
-            // txtPDUSize
-            // 
-            this.txtPDUSize.Enabled = false;
-            this.txtPDUSize.Location = new System.Drawing.Point(267, 98);
-            this.txtPDUSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtPDUSize.Name = "txtPDUSize";
-            this.txtPDUSize.Size = new System.Drawing.Size(130, 26);
-            this.txtPDUSize.TabIndex = 5;
-            this.txtPDUSize.Text = "9999";
-            // 
-            // txtConformanceBlock
-            // 
-            this.txtConformanceBlock.Enabled = false;
-            this.txtConformanceBlock.Location = new System.Drawing.Point(267, 51);
-            this.txtConformanceBlock.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtConformanceBlock.Name = "txtConformanceBlock";
-            this.txtConformanceBlock.Size = new System.Drawing.Size(130, 26);
-            this.txtConformanceBlock.TabIndex = 4;
-            this.txtConformanceBlock.Text = "00142C";
             // 
             // label8
             // 
@@ -258,6 +238,7 @@
             // tabSerialPort
             // 
             this.tabSerialPort.BackColor = System.Drawing.Color.White;
+            this.tabSerialPort.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tabSerialPort.BackgroundImage")));
             this.tabSerialPort.Controls.Add(this.label2);
             this.tabSerialPort.Controls.Add(this.cmbSettingCategory);
             this.tabSerialPort.Controls.Add(this.groupBox10);
@@ -283,24 +264,11 @@
             this.label2.TabIndex = 11;
             this.label2.Text = "Setting Category";
             // 
-            // cmbSettingCategory
-            // 
-            this.cmbSettingCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSettingCategory.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmbSettingCategory.FormattingEnabled = true;
-            this.cmbSettingCategory.Items.AddRange(new object[] {
-            "IEC Default",
-            "DLMS & IEC @ 9600"});
-            this.cmbSettingCategory.Location = new System.Drawing.Point(300, 58);
-            this.cmbSettingCategory.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmbSettingCategory.Name = "cmbSettingCategory";
-            this.cmbSettingCategory.Size = new System.Drawing.Size(223, 33);
-            this.cmbSettingCategory.TabIndex = 10;
-            this.cmbSettingCategory.SelectedIndexChanged += new System.EventHandler(this.cmbSettingCategory_SelectedIndexChanged);
-            // 
             // groupBox10
             // 
             this.groupBox10.BackColor = System.Drawing.Color.White;
+            this.groupBox10.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("groupBox10.BackgroundImage")));
+            this.groupBox10.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.groupBox10.Controls.Add(this.clbPorts);
             this.groupBox10.Controls.Add(this.chkPortSelectAll);
             this.groupBox10.Controls.Add(this.cmbSignonBaudRate);
@@ -330,6 +298,7 @@
             // 
             // clbPorts
             // 
+            this.clbPorts.BackColor = System.Drawing.Color.WhiteSmoke;
             this.clbPorts.CheckOnClick = true;
             this.clbPorts.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.clbPorts.FormattingEnabled = true;
@@ -343,28 +312,15 @@
             // chkPortSelectAll
             // 
             this.chkPortSelectAll.AutoSize = true;
+            this.chkPortSelectAll.BackColor = System.Drawing.Color.Transparent;
             this.chkPortSelectAll.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.chkPortSelectAll.Location = new System.Drawing.Point(444, 193);
             this.chkPortSelectAll.Name = "chkPortSelectAll";
             this.chkPortSelectAll.Size = new System.Drawing.Size(109, 29);
             this.chkPortSelectAll.TabIndex = 24;
             this.chkPortSelectAll.Text = "Select All";
-            this.chkPortSelectAll.UseVisualStyleBackColor = true;
+            this.chkPortSelectAll.UseVisualStyleBackColor = false;
             this.chkPortSelectAll.CheckedChanged += new System.EventHandler(this.chkPortSelectAll_CheckedChanged);
-            // 
-            // cmbSignonBaudRate
-            // 
-            this.cmbSignonBaudRate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSignonBaudRate.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.cmbSignonBaudRate.FormattingEnabled = true;
-            this.cmbSignonBaudRate.Items.AddRange(new object[] {
-            "300",
-            "9600"});
-            this.cmbSignonBaudRate.Location = new System.Drawing.Point(444, 291);
-            this.cmbSignonBaudRate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmbSignonBaudRate.Name = "cmbSignonBaudRate";
-            this.cmbSignonBaudRate.Size = new System.Drawing.Size(180, 33);
-            this.cmbSignonBaudRate.TabIndex = 22;
             // 
             // label1
             // 
@@ -377,31 +333,6 @@
             this.label1.TabIndex = 21;
             this.label1.Text = "Signon Baud Rate (For NON-DLMS)";
             // 
-            // txtInterFrameTimeout
-            // 
-            this.txtInterFrameTimeout.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtInterFrameTimeout.Location = new System.Drawing.Point(444, 504);
-            this.txtInterFrameTimeout.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtInterFrameTimeout.MaxLength = 5;
-            this.txtInterFrameTimeout.Name = "txtInterFrameTimeout";
-            this.txtInterFrameTimeout.Size = new System.Drawing.Size(180, 31);
-            this.txtInterFrameTimeout.TabIndex = 20;
-            // 
-            // cmbParity
-            // 
-            this.cmbParity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbParity.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.cmbParity.FormattingEnabled = true;
-            this.cmbParity.Items.AddRange(new object[] {
-            "None",
-            "Even",
-            "Odd"});
-            this.cmbParity.Location = new System.Drawing.Point(444, 374);
-            this.cmbParity.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmbParity.Name = "cmbParity";
-            this.cmbParity.Size = new System.Drawing.Size(180, 33);
-            this.cmbParity.TabIndex = 3;
-            // 
             // label23
             // 
             this.label23.AutoSize = true;
@@ -412,16 +343,6 @@
             this.label23.Size = new System.Drawing.Size(55, 25);
             this.label23.TabIndex = 2;
             this.label23.Text = "Parity";
-            // 
-            // txtResponsTimeout
-            // 
-            this.txtResponsTimeout.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtResponsTimeout.Location = new System.Drawing.Point(444, 463);
-            this.txtResponsTimeout.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtResponsTimeout.MaxLength = 5;
-            this.txtResponsTimeout.Name = "txtResponsTimeout";
-            this.txtResponsTimeout.Size = new System.Drawing.Size(180, 31);
-            this.txtResponsTimeout.TabIndex = 19;
             // 
             // label30
             // 
@@ -456,34 +377,6 @@
             this.label26.TabIndex = 14;
             this.label26.Text = "Response Timeout (ms)";
             // 
-            // cmbDatabits
-            // 
-            this.cmbDatabits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbDatabits.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.cmbDatabits.FormattingEnabled = true;
-            this.cmbDatabits.Items.AddRange(new object[] {
-            "7",
-            "8"});
-            this.cmbDatabits.Location = new System.Drawing.Point(444, 331);
-            this.cmbDatabits.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmbDatabits.Name = "cmbDatabits";
-            this.cmbDatabits.Size = new System.Drawing.Size(180, 33);
-            this.cmbDatabits.TabIndex = 5;
-            // 
-            // cmbStopBits
-            // 
-            this.cmbStopBits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbStopBits.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.cmbStopBits.FormattingEnabled = true;
-            this.cmbStopBits.Items.AddRange(new object[] {
-            "1",
-            "2"});
-            this.cmbStopBits.Location = new System.Drawing.Point(444, 420);
-            this.cmbStopBits.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmbStopBits.Name = "cmbStopBits";
-            this.cmbStopBits.Size = new System.Drawing.Size(180, 33);
-            this.cmbStopBits.TabIndex = 9;
-            // 
             // label29
             // 
             this.label29.AutoSize = true;
@@ -494,31 +387,6 @@
             this.label29.Size = new System.Drawing.Size(82, 25);
             this.label29.TabIndex = 8;
             this.label29.Text = "Stop Bits";
-            // 
-            // cmbBaudRate
-            // 
-            this.cmbBaudRate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbBaudRate.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.cmbBaudRate.FormattingEnabled = true;
-            this.cmbBaudRate.Items.AddRange(new object[] {
-            "300",
-            "600",
-            "1200",
-            "2400",
-            "4800",
-            "9600",
-            "19200",
-            "38400",
-            "57600",
-            "115200",
-            "230400",
-            "460800",
-            "921600"});
-            this.cmbBaudRate.Location = new System.Drawing.Point(444, 248);
-            this.cmbBaudRate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmbBaudRate.Name = "cmbBaudRate";
-            this.cmbBaudRate.Size = new System.Drawing.Size(180, 33);
-            this.cmbBaudRate.TabIndex = 7;
             // 
             // label25
             // 
@@ -545,6 +413,7 @@
             // tabHDLC
             // 
             this.tabHDLC.BackColor = System.Drawing.Color.White;
+            this.tabHDLC.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tabHDLC.BackgroundImage")));
             this.tabHDLC.Controls.Add(this.groupBox11);
             this.tabHDLC.Location = new System.Drawing.Point(4, 39);
             this.tabHDLC.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -558,6 +427,8 @@
             // groupBox11
             // 
             this.groupBox11.BackColor = System.Drawing.Color.White;
+            this.groupBox11.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("groupBox11.BackgroundImage")));
+            this.groupBox11.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.groupBox11.Controls.Add(this.txtDLLBufferSize);
             this.groupBox11.Controls.Add(this.txtCosemBufferSize);
             this.groupBox11.Controls.Add(this.label27);
@@ -579,24 +450,6 @@
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "HDLC Settings";
             // 
-            // txtDLLBufferSize
-            // 
-            this.txtDLLBufferSize.Location = new System.Drawing.Point(402, 451);
-            this.txtDLLBufferSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtDLLBufferSize.MaxLength = 4;
-            this.txtDLLBufferSize.Name = "txtDLLBufferSize";
-            this.txtDLLBufferSize.Size = new System.Drawing.Size(180, 26);
-            this.txtDLLBufferSize.TabIndex = 23;
-            // 
-            // txtCosemBufferSize
-            // 
-            this.txtCosemBufferSize.Location = new System.Drawing.Point(402, 381);
-            this.txtCosemBufferSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtCosemBufferSize.MaxLength = 4;
-            this.txtCosemBufferSize.Name = "txtCosemBufferSize";
-            this.txtCosemBufferSize.Size = new System.Drawing.Size(180, 26);
-            this.txtCosemBufferSize.TabIndex = 22;
-            // 
             // label27
             // 
             this.label27.AutoSize = true;
@@ -617,45 +470,6 @@
             this.label28.TabIndex = 20;
             this.label28.Text = "Cosem Buffer Size";
             // 
-            // cmbWindowSize
-            // 
-            this.cmbWindowSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbWindowSize.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.cmbWindowSize.FormattingEnabled = true;
-            this.cmbWindowSize.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7"});
-            this.cmbWindowSize.Location = new System.Drawing.Point(402, 142);
-            this.cmbWindowSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmbWindowSize.Name = "cmbWindowSize";
-            this.cmbWindowSize.Size = new System.Drawing.Size(180, 33);
-            this.cmbWindowSize.TabIndex = 19;
-            // 
-            // txtInformationSize
-            // 
-            this.txtInformationSize.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtInformationSize.Location = new System.Drawing.Point(402, 62);
-            this.txtInformationSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtInformationSize.MaxLength = 3;
-            this.txtInformationSize.Name = "txtInformationSize";
-            this.txtInformationSize.Size = new System.Drawing.Size(180, 31);
-            this.txtInformationSize.TabIndex = 18;
-            // 
-            // txtPhysicalID
-            // 
-            this.txtPhysicalID.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtPhysicalID.Location = new System.Drawing.Point(402, 304);
-            this.txtPhysicalID.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtPhysicalID.MaxLength = 8;
-            this.txtPhysicalID.Name = "txtPhysicalID";
-            this.txtPhysicalID.Size = new System.Drawing.Size(180, 31);
-            this.txtPhysicalID.TabIndex = 17;
-            // 
             // label36
             // 
             this.label36.AutoSize = true;
@@ -666,22 +480,6 @@
             this.label36.Size = new System.Drawing.Size(151, 25);
             this.label36.TabIndex = 6;
             this.label36.Text = "Server Physical ID";
-            // 
-            // cmbHDLCAddressing
-            // 
-            this.cmbHDLCAddressing.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbHDLCAddressing.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.cmbHDLCAddressing.FormattingEnabled = true;
-            this.cmbHDLCAddressing.Items.AddRange(new object[] {
-            "1 Byte",
-            "2 Byte",
-            "4 Byte"});
-            this.cmbHDLCAddressing.Location = new System.Drawing.Point(402, 225);
-            this.cmbHDLCAddressing.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmbHDLCAddressing.Name = "cmbHDLCAddressing";
-            this.cmbHDLCAddressing.Size = new System.Drawing.Size(180, 33);
-            this.cmbHDLCAddressing.TabIndex = 5;
-            this.cmbHDLCAddressing.SelectedIndexChanged += new System.EventHandler(this.cmbHDLCAddressing_SelectedIndexChanged);
             // 
             // label37
             // 
@@ -731,6 +529,8 @@
             // groupBox12
             // 
             this.groupBox12.BackColor = System.Drawing.Color.White;
+            this.groupBox12.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("groupBox12.BackgroundImage")));
+            this.groupBox12.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.groupBox12.Controls.Add(this.txtAuthentication);
             this.groupBox12.Controls.Add(this.label7);
             this.groupBox12.Controls.Add(this.cmbDedicatedKey);
@@ -766,16 +566,6 @@
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "  ";
             // 
-            // txtAuthentication
-            // 
-            this.txtAuthentication.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtAuthentication.Location = new System.Drawing.Point(380, 559);
-            this.txtAuthentication.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtAuthentication.MaxLength = 32;
-            this.txtAuthentication.Name = "txtAuthentication";
-            this.txtAuthentication.Size = new System.Drawing.Size(313, 31);
-            this.txtAuthentication.TabIndex = 43;
-            // 
             // label7
             // 
             this.label7.AutoSize = true;
@@ -786,20 +576,6 @@
             this.label7.Size = new System.Drawing.Size(160, 25);
             this.label7.TabIndex = 42;
             this.label7.Text = "Authentication Key";
-            // 
-            // cmbDedicatedKey
-            // 
-            this.cmbDedicatedKey.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbDedicatedKey.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.cmbDedicatedKey.FormattingEnabled = true;
-            this.cmbDedicatedKey.Items.AddRange(new object[] {
-            "True",
-            "False"});
-            this.cmbDedicatedKey.Location = new System.Drawing.Point(380, 612);
-            this.cmbDedicatedKey.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmbDedicatedKey.Name = "cmbDedicatedKey";
-            this.cmbDedicatedKey.Size = new System.Drawing.Size(313, 33);
-            this.cmbDedicatedKey.TabIndex = 41;
             // 
             // lbldedication
             // 
@@ -812,16 +588,6 @@
             this.lbldedication.TabIndex = 40;
             this.lbldedication.Text = "Dedicated Key";
             // 
-            // txtEncryKey
-            // 
-            this.txtEncryKey.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtEncryKey.Location = new System.Drawing.Point(380, 503);
-            this.txtEncryKey.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtEncryKey.MaxLength = 32;
-            this.txtEncryKey.Name = "txtEncryKey";
-            this.txtEncryKey.Size = new System.Drawing.Size(313, 31);
-            this.txtEncryKey.TabIndex = 37;
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -832,21 +598,6 @@
             this.label6.Size = new System.Drawing.Size(185, 25);
             this.label6.TabIndex = 36;
             this.label6.Text = "Global Encryption Key";
-            // 
-            // cmbSecuritysuit
-            // 
-            this.cmbSecuritysuit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSecuritysuit.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.cmbSecuritysuit.FormattingEnabled = true;
-            this.cmbSecuritysuit.Items.AddRange(new object[] {
-            "Authentication Only",
-            "Encryption Only",
-            "Encryption + Authentication "});
-            this.cmbSecuritysuit.Location = new System.Drawing.Point(380, 449);
-            this.cmbSecuritysuit.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmbSecuritysuit.Name = "cmbSecuritysuit";
-            this.cmbSecuritysuit.Size = new System.Drawing.Size(313, 33);
-            this.cmbSecuritysuit.TabIndex = 35;
             // 
             // label5
             // 
@@ -859,16 +610,6 @@
             this.label5.TabIndex = 34;
             this.label5.Text = "Security Suit";
             // 
-            // txtClientSystem
-            // 
-            this.txtClientSystem.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtClientSystem.Location = new System.Drawing.Point(383, 399);
-            this.txtClientSystem.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtClientSystem.MaxLength = 8;
-            this.txtClientSystem.Name = "txtClientSystem";
-            this.txtClientSystem.Size = new System.Drawing.Size(310, 31);
-            this.txtClientSystem.TabIndex = 33;
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -880,24 +621,6 @@
             this.label4.TabIndex = 32;
             this.label4.Text = "Client System Title";
             // 
-            // cmbClientType
-            // 
-            this.cmbClientType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbClientType.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.cmbClientType.FormattingEnabled = true;
-            this.cmbClientType.Items.AddRange(new object[] {
-            " PC ",
-            " MR ",
-            " US ",
-            " FS ",
-            " FU"});
-            this.cmbClientType.Location = new System.Drawing.Point(375, 34);
-            this.cmbClientType.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmbClientType.Name = "cmbClientType";
-            this.cmbClientType.Size = new System.Drawing.Size(313, 33);
-            this.cmbClientType.TabIndex = 29;
-            this.cmbClientType.SelectedIndexChanged += new System.EventHandler(this.cmbClientType_SelectedIndexChanged);
-            // 
             // label45
             // 
             this.label45.AutoSize = true;
@@ -908,26 +631,6 @@
             this.label45.Size = new System.Drawing.Size(98, 25);
             this.label45.TabIndex = 28;
             this.label45.Text = "Client Type";
-            // 
-            // txtServerLAddress
-            // 
-            this.txtServerLAddress.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtServerLAddress.Location = new System.Drawing.Point(380, 120);
-            this.txtServerLAddress.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtServerLAddress.MaxLength = 5;
-            this.txtServerLAddress.Name = "txtServerLAddress";
-            this.txtServerLAddress.Size = new System.Drawing.Size(313, 31);
-            this.txtServerLAddress.TabIndex = 27;
-            // 
-            // txtServerUAddress
-            // 
-            this.txtServerUAddress.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtServerUAddress.Location = new System.Drawing.Point(375, 77);
-            this.txtServerUAddress.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtServerUAddress.MaxLength = 1;
-            this.txtServerUAddress.Name = "txtServerUAddress";
-            this.txtServerUAddress.Size = new System.Drawing.Size(313, 31);
-            this.txtServerUAddress.TabIndex = 26;
             // 
             // label42
             // 
@@ -951,36 +654,6 @@
             this.label44.TabIndex = 24;
             this.label44.Text = "Server Upper Address";
             // 
-            // txtDLMSVersion
-            // 
-            this.txtDLMSVersion.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtDLMSVersion.Location = new System.Drawing.Point(383, 161);
-            this.txtDLMSVersion.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtDLMSVersion.MaxLength = 1;
-            this.txtDLMSVersion.Name = "txtDLMSVersion";
-            this.txtDLMSVersion.Size = new System.Drawing.Size(310, 31);
-            this.txtDLMSVersion.TabIndex = 23;
-            // 
-            // txtMaxPDUSize
-            // 
-            this.txtMaxPDUSize.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtMaxPDUSize.Location = new System.Drawing.Point(383, 348);
-            this.txtMaxPDUSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtMaxPDUSize.MaxLength = 4;
-            this.txtMaxPDUSize.Name = "txtMaxPDUSize";
-            this.txtMaxPDUSize.Size = new System.Drawing.Size(310, 31);
-            this.txtMaxPDUSize.TabIndex = 18;
-            // 
-            // txtPassword
-            // 
-            this.txtPassword.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtPassword.Location = new System.Drawing.Point(383, 297);
-            this.txtPassword.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtPassword.MaxLength = 8;
-            this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(310, 31);
-            this.txtPassword.TabIndex = 17;
-            // 
             // label33
             // 
             this.label33.AutoSize = true;
@@ -1003,22 +676,6 @@
             this.label34.TabIndex = 10;
             this.label34.Text = "Password";
             // 
-            // cmbAuthenticationLevel
-            // 
-            this.cmbAuthenticationLevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbAuthenticationLevel.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.cmbAuthenticationLevel.FormattingEnabled = true;
-            this.cmbAuthenticationLevel.Items.AddRange(new object[] {
-            "No - Security",
-            "Low - Level",
-            "High - Level"});
-            this.cmbAuthenticationLevel.Location = new System.Drawing.Point(383, 245);
-            this.cmbAuthenticationLevel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmbAuthenticationLevel.Name = "cmbAuthenticationLevel";
-            this.cmbAuthenticationLevel.Size = new System.Drawing.Size(310, 33);
-            this.cmbAuthenticationLevel.TabIndex = 9;
-            this.cmbAuthenticationLevel.SelectedIndexChanged += new System.EventHandler(this.cmbAuthenticationLevel_SelectedIndexChanged);
-            // 
             // label35
             // 
             this.label35.AutoSize = true;
@@ -1029,22 +686,6 @@
             this.label35.Size = new System.Drawing.Size(171, 25);
             this.label35.TabIndex = 8;
             this.label35.Text = "Authentication Level";
-            // 
-            // cmbApplicationContext
-            // 
-            this.cmbApplicationContext.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbApplicationContext.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.cmbApplicationContext.FormattingEnabled = true;
-            this.cmbApplicationContext.Items.AddRange(new object[] {
-            "Short Name without ciphering",
-            "Logical Name without ciphering",
-            "Logical Name with ciphering"});
-            this.cmbApplicationContext.Location = new System.Drawing.Point(383, 202);
-            this.cmbApplicationContext.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmbApplicationContext.Name = "cmbApplicationContext";
-            this.cmbApplicationContext.Size = new System.Drawing.Size(310, 33);
-            this.cmbApplicationContext.TabIndex = 7;
-            this.cmbApplicationContext.SelectedIndexChanged += new System.EventHandler(this.cmbApplicationContext_SelectedIndexChanged);
             // 
             // label40
             // 
@@ -1431,6 +1072,446 @@
             this.Resered1.Text = "Reserved";
             this.Resered1.UseVisualStyleBackColor = false;
             // 
+            // cmbSettingCategory
+            // 
+            this.cmbSettingCategory.BackColor = System.Drawing.Color.Transparent;
+            this.cmbSettingCategory.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbSettingCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSettingCategory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbSettingCategory.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbSettingCategory.FormattingEnabled = true;
+            this.cmbSettingCategory.Items.AddRange(new object[] {
+            "IEC Default",
+            "DLMS & IEC @ 9600"});
+            this.cmbSettingCategory.Location = new System.Drawing.Point(300, 58);
+            this.cmbSettingCategory.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbSettingCategory.Name = "cmbSettingCategory";
+            this.cmbSettingCategory.Size = new System.Drawing.Size(223, 32);
+            this.cmbSettingCategory.TabIndex = 10;
+            this.cmbSettingCategory.SelectedIndexChanged += new System.EventHandler(this.cmbSettingCategory_SelectedIndexChanged);
+            // 
+            // cmbSignonBaudRate
+            // 
+            this.cmbSignonBaudRate.BackColor = System.Drawing.Color.Transparent;
+            this.cmbSignonBaudRate.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbSignonBaudRate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSignonBaudRate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbSignonBaudRate.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cmbSignonBaudRate.FormattingEnabled = true;
+            this.cmbSignonBaudRate.Items.AddRange(new object[] {
+            "300",
+            "9600"});
+            this.cmbSignonBaudRate.Location = new System.Drawing.Point(444, 291);
+            this.cmbSignonBaudRate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbSignonBaudRate.Name = "cmbSignonBaudRate";
+            this.cmbSignonBaudRate.Size = new System.Drawing.Size(180, 32);
+            this.cmbSignonBaudRate.TabIndex = 22;
+            // 
+            // txtInterFrameTimeout
+            // 
+            this.txtInterFrameTimeout.BackColor = System.Drawing.Color.Transparent;
+            this.txtInterFrameTimeout.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtInterFrameTimeout.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtInterFrameTimeout.Location = new System.Drawing.Point(444, 504);
+            this.txtInterFrameTimeout.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtInterFrameTimeout.MaxLength = 5;
+            this.txtInterFrameTimeout.Name = "txtInterFrameTimeout";
+            this.txtInterFrameTimeout.Size = new System.Drawing.Size(180, 24);
+            this.txtInterFrameTimeout.TabIndex = 20;
+            // 
+            // cmbParity
+            // 
+            this.cmbParity.BackColor = System.Drawing.Color.Transparent;
+            this.cmbParity.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbParity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbParity.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbParity.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cmbParity.FormattingEnabled = true;
+            this.cmbParity.Items.AddRange(new object[] {
+            "None",
+            "Even",
+            "Odd"});
+            this.cmbParity.Location = new System.Drawing.Point(444, 374);
+            this.cmbParity.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbParity.Name = "cmbParity";
+            this.cmbParity.Size = new System.Drawing.Size(180, 32);
+            this.cmbParity.TabIndex = 3;
+            // 
+            // txtResponsTimeout
+            // 
+            this.txtResponsTimeout.BackColor = System.Drawing.Color.Transparent;
+            this.txtResponsTimeout.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtResponsTimeout.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtResponsTimeout.Location = new System.Drawing.Point(444, 463);
+            this.txtResponsTimeout.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtResponsTimeout.MaxLength = 5;
+            this.txtResponsTimeout.Name = "txtResponsTimeout";
+            this.txtResponsTimeout.Size = new System.Drawing.Size(180, 24);
+            this.txtResponsTimeout.TabIndex = 19;
+            // 
+            // cmbDatabits
+            // 
+            this.cmbDatabits.BackColor = System.Drawing.Color.Transparent;
+            this.cmbDatabits.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbDatabits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbDatabits.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbDatabits.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cmbDatabits.FormattingEnabled = true;
+            this.cmbDatabits.Items.AddRange(new object[] {
+            "7",
+            "8"});
+            this.cmbDatabits.Location = new System.Drawing.Point(444, 331);
+            this.cmbDatabits.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbDatabits.Name = "cmbDatabits";
+            this.cmbDatabits.Size = new System.Drawing.Size(180, 32);
+            this.cmbDatabits.TabIndex = 5;
+            // 
+            // cmbStopBits
+            // 
+            this.cmbStopBits.BackColor = System.Drawing.Color.Transparent;
+            this.cmbStopBits.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbStopBits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbStopBits.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbStopBits.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cmbStopBits.FormattingEnabled = true;
+            this.cmbStopBits.Items.AddRange(new object[] {
+            "1",
+            "2"});
+            this.cmbStopBits.Location = new System.Drawing.Point(444, 420);
+            this.cmbStopBits.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbStopBits.Name = "cmbStopBits";
+            this.cmbStopBits.Size = new System.Drawing.Size(180, 32);
+            this.cmbStopBits.TabIndex = 9;
+            // 
+            // cmbBaudRate
+            // 
+            this.cmbBaudRate.BackColor = System.Drawing.Color.Transparent;
+            this.cmbBaudRate.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbBaudRate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbBaudRate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbBaudRate.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cmbBaudRate.FormattingEnabled = true;
+            this.cmbBaudRate.Items.AddRange(new object[] {
+            "300",
+            "600",
+            "1200",
+            "2400",
+            "4800",
+            "9600",
+            "19200",
+            "38400",
+            "57600",
+            "115200",
+            "230400",
+            "460800",
+            "921600"});
+            this.cmbBaudRate.Location = new System.Drawing.Point(444, 248);
+            this.cmbBaudRate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbBaudRate.Name = "cmbBaudRate";
+            this.cmbBaudRate.Size = new System.Drawing.Size(180, 32);
+            this.cmbBaudRate.TabIndex = 7;
+            // 
+            // txtDLLBufferSize
+            // 
+            this.txtDLLBufferSize.BackColor = System.Drawing.Color.Transparent;
+            this.txtDLLBufferSize.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtDLLBufferSize.Location = new System.Drawing.Point(402, 451);
+            this.txtDLLBufferSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtDLLBufferSize.MaxLength = 4;
+            this.txtDLLBufferSize.Name = "txtDLLBufferSize";
+            this.txtDLLBufferSize.Size = new System.Drawing.Size(180, 19);
+            this.txtDLLBufferSize.TabIndex = 23;
+            // 
+            // txtCosemBufferSize
+            // 
+            this.txtCosemBufferSize.BackColor = System.Drawing.Color.Transparent;
+            this.txtCosemBufferSize.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtCosemBufferSize.Location = new System.Drawing.Point(402, 381);
+            this.txtCosemBufferSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtCosemBufferSize.MaxLength = 4;
+            this.txtCosemBufferSize.Name = "txtCosemBufferSize";
+            this.txtCosemBufferSize.Size = new System.Drawing.Size(180, 19);
+            this.txtCosemBufferSize.TabIndex = 22;
+            // 
+            // cmbWindowSize
+            // 
+            this.cmbWindowSize.BackColor = System.Drawing.Color.Transparent;
+            this.cmbWindowSize.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbWindowSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbWindowSize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbWindowSize.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cmbWindowSize.FormattingEnabled = true;
+            this.cmbWindowSize.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7"});
+            this.cmbWindowSize.Location = new System.Drawing.Point(402, 142);
+            this.cmbWindowSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbWindowSize.Name = "cmbWindowSize";
+            this.cmbWindowSize.Size = new System.Drawing.Size(180, 32);
+            this.cmbWindowSize.TabIndex = 19;
+            // 
+            // txtInformationSize
+            // 
+            this.txtInformationSize.BackColor = System.Drawing.Color.Transparent;
+            this.txtInformationSize.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtInformationSize.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtInformationSize.Location = new System.Drawing.Point(402, 62);
+            this.txtInformationSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtInformationSize.MaxLength = 3;
+            this.txtInformationSize.Name = "txtInformationSize";
+            this.txtInformationSize.Size = new System.Drawing.Size(180, 24);
+            this.txtInformationSize.TabIndex = 18;
+            // 
+            // txtPhysicalID
+            // 
+            this.txtPhysicalID.BackColor = System.Drawing.Color.Transparent;
+            this.txtPhysicalID.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtPhysicalID.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtPhysicalID.Location = new System.Drawing.Point(402, 304);
+            this.txtPhysicalID.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtPhysicalID.MaxLength = 8;
+            this.txtPhysicalID.Name = "txtPhysicalID";
+            this.txtPhysicalID.Size = new System.Drawing.Size(180, 24);
+            this.txtPhysicalID.TabIndex = 17;
+            // 
+            // cmbHDLCAddressing
+            // 
+            this.cmbHDLCAddressing.BackColor = System.Drawing.Color.Transparent;
+            this.cmbHDLCAddressing.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbHDLCAddressing.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbHDLCAddressing.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbHDLCAddressing.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cmbHDLCAddressing.FormattingEnabled = true;
+            this.cmbHDLCAddressing.Items.AddRange(new object[] {
+            "1 Byte",
+            "2 Byte",
+            "4 Byte"});
+            this.cmbHDLCAddressing.Location = new System.Drawing.Point(402, 225);
+            this.cmbHDLCAddressing.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbHDLCAddressing.Name = "cmbHDLCAddressing";
+            this.cmbHDLCAddressing.Size = new System.Drawing.Size(180, 32);
+            this.cmbHDLCAddressing.TabIndex = 5;
+            this.cmbHDLCAddressing.SelectedIndexChanged += new System.EventHandler(this.cmbHDLCAddressing_SelectedIndexChanged);
+            // 
+            // txtAuthentication
+            // 
+            this.txtAuthentication.BackColor = System.Drawing.Color.Transparent;
+            this.txtAuthentication.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtAuthentication.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtAuthentication.Location = new System.Drawing.Point(380, 559);
+            this.txtAuthentication.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtAuthentication.MaxLength = 32;
+            this.txtAuthentication.Name = "txtAuthentication";
+            this.txtAuthentication.Size = new System.Drawing.Size(313, 24);
+            this.txtAuthentication.TabIndex = 43;
+            // 
+            // cmbDedicatedKey
+            // 
+            this.cmbDedicatedKey.BackColor = System.Drawing.Color.Transparent;
+            this.cmbDedicatedKey.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbDedicatedKey.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbDedicatedKey.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbDedicatedKey.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cmbDedicatedKey.FormattingEnabled = true;
+            this.cmbDedicatedKey.Items.AddRange(new object[] {
+            "True",
+            "False"});
+            this.cmbDedicatedKey.Location = new System.Drawing.Point(380, 612);
+            this.cmbDedicatedKey.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbDedicatedKey.Name = "cmbDedicatedKey";
+            this.cmbDedicatedKey.Size = new System.Drawing.Size(313, 32);
+            this.cmbDedicatedKey.TabIndex = 41;
+            // 
+            // txtEncryKey
+            // 
+            this.txtEncryKey.BackColor = System.Drawing.Color.Transparent;
+            this.txtEncryKey.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtEncryKey.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtEncryKey.Location = new System.Drawing.Point(380, 503);
+            this.txtEncryKey.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtEncryKey.MaxLength = 32;
+            this.txtEncryKey.Name = "txtEncryKey";
+            this.txtEncryKey.Size = new System.Drawing.Size(313, 24);
+            this.txtEncryKey.TabIndex = 37;
+            // 
+            // cmbSecuritysuit
+            // 
+            this.cmbSecuritysuit.BackColor = System.Drawing.Color.Transparent;
+            this.cmbSecuritysuit.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbSecuritysuit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSecuritysuit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbSecuritysuit.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cmbSecuritysuit.FormattingEnabled = true;
+            this.cmbSecuritysuit.Items.AddRange(new object[] {
+            "Authentication Only",
+            "Encryption Only",
+            "Encryption + Authentication "});
+            this.cmbSecuritysuit.Location = new System.Drawing.Point(380, 449);
+            this.cmbSecuritysuit.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbSecuritysuit.Name = "cmbSecuritysuit";
+            this.cmbSecuritysuit.Size = new System.Drawing.Size(313, 32);
+            this.cmbSecuritysuit.TabIndex = 35;
+            // 
+            // txtClientSystem
+            // 
+            this.txtClientSystem.BackColor = System.Drawing.Color.Transparent;
+            this.txtClientSystem.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtClientSystem.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtClientSystem.Location = new System.Drawing.Point(383, 399);
+            this.txtClientSystem.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtClientSystem.MaxLength = 8;
+            this.txtClientSystem.Name = "txtClientSystem";
+            this.txtClientSystem.Size = new System.Drawing.Size(310, 24);
+            this.txtClientSystem.TabIndex = 33;
+            // 
+            // cmbClientType
+            // 
+            this.cmbClientType.BackColor = System.Drawing.Color.Transparent;
+            this.cmbClientType.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbClientType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbClientType.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbClientType.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cmbClientType.FormattingEnabled = true;
+            this.cmbClientType.Items.AddRange(new object[] {
+            " PC ",
+            " MR ",
+            " US ",
+            " FS ",
+            " FU"});
+            this.cmbClientType.Location = new System.Drawing.Point(375, 34);
+            this.cmbClientType.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbClientType.Name = "cmbClientType";
+            this.cmbClientType.Size = new System.Drawing.Size(313, 32);
+            this.cmbClientType.TabIndex = 29;
+            this.cmbClientType.SelectedIndexChanged += new System.EventHandler(this.cmbClientType_SelectedIndexChanged);
+            // 
+            // txtServerLAddress
+            // 
+            this.txtServerLAddress.BackColor = System.Drawing.Color.Transparent;
+            this.txtServerLAddress.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtServerLAddress.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtServerLAddress.Location = new System.Drawing.Point(380, 120);
+            this.txtServerLAddress.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtServerLAddress.MaxLength = 5;
+            this.txtServerLAddress.Name = "txtServerLAddress";
+            this.txtServerLAddress.Size = new System.Drawing.Size(313, 24);
+            this.txtServerLAddress.TabIndex = 27;
+            // 
+            // txtServerUAddress
+            // 
+            this.txtServerUAddress.BackColor = System.Drawing.Color.Transparent;
+            this.txtServerUAddress.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtServerUAddress.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtServerUAddress.Location = new System.Drawing.Point(375, 77);
+            this.txtServerUAddress.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtServerUAddress.MaxLength = 1;
+            this.txtServerUAddress.Name = "txtServerUAddress";
+            this.txtServerUAddress.Size = new System.Drawing.Size(313, 24);
+            this.txtServerUAddress.TabIndex = 26;
+            // 
+            // txtDLMSVersion
+            // 
+            this.txtDLMSVersion.BackColor = System.Drawing.Color.Transparent;
+            this.txtDLMSVersion.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtDLMSVersion.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtDLMSVersion.Location = new System.Drawing.Point(383, 161);
+            this.txtDLMSVersion.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtDLMSVersion.MaxLength = 1;
+            this.txtDLMSVersion.Name = "txtDLMSVersion";
+            this.txtDLMSVersion.Size = new System.Drawing.Size(310, 24);
+            this.txtDLMSVersion.TabIndex = 23;
+            // 
+            // txtMaxPDUSize
+            // 
+            this.txtMaxPDUSize.BackColor = System.Drawing.Color.Transparent;
+            this.txtMaxPDUSize.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtMaxPDUSize.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtMaxPDUSize.Location = new System.Drawing.Point(383, 348);
+            this.txtMaxPDUSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtMaxPDUSize.MaxLength = 4;
+            this.txtMaxPDUSize.Name = "txtMaxPDUSize";
+            this.txtMaxPDUSize.Size = new System.Drawing.Size(310, 24);
+            this.txtMaxPDUSize.TabIndex = 18;
+            // 
+            // txtPassword
+            // 
+            this.txtPassword.BackColor = System.Drawing.Color.Transparent;
+            this.txtPassword.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtPassword.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtPassword.Location = new System.Drawing.Point(383, 297);
+            this.txtPassword.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtPassword.MaxLength = 8;
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.Size = new System.Drawing.Size(310, 24);
+            this.txtPassword.TabIndex = 17;
+            // 
+            // cmbAuthenticationLevel
+            // 
+            this.cmbAuthenticationLevel.BackColor = System.Drawing.Color.Transparent;
+            this.cmbAuthenticationLevel.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbAuthenticationLevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbAuthenticationLevel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbAuthenticationLevel.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cmbAuthenticationLevel.FormattingEnabled = true;
+            this.cmbAuthenticationLevel.Items.AddRange(new object[] {
+            "No - Security",
+            "Low - Level",
+            "High - Level"});
+            this.cmbAuthenticationLevel.Location = new System.Drawing.Point(383, 245);
+            this.cmbAuthenticationLevel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbAuthenticationLevel.Name = "cmbAuthenticationLevel";
+            this.cmbAuthenticationLevel.Size = new System.Drawing.Size(310, 32);
+            this.cmbAuthenticationLevel.TabIndex = 9;
+            this.cmbAuthenticationLevel.SelectedIndexChanged += new System.EventHandler(this.cmbAuthenticationLevel_SelectedIndexChanged);
+            // 
+            // cmbApplicationContext
+            // 
+            this.cmbApplicationContext.BackColor = System.Drawing.Color.Transparent;
+            this.cmbApplicationContext.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbApplicationContext.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbApplicationContext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbApplicationContext.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cmbApplicationContext.FormattingEnabled = true;
+            this.cmbApplicationContext.Items.AddRange(new object[] {
+            "Short Name without ciphering",
+            "Logical Name without ciphering",
+            "Logical Name with ciphering"});
+            this.cmbApplicationContext.Location = new System.Drawing.Point(383, 202);
+            this.cmbApplicationContext.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbApplicationContext.Name = "cmbApplicationContext";
+            this.cmbApplicationContext.Size = new System.Drawing.Size(310, 32);
+            this.cmbApplicationContext.TabIndex = 7;
+            this.cmbApplicationContext.SelectedIndexChanged += new System.EventHandler(this.cmbApplicationContext_SelectedIndexChanged);
+            // 
+            // txtPDUSize
+            // 
+            this.txtPDUSize.BackColor = System.Drawing.Color.Transparent;
+            this.txtPDUSize.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtPDUSize.Enabled = false;
+            this.txtPDUSize.Location = new System.Drawing.Point(267, 98);
+            this.txtPDUSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtPDUSize.Name = "txtPDUSize";
+            this.txtPDUSize.Size = new System.Drawing.Size(130, 19);
+            this.txtPDUSize.TabIndex = 5;
+            this.txtPDUSize.Text = "9999";
+            // 
+            // txtConformanceBlock
+            // 
+            this.txtConformanceBlock.BackColor = System.Drawing.Color.Transparent;
+            this.txtConformanceBlock.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtConformanceBlock.Enabled = false;
+            this.txtConformanceBlock.Location = new System.Drawing.Point(267, 51);
+            this.txtConformanceBlock.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtConformanceBlock.Name = "txtConformanceBlock";
+            this.txtConformanceBlock.Size = new System.Drawing.Size(130, 19);
+            this.txtConformanceBlock.TabIndex = 4;
+            this.txtConformanceBlock.Text = "00142C";
+            // 
             // Association
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -1479,8 +1560,8 @@
         private System.Windows.Forms.Panel panelUserInfo;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox txtPDUSize;
-        private System.Windows.Forms.TextBox txtConformanceBlock;
+        private CabconPMP.TransparentTextBox txtPDUSize;
+        private CabconPMP.TransparentTextBox txtConformanceBlock;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button btnOK;
@@ -1489,45 +1570,45 @@
         private System.Windows.Forms.GroupBox groupBox10;
         private System.Windows.Forms.TabPage tabHDLC;
         private System.Windows.Forms.TabPage tabAssociation;
-        private System.Windows.Forms.ComboBox cmbBaudRate;
+        private CabconPMP.TransparentComboBox cmbBaudRate;
         private System.Windows.Forms.Label label25;
-        private System.Windows.Forms.ComboBox cmbDatabits;
+        private CabconPMP.TransparentComboBox cmbDatabits;
         private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.ComboBox cmbParity;
+        private CabconPMP.TransparentComboBox cmbParity;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.Label label26;
-        private System.Windows.Forms.ComboBox cmbStopBits;
+        private CabconPMP.TransparentComboBox cmbStopBits;
         private System.Windows.Forms.Label label29;
-        private System.Windows.Forms.TextBox txtInterFrameTimeout;
-        private System.Windows.Forms.TextBox txtResponsTimeout;
+        private CabconPMP.TransparentTextBox txtInterFrameTimeout;
+        private CabconPMP.TransparentTextBox txtResponsTimeout;
         private System.Windows.Forms.GroupBox groupBox11;
-        private System.Windows.Forms.TextBox txtInformationSize;
-        private System.Windows.Forms.TextBox txtPhysicalID;
+        private CabconPMP.TransparentTextBox txtInformationSize;
+        private CabconPMP.TransparentTextBox txtPhysicalID;
         private System.Windows.Forms.Label label36;
-        private System.Windows.Forms.ComboBox cmbHDLCAddressing;
+        private CabconPMP.TransparentComboBox cmbHDLCAddressing;
         private System.Windows.Forms.Label label37;
         private System.Windows.Forms.Label label38;
         private System.Windows.Forms.Label label39;
         private System.Windows.Forms.GroupBox groupBox12;
-        private System.Windows.Forms.TextBox txtMaxPDUSize;
-        private System.Windows.Forms.TextBox txtPassword;
+        private CabconPMP.TransparentTextBox txtMaxPDUSize;
+        private CabconPMP.TransparentTextBox txtPassword;
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.Label label34;
-        private System.Windows.Forms.ComboBox cmbAuthenticationLevel;
+        private CabconPMP.TransparentComboBox cmbAuthenticationLevel;
         private System.Windows.Forms.Label label35;
-        private System.Windows.Forms.ComboBox cmbApplicationContext;
+        private CabconPMP.TransparentComboBox cmbApplicationContext;
         private System.Windows.Forms.Label label40;
         private System.Windows.Forms.Label label41;
-        private System.Windows.Forms.TextBox txtDLMSVersion;
-        private System.Windows.Forms.TextBox txtServerLAddress;
-        private System.Windows.Forms.TextBox txtServerUAddress;
+        private CabconPMP.TransparentTextBox txtDLMSVersion;
+        private CabconPMP.TransparentTextBox txtServerLAddress;
+        private CabconPMP.TransparentTextBox txtServerUAddress;
         private System.Windows.Forms.Label label42;
         private System.Windows.Forms.Label label44;
-        private System.Windows.Forms.ComboBox cmbClientType;
+        private CabconPMP.TransparentComboBox cmbClientType;
         private System.Windows.Forms.Label label45;
-        private System.Windows.Forms.ComboBox cmbWindowSize;
+        private CabconPMP.TransparentComboBox cmbWindowSize;
         private System.Windows.Forms.TabPage tabconformanceBlock;
         private System.Windows.Forms.GroupBox grpConformanceBlock;
         private System.Windows.Forms.CheckBox Resered5;
@@ -1554,24 +1635,24 @@
         private System.Windows.Forms.CheckBox chkMultiReference;
         private System.Windows.Forms.CheckBox chkBlockTransferwithAction;
         private System.Windows.Forms.CheckBox chkBlockTransferwithWrite;
-        private System.Windows.Forms.TextBox txtDLLBufferSize;
-        private System.Windows.Forms.TextBox txtCosemBufferSize;
+        private CabconPMP.TransparentTextBox txtDLLBufferSize;
+        private CabconPMP.TransparentTextBox txtCosemBufferSize;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.CheckBox chlSelectAll;
-        private System.Windows.Forms.ComboBox cmbSignonBaudRate;
+        private CabconPMP.TransparentComboBox cmbSignonBaudRate;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox cmbSettingCategory;
-        private System.Windows.Forms.TextBox txtClientSystem;
+        private CabconPMP.TransparentComboBox cmbSettingCategory;
+        private CabconPMP.TransparentTextBox txtClientSystem;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox cmbSecuritysuit;
+        private CabconPMP.TransparentComboBox cmbSecuritysuit;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox txtEncryKey;
+        private CabconPMP.TransparentTextBox txtEncryKey;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox cmbDedicatedKey;
+        private CabconPMP.TransparentComboBox cmbDedicatedKey;
         private System.Windows.Forms.Label lbldedication;
-        private System.Windows.Forms.TextBox txtAuthentication;
+        private CabconPMP.TransparentTextBox txtAuthentication;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.CheckedListBox clbPorts;
         private System.Windows.Forms.CheckBox chkPortSelectAll;

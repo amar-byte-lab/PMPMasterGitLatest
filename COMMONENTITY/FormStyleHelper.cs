@@ -132,10 +132,13 @@ namespace COMMONENTITY
             }
             else if (ctrl is TextBox txt)
             {
-                txt.BorderStyle = BorderStyle.FixedSingle;
-                txt.Font = ControlFont;
-                txt.BackColor = Color.White;
-                txt.ForeColor = TextColor;
+                if (txt.GetType().Name != "TransparentTextBox")
+                {
+                    txt.BorderStyle = BorderStyle.FixedSingle;
+                    txt.Font = ControlFont;
+                    txt.BackColor = Color.White;
+                    txt.ForeColor = TextColor;
+                }
             }
             else if (ctrl is MaskedTextBox mxt)
             {
@@ -146,10 +149,13 @@ namespace COMMONENTITY
             }
             else if (ctrl is ComboBox cmb)
             {
-                cmb.FlatStyle = FlatStyle.Flat;
-                cmb.Font = ControlFont;
-                cmb.BackColor = Color.White;
-                cmb.ForeColor = TextColor;
+                if (cmb.GetType().Name != "TransparentComboBox")
+                {
+                    cmb.FlatStyle = FlatStyle.Flat;
+                    cmb.Font = ControlFont;
+                    cmb.BackColor = Color.White;
+                    cmb.ForeColor = TextColor;
+                }
             }
             else if (ctrl is Label lbl)
             {
