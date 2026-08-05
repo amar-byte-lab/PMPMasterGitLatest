@@ -1098,6 +1098,8 @@
             // grpConformanceBlock
             // 
             this.grpConformanceBlock.BackColor = System.Drawing.Color.White;
+            this.grpConformanceBlock.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("grpConformanceBlock.BackgroundImage")));
+            this.grpConformanceBlock.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.grpConformanceBlock.Controls.Add(this.chkAction);
             this.grpConformanceBlock.Controls.Add(this.chkEventNotification);
             this.grpConformanceBlock.Controls.Add(this.chkSelectiveAccess);
@@ -1136,72 +1138,79 @@
             // chkAction
             // 
             this.chkAction.AutoSize = true;
+            this.chkAction.BackColor = System.Drawing.Color.Transparent;
             this.chkAction.Location = new System.Drawing.Point(482, 555);
             this.chkAction.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkAction.Name = "chkAction";
             this.chkAction.Size = new System.Drawing.Size(80, 24);
             this.chkAction.TabIndex = 23;
             this.chkAction.Text = "Action";
-            this.chkAction.UseVisualStyleBackColor = true;
+            this.chkAction.UseVisualStyleBackColor = false;
             // 
             // chkEventNotification
             // 
             this.chkEventNotification.AutoSize = true;
+            this.chkEventNotification.BackColor = System.Drawing.Color.Transparent;
             this.chkEventNotification.Location = new System.Drawing.Point(482, 510);
             this.chkEventNotification.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkEventNotification.Name = "chkEventNotification";
             this.chkEventNotification.Size = new System.Drawing.Size(159, 24);
             this.chkEventNotification.TabIndex = 22;
             this.chkEventNotification.Text = "Event Notification";
-            this.chkEventNotification.UseVisualStyleBackColor = true;
+            this.chkEventNotification.UseVisualStyleBackColor = false;
             // 
             // chkSelectiveAccess
             // 
             this.chkSelectiveAccess.AutoSize = true;
+            this.chkSelectiveAccess.BackColor = System.Drawing.Color.Transparent;
             this.chkSelectiveAccess.Location = new System.Drawing.Point(482, 467);
             this.chkSelectiveAccess.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkSelectiveAccess.Name = "chkSelectiveAccess";
             this.chkSelectiveAccess.Size = new System.Drawing.Size(155, 24);
             this.chkSelectiveAccess.TabIndex = 21;
             this.chkSelectiveAccess.Text = "Selective Access";
-            this.chkSelectiveAccess.UseVisualStyleBackColor = true;
+            this.chkSelectiveAccess.UseVisualStyleBackColor = false;
             // 
             // chkSet
             // 
             this.chkSet.AutoSize = true;
+            this.chkSet.BackColor = System.Drawing.Color.Transparent;
             this.chkSet.Location = new System.Drawing.Point(482, 424);
             this.chkSet.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkSet.Name = "chkSet";
             this.chkSet.Size = new System.Drawing.Size(60, 24);
             this.chkSet.TabIndex = 20;
             this.chkSet.Text = "Set";
-            this.chkSet.UseVisualStyleBackColor = true;
+            this.chkSet.UseVisualStyleBackColor = false;
             // 
             // chkGet
             // 
             this.chkGet.AutoSize = true;
+            this.chkGet.BackColor = System.Drawing.Color.Transparent;
             this.chkGet.Location = new System.Drawing.Point(482, 383);
             this.chkGet.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkGet.Name = "chkGet";
             this.chkGet.Size = new System.Drawing.Size(62, 24);
             this.chkGet.TabIndex = 19;
             this.chkGet.Text = "Get";
-            this.chkGet.UseVisualStyleBackColor = true;
+            this.chkGet.UseVisualStyleBackColor = false;
             // 
             // chkParameterizedAccess
             // 
             this.chkParameterizedAccess.AutoSize = true;
+            this.chkParameterizedAccess.BackColor = System.Drawing.Color.Transparent;
             this.chkParameterizedAccess.Location = new System.Drawing.Point(482, 332);
             this.chkParameterizedAccess.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkParameterizedAccess.Name = "chkParameterizedAccess";
             this.chkParameterizedAccess.Size = new System.Drawing.Size(194, 24);
             this.chkParameterizedAccess.TabIndex = 18;
             this.chkParameterizedAccess.Text = "Parameterized Access";
-            this.chkParameterizedAccess.UseVisualStyleBackColor = true;
+            this.chkParameterizedAccess.UseVisualStyleBackColor = false;
             // 
             // Resered7
             // 
             this.Resered7.AutoSize = true;
+            this.Resered7.BackColor = System.Drawing.Color.Transparent;
             this.Resered7.Enabled = false;
             this.Resered7.Location = new System.Drawing.Point(482, 283);
             this.Resered7.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -1209,11 +1218,12 @@
             this.Resered7.Size = new System.Drawing.Size(103, 24);
             this.Resered7.TabIndex = 17;
             this.Resered7.Text = "Reserved";
-            this.Resered7.UseVisualStyleBackColor = true;
+            this.Resered7.UseVisualStyleBackColor = false;
             // 
             // Resered6
             // 
             this.Resered6.AutoSize = true;
+            this.Resered6.BackColor = System.Drawing.Color.Transparent;
             this.Resered6.Enabled = false;
             this.Resered6.Location = new System.Drawing.Point(482, 237);
             this.Resered6.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -1221,55 +1231,61 @@
             this.Resered6.Size = new System.Drawing.Size(103, 24);
             this.Resered6.TabIndex = 16;
             this.Resered6.Text = "Reserved";
-            this.Resered6.UseVisualStyleBackColor = true;
+            this.Resered6.UseVisualStyleBackColor = false;
             // 
             // chkInformationReport
             // 
             this.chkInformationReport.AutoSize = true;
+            this.chkInformationReport.BackColor = System.Drawing.Color.Transparent;
             this.chkInformationReport.Location = new System.Drawing.Point(482, 188);
             this.chkInformationReport.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkInformationReport.Name = "chkInformationReport";
             this.chkInformationReport.Size = new System.Drawing.Size(162, 24);
             this.chkInformationReport.TabIndex = 15;
             this.chkInformationReport.Text = "Information report";
-            this.chkInformationReport.UseVisualStyleBackColor = true;
+            this.chkInformationReport.UseVisualStyleBackColor = false;
+            this.chkInformationReport.CheckedChanged += new System.EventHandler(this.chkInformationReport_CheckedChanged);
             // 
             // chkMultiReference
             // 
             this.chkMultiReference.AutoSize = true;
+            this.chkMultiReference.BackColor = System.Drawing.Color.Transparent;
             this.chkMultiReference.Location = new System.Drawing.Point(482, 143);
             this.chkMultiReference.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkMultiReference.Name = "chkMultiReference";
             this.chkMultiReference.Size = new System.Drawing.Size(168, 24);
             this.chkMultiReference.TabIndex = 14;
             this.chkMultiReference.Text = "Multiple Reference";
-            this.chkMultiReference.UseVisualStyleBackColor = true;
+            this.chkMultiReference.UseVisualStyleBackColor = false;
             // 
             // chkBlockTransferwithAction
             // 
             this.chkBlockTransferwithAction.AutoSize = true;
+            this.chkBlockTransferwithAction.BackColor = System.Drawing.Color.Transparent;
             this.chkBlockTransferwithAction.Location = new System.Drawing.Point(482, 97);
             this.chkBlockTransferwithAction.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkBlockTransferwithAction.Name = "chkBlockTransferwithAction";
             this.chkBlockTransferwithAction.Size = new System.Drawing.Size(222, 24);
             this.chkBlockTransferwithAction.TabIndex = 13;
             this.chkBlockTransferwithAction.Text = "Block Transfer With Action";
-            this.chkBlockTransferwithAction.UseVisualStyleBackColor = true;
+            this.chkBlockTransferwithAction.UseVisualStyleBackColor = false;
             // 
             // chkBlockTransferwithWrite
             // 
             this.chkBlockTransferwithWrite.AutoSize = true;
+            this.chkBlockTransferwithWrite.BackColor = System.Drawing.Color.Transparent;
             this.chkBlockTransferwithWrite.Location = new System.Drawing.Point(482, 48);
             this.chkBlockTransferwithWrite.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkBlockTransferwithWrite.Name = "chkBlockTransferwithWrite";
             this.chkBlockTransferwithWrite.Size = new System.Drawing.Size(202, 24);
             this.chkBlockTransferwithWrite.TabIndex = 12;
             this.chkBlockTransferwithWrite.Text = "Block Transfer With Set";
-            this.chkBlockTransferwithWrite.UseVisualStyleBackColor = true;
+            this.chkBlockTransferwithWrite.UseVisualStyleBackColor = false;
             // 
             // Resered5
             // 
             this.Resered5.AutoSize = true;
+            this.Resered5.BackColor = System.Drawing.Color.Transparent;
             this.Resered5.Enabled = false;
             this.Resered5.Location = new System.Drawing.Point(50, 383);
             this.Resered5.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -1277,11 +1293,12 @@
             this.Resered5.Size = new System.Drawing.Size(103, 24);
             this.Resered5.TabIndex = 7;
             this.Resered5.Text = "Reserved";
-            this.Resered5.UseVisualStyleBackColor = true;
+            this.Resered5.UseVisualStyleBackColor = false;
             // 
             // Resered4
             // 
             this.Resered4.AutoSize = true;
+            this.Resered4.BackColor = System.Drawing.Color.Transparent;
             this.Resered4.Enabled = false;
             this.Resered4.Location = new System.Drawing.Point(50, 332);
             this.Resered4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -1289,66 +1306,72 @@
             this.Resered4.Size = new System.Drawing.Size(103, 24);
             this.Resered4.TabIndex = 6;
             this.Resered4.Text = "Reserved";
-            this.Resered4.UseVisualStyleBackColor = true;
+            this.Resered4.UseVisualStyleBackColor = false;
             // 
             // chkUwrite
             // 
             this.chkUwrite.AutoSize = true;
+            this.chkUwrite.BackColor = System.Drawing.Color.Transparent;
             this.chkUwrite.Location = new System.Drawing.Point(50, 283);
             this.chkUwrite.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkUwrite.Name = "chkUwrite";
             this.chkUwrite.Size = new System.Drawing.Size(167, 24);
             this.chkUwrite.TabIndex = 5;
             this.chkUwrite.Text = "Unconfirmed Write";
-            this.chkUwrite.UseVisualStyleBackColor = true;
+            this.chkUwrite.UseVisualStyleBackColor = false;
             // 
             // chkWrite
             // 
             this.chkWrite.AutoSize = true;
+            this.chkWrite.BackColor = System.Drawing.Color.Transparent;
             this.chkWrite.Location = new System.Drawing.Point(50, 237);
             this.chkWrite.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkWrite.Name = "chkWrite";
             this.chkWrite.Size = new System.Drawing.Size(72, 24);
             this.chkWrite.TabIndex = 4;
             this.chkWrite.Text = "Write";
-            this.chkWrite.UseVisualStyleBackColor = true;
+            this.chkWrite.UseVisualStyleBackColor = false;
             // 
             // chkBlockTransferwithGetRead
             // 
             this.chkBlockTransferwithGetRead.AutoSize = true;
+            this.chkBlockTransferwithGetRead.BackColor = System.Drawing.Color.Transparent;
             this.chkBlockTransferwithGetRead.Location = new System.Drawing.Point(50, 555);
             this.chkBlockTransferwithGetRead.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkBlockTransferwithGetRead.Name = "chkBlockTransferwithGetRead";
             this.chkBlockTransferwithGetRead.Size = new System.Drawing.Size(204, 24);
             this.chkBlockTransferwithGetRead.TabIndex = 11;
             this.chkBlockTransferwithGetRead.Text = "Block Transfer With Get";
-            this.chkBlockTransferwithGetRead.UseVisualStyleBackColor = true;
+            this.chkBlockTransferwithGetRead.UseVisualStyleBackColor = false;
             // 
             // chkread
             // 
             this.chkread.AutoSize = true;
+            this.chkread.BackColor = System.Drawing.Color.Transparent;
             this.chkread.Location = new System.Drawing.Point(50, 188);
             this.chkread.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkread.Name = "chkread";
             this.chkread.Size = new System.Drawing.Size(74, 24);
             this.chkread.TabIndex = 3;
             this.chkread.Text = "Read";
-            this.chkread.UseVisualStyleBackColor = true;
+            this.chkread.UseVisualStyleBackColor = false;
             // 
             // chkAttributewithGet
             // 
             this.chkAttributewithGet.AutoSize = true;
+            this.chkAttributewithGet.BackColor = System.Drawing.Color.Transparent;
             this.chkAttributewithGet.Location = new System.Drawing.Point(50, 510);
             this.chkAttributewithGet.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkAttributewithGet.Name = "chkAttributewithGet";
             this.chkAttributewithGet.Size = new System.Drawing.Size(182, 24);
             this.chkAttributewithGet.TabIndex = 10;
             this.chkAttributewithGet.Text = "Attribute \'0\' With Get";
-            this.chkAttributewithGet.UseVisualStyleBackColor = true;
+            this.chkAttributewithGet.UseVisualStyleBackColor = false;
             // 
             // Resered3
             // 
             this.Resered3.AutoSize = true;
+            this.Resered3.BackColor = System.Drawing.Color.Transparent;
             this.Resered3.Enabled = false;
             this.Resered3.Location = new System.Drawing.Point(50, 143);
             this.Resered3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -1356,22 +1379,24 @@
             this.Resered3.Size = new System.Drawing.Size(103, 24);
             this.Resered3.TabIndex = 2;
             this.Resered3.Text = "Reserved";
-            this.Resered3.UseVisualStyleBackColor = true;
+            this.Resered3.UseVisualStyleBackColor = false;
             // 
             // chkPriority
             // 
             this.chkPriority.AutoSize = true;
+            this.chkPriority.BackColor = System.Drawing.Color.Transparent;
             this.chkPriority.Location = new System.Drawing.Point(50, 467);
             this.chkPriority.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkPriority.Name = "chkPriority";
             this.chkPriority.Size = new System.Drawing.Size(196, 24);
             this.chkPriority.TabIndex = 9;
             this.chkPriority.Text = "Priority Mgt. Supported";
-            this.chkPriority.UseVisualStyleBackColor = true;
+            this.chkPriority.UseVisualStyleBackColor = false;
             // 
             // Resered2
             // 
             this.Resered2.AutoSize = true;
+            this.Resered2.BackColor = System.Drawing.Color.Transparent;
             this.Resered2.Enabled = false;
             this.Resered2.Location = new System.Drawing.Point(50, 97);
             this.Resered2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -1379,22 +1404,24 @@
             this.Resered2.Size = new System.Drawing.Size(103, 24);
             this.Resered2.TabIndex = 1;
             this.Resered2.Text = "Reserved";
-            this.Resered2.UseVisualStyleBackColor = true;
+            this.Resered2.UseVisualStyleBackColor = false;
             // 
             // chkAttributeWithSet
             // 
             this.chkAttributeWithSet.AutoSize = true;
+            this.chkAttributeWithSet.BackColor = System.Drawing.Color.Transparent;
             this.chkAttributeWithSet.Location = new System.Drawing.Point(50, 424);
             this.chkAttributeWithSet.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkAttributeWithSet.Name = "chkAttributeWithSet";
             this.chkAttributeWithSet.Size = new System.Drawing.Size(180, 24);
             this.chkAttributeWithSet.TabIndex = 8;
             this.chkAttributeWithSet.Text = "Attribute \'0\' With Set";
-            this.chkAttributeWithSet.UseVisualStyleBackColor = true;
+            this.chkAttributeWithSet.UseVisualStyleBackColor = false;
             // 
             // Resered1
             // 
             this.Resered1.AutoSize = true;
+            this.Resered1.BackColor = System.Drawing.Color.Transparent;
             this.Resered1.Enabled = false;
             this.Resered1.Location = new System.Drawing.Point(50, 48);
             this.Resered1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -1402,7 +1429,7 @@
             this.Resered1.Size = new System.Drawing.Size(103, 24);
             this.Resered1.TabIndex = 0;
             this.Resered1.Text = "Reserved";
-            this.Resered1.UseVisualStyleBackColor = true;
+            this.Resered1.UseVisualStyleBackColor = false;
             // 
             // Association
             // 

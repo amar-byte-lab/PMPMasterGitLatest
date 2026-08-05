@@ -726,5 +726,10 @@ namespace CabconPMP
         {
 
         }
+
+        private void chkInformationReport_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
