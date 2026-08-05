@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Association));
             this.panelUserInfo = new System.Windows.Forms.Panel();
             this.txtPDUSize = new System.Windows.Forms.TextBox();
             this.txtConformanceBlock = new System.Windows.Forms.TextBox();
@@ -216,7 +217,7 @@
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.button3.ForeColor = System.Drawing.Color.White;
-            this.button3.Location = new System.Drawing.Point(534, 746);
+            this.button3.Location = new System.Drawing.Point(638, 746);
             this.button3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(112, 43);
@@ -231,7 +232,7 @@
             this.btnOK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOK.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnOK.ForeColor = System.Drawing.Color.White;
-            this.btnOK.Location = new System.Drawing.Point(413, 746);
+            this.btnOK.Location = new System.Drawing.Point(489, 746);
             this.btnOK.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(112, 43);
@@ -251,7 +252,7 @@
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.Padding = new System.Drawing.Point(18, 8);
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(678, 734);
+            this.tabControl1.Size = new System.Drawing.Size(784, 734);
             this.tabControl1.TabIndex = 22;
             // 
             // tabSerialPort
@@ -264,10 +265,11 @@
             this.tabSerialPort.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabSerialPort.Name = "tabSerialPort";
             this.tabSerialPort.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabSerialPort.Size = new System.Drawing.Size(670, 691);
+            this.tabSerialPort.Size = new System.Drawing.Size(776, 691);
             this.tabSerialPort.TabIndex = 0;
             this.tabSerialPort.Text = "Port Settings";
             this.tabSerialPort.UseVisualStyleBackColor = true;
+            this.tabSerialPort.Click += new System.EventHandler(this.tabSerialPort_Click);
             // 
             // label2
             // 
@@ -321,7 +323,7 @@
             this.groupBox10.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox10.Name = "groupBox10";
             this.groupBox10.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.groupBox10.Size = new System.Drawing.Size(561, 567);
+            this.groupBox10.Size = new System.Drawing.Size(688, 567);
             this.groupBox10.TabIndex = 0;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Serial Port Setting";
@@ -331,7 +333,7 @@
             this.clbPorts.CheckOnClick = true;
             this.clbPorts.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.clbPorts.FormattingEnabled = true;
-            this.clbPorts.Location = new System.Drawing.Point(360, 29);
+            this.clbPorts.Location = new System.Drawing.Point(444, 29);
             this.clbPorts.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.clbPorts.Name = "clbPorts";
             this.clbPorts.Size = new System.Drawing.Size(180, 144);
@@ -342,7 +344,7 @@
             // 
             this.chkPortSelectAll.AutoSize = true;
             this.chkPortSelectAll.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.chkPortSelectAll.Location = new System.Drawing.Point(360, 196);
+            this.chkPortSelectAll.Location = new System.Drawing.Point(444, 193);
             this.chkPortSelectAll.Name = "chkPortSelectAll";
             this.chkPortSelectAll.Size = new System.Drawing.Size(109, 29);
             this.chkPortSelectAll.TabIndex = 24;
@@ -358,7 +360,7 @@
             this.cmbSignonBaudRate.Items.AddRange(new object[] {
             "300",
             "9600"});
-            this.cmbSignonBaudRate.Location = new System.Drawing.Point(359, 292);
+            this.cmbSignonBaudRate.Location = new System.Drawing.Point(444, 291);
             this.cmbSignonBaudRate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbSignonBaudRate.Name = "cmbSignonBaudRate";
             this.cmbSignonBaudRate.Size = new System.Drawing.Size(180, 33);
@@ -378,7 +380,7 @@
             // txtInterFrameTimeout
             // 
             this.txtInterFrameTimeout.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtInterFrameTimeout.Location = new System.Drawing.Point(359, 502);
+            this.txtInterFrameTimeout.Location = new System.Drawing.Point(444, 504);
             this.txtInterFrameTimeout.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtInterFrameTimeout.MaxLength = 5;
             this.txtInterFrameTimeout.Name = "txtInterFrameTimeout";
@@ -394,7 +396,7 @@
             "None",
             "Even",
             "Odd"});
-            this.cmbParity.Location = new System.Drawing.Point(359, 375);
+            this.cmbParity.Location = new System.Drawing.Point(444, 374);
             this.cmbParity.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbParity.Name = "cmbParity";
             this.cmbParity.Size = new System.Drawing.Size(180, 33);
@@ -414,7 +416,7 @@
             // txtResponsTimeout
             // 
             this.txtResponsTimeout.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtResponsTimeout.Location = new System.Drawing.Point(359, 462);
+            this.txtResponsTimeout.Location = new System.Drawing.Point(444, 463);
             this.txtResponsTimeout.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtResponsTimeout.MaxLength = 5;
             this.txtResponsTimeout.Name = "txtResponsTimeout";
@@ -462,7 +464,7 @@
             this.cmbDatabits.Items.AddRange(new object[] {
             "7",
             "8"});
-            this.cmbDatabits.Location = new System.Drawing.Point(359, 334);
+            this.cmbDatabits.Location = new System.Drawing.Point(444, 331);
             this.cmbDatabits.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbDatabits.Name = "cmbDatabits";
             this.cmbDatabits.Size = new System.Drawing.Size(180, 33);
@@ -476,7 +478,7 @@
             this.cmbStopBits.Items.AddRange(new object[] {
             "1",
             "2"});
-            this.cmbStopBits.Location = new System.Drawing.Point(359, 420);
+            this.cmbStopBits.Location = new System.Drawing.Point(444, 420);
             this.cmbStopBits.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbStopBits.Name = "cmbStopBits";
             this.cmbStopBits.Size = new System.Drawing.Size(180, 33);
@@ -512,7 +514,7 @@
             "230400",
             "460800",
             "921600"});
-            this.cmbBaudRate.Location = new System.Drawing.Point(359, 251);
+            this.cmbBaudRate.Location = new System.Drawing.Point(444, 248);
             this.cmbBaudRate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbBaudRate.Name = "cmbBaudRate";
             this.cmbBaudRate.Size = new System.Drawing.Size(180, 33);
@@ -533,7 +535,7 @@
             // 
             this.label22.AutoSize = true;
             this.label22.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label22.Location = new System.Drawing.Point(21, 29);
+            this.label22.Location = new System.Drawing.Point(25, 42);
             this.label22.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(175, 25);
@@ -548,7 +550,7 @@
             this.tabHDLC.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabHDLC.Name = "tabHDLC";
             this.tabHDLC.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabHDLC.Size = new System.Drawing.Size(670, 691);
+            this.tabHDLC.Size = new System.Drawing.Size(776, 691);
             this.tabHDLC.TabIndex = 1;
             this.tabHDLC.Text = "HDLC Settings";
             this.tabHDLC.UseVisualStyleBackColor = true;
@@ -572,14 +574,14 @@
             this.groupBox11.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox11.Name = "groupBox11";
             this.groupBox11.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.groupBox11.Size = new System.Drawing.Size(466, 317);
+            this.groupBox11.Size = new System.Drawing.Size(649, 520);
             this.groupBox11.TabIndex = 1;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "HDLC Settings";
             // 
             // txtDLLBufferSize
             // 
-            this.txtDLLBufferSize.Location = new System.Drawing.Point(258, 231);
+            this.txtDLLBufferSize.Location = new System.Drawing.Point(402, 451);
             this.txtDLLBufferSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtDLLBufferSize.MaxLength = 4;
             this.txtDLLBufferSize.Name = "txtDLLBufferSize";
@@ -588,7 +590,7 @@
             // 
             // txtCosemBufferSize
             // 
-            this.txtCosemBufferSize.Location = new System.Drawing.Point(258, 194);
+            this.txtCosemBufferSize.Location = new System.Drawing.Point(402, 381);
             this.txtCosemBufferSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtCosemBufferSize.MaxLength = 4;
             this.txtCosemBufferSize.Name = "txtCosemBufferSize";
@@ -598,7 +600,7 @@
             // label27
             // 
             this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(56, 235);
+            this.label27.Location = new System.Drawing.Point(57, 451);
             this.label27.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(122, 20);
@@ -608,7 +610,7 @@
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(56, 198);
+            this.label28.Location = new System.Drawing.Point(57, 387);
             this.label28.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(142, 20);
@@ -628,7 +630,7 @@
             "5",
             "6",
             "7"});
-            this.cmbWindowSize.Location = new System.Drawing.Point(258, 71);
+            this.cmbWindowSize.Location = new System.Drawing.Point(402, 142);
             this.cmbWindowSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbWindowSize.Name = "cmbWindowSize";
             this.cmbWindowSize.Size = new System.Drawing.Size(180, 33);
@@ -637,7 +639,7 @@
             // txtInformationSize
             // 
             this.txtInformationSize.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtInformationSize.Location = new System.Drawing.Point(258, 32);
+            this.txtInformationSize.Location = new System.Drawing.Point(402, 62);
             this.txtInformationSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtInformationSize.MaxLength = 3;
             this.txtInformationSize.Name = "txtInformationSize";
@@ -647,7 +649,7 @@
             // txtPhysicalID
             // 
             this.txtPhysicalID.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtPhysicalID.Location = new System.Drawing.Point(258, 154);
+            this.txtPhysicalID.Location = new System.Drawing.Point(402, 304);
             this.txtPhysicalID.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtPhysicalID.MaxLength = 8;
             this.txtPhysicalID.Name = "txtPhysicalID";
@@ -658,7 +660,7 @@
             // 
             this.label36.AutoSize = true;
             this.label36.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label36.Location = new System.Drawing.Point(56, 158);
+            this.label36.Location = new System.Drawing.Point(56, 310);
             this.label36.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label36.Name = "label36";
             this.label36.Size = new System.Drawing.Size(151, 25);
@@ -674,7 +676,7 @@
             "1 Byte",
             "2 Byte",
             "4 Byte"});
-            this.cmbHDLCAddressing.Location = new System.Drawing.Point(258, 112);
+            this.cmbHDLCAddressing.Location = new System.Drawing.Point(402, 225);
             this.cmbHDLCAddressing.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbHDLCAddressing.Name = "cmbHDLCAddressing";
             this.cmbHDLCAddressing.Size = new System.Drawing.Size(180, 33);
@@ -685,7 +687,7 @@
             // 
             this.label37.AutoSize = true;
             this.label37.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label37.Location = new System.Drawing.Point(54, 117);
+            this.label37.Location = new System.Drawing.Point(57, 225);
             this.label37.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label37.Name = "label37";
             this.label37.Size = new System.Drawing.Size(209, 25);
@@ -696,7 +698,7 @@
             // 
             this.label38.AutoSize = true;
             this.label38.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label38.Location = new System.Drawing.Point(56, 75);
+            this.label38.Location = new System.Drawing.Point(57, 142);
             this.label38.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label38.Name = "label38";
             this.label38.Size = new System.Drawing.Size(114, 25);
@@ -707,7 +709,7 @@
             // 
             this.label39.AutoSize = true;
             this.label39.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label39.Location = new System.Drawing.Point(54, 37);
+            this.label39.Location = new System.Drawing.Point(57, 68);
             this.label39.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label39.Name = "label39";
             this.label39.Size = new System.Drawing.Size(142, 25);
@@ -721,7 +723,7 @@
             this.tabAssociation.Location = new System.Drawing.Point(4, 39);
             this.tabAssociation.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabAssociation.Name = "tabAssociation";
-            this.tabAssociation.Size = new System.Drawing.Size(670, 691);
+            this.tabAssociation.Size = new System.Drawing.Size(776, 691);
             this.tabAssociation.TabIndex = 2;
             this.tabAssociation.Text = "Association Settings";
             this.tabAssociation.UseVisualStyleBackColor = true;
@@ -759,7 +761,7 @@
             this.groupBox12.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox12.Name = "groupBox12";
             this.groupBox12.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.groupBox12.Size = new System.Drawing.Size(570, 566);
+            this.groupBox12.Size = new System.Drawing.Size(701, 666);
             this.groupBox12.TabIndex = 1;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "  ";
@@ -767,7 +769,7 @@
             // txtAuthentication
             // 
             this.txtAuthentication.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtAuthentication.Location = new System.Drawing.Point(242, 452);
+            this.txtAuthentication.Location = new System.Drawing.Point(380, 559);
             this.txtAuthentication.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtAuthentication.MaxLength = 32;
             this.txtAuthentication.Name = "txtAuthentication";
@@ -778,7 +780,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label7.Location = new System.Drawing.Point(39, 457);
+            this.label7.Location = new System.Drawing.Point(38, 565);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(160, 25);
@@ -793,7 +795,7 @@
             this.cmbDedicatedKey.Items.AddRange(new object[] {
             "True",
             "False"});
-            this.cmbDedicatedKey.Location = new System.Drawing.Point(242, 488);
+            this.cmbDedicatedKey.Location = new System.Drawing.Point(380, 612);
             this.cmbDedicatedKey.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbDedicatedKey.Name = "cmbDedicatedKey";
             this.cmbDedicatedKey.Size = new System.Drawing.Size(313, 33);
@@ -803,7 +805,7 @@
             // 
             this.lbldedication.AutoSize = true;
             this.lbldedication.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lbldedication.Location = new System.Drawing.Point(40, 491);
+            this.lbldedication.Location = new System.Drawing.Point(36, 620);
             this.lbldedication.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbldedication.Name = "lbldedication";
             this.lbldedication.Size = new System.Drawing.Size(125, 25);
@@ -813,7 +815,7 @@
             // txtEncryKey
             // 
             this.txtEncryKey.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtEncryKey.Location = new System.Drawing.Point(242, 414);
+            this.txtEncryKey.Location = new System.Drawing.Point(380, 503);
             this.txtEncryKey.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtEncryKey.MaxLength = 32;
             this.txtEncryKey.Name = "txtEncryKey";
@@ -824,7 +826,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label6.Location = new System.Drawing.Point(39, 418);
+            this.label6.Location = new System.Drawing.Point(36, 509);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(185, 25);
@@ -840,7 +842,7 @@
             "Authentication Only",
             "Encryption Only",
             "Encryption + Authentication "});
-            this.cmbSecuritysuit.Location = new System.Drawing.Point(242, 372);
+            this.cmbSecuritysuit.Location = new System.Drawing.Point(380, 449);
             this.cmbSecuritysuit.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbSecuritysuit.Name = "cmbSecuritysuit";
             this.cmbSecuritysuit.Size = new System.Drawing.Size(313, 33);
@@ -850,7 +852,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label5.Location = new System.Drawing.Point(39, 378);
+            this.label5.Location = new System.Drawing.Point(38, 457);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(109, 25);
@@ -860,7 +862,7 @@
             // txtClientSystem
             // 
             this.txtClientSystem.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtClientSystem.Location = new System.Drawing.Point(242, 334);
+            this.txtClientSystem.Location = new System.Drawing.Point(383, 399);
             this.txtClientSystem.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtClientSystem.MaxLength = 8;
             this.txtClientSystem.Name = "txtClientSystem";
@@ -871,7 +873,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label4.Location = new System.Drawing.Point(40, 338);
+            this.label4.Location = new System.Drawing.Point(43, 405);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(155, 25);
@@ -889,7 +891,7 @@
             " US ",
             " FS ",
             " FU"});
-            this.cmbClientType.Location = new System.Drawing.Point(242, 34);
+            this.cmbClientType.Location = new System.Drawing.Point(375, 34);
             this.cmbClientType.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbClientType.Name = "cmbClientType";
             this.cmbClientType.Size = new System.Drawing.Size(313, 33);
@@ -910,7 +912,7 @@
             // txtServerLAddress
             // 
             this.txtServerLAddress.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtServerLAddress.Location = new System.Drawing.Point(242, 105);
+            this.txtServerLAddress.Location = new System.Drawing.Point(380, 120);
             this.txtServerLAddress.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtServerLAddress.MaxLength = 5;
             this.txtServerLAddress.Name = "txtServerLAddress";
@@ -920,7 +922,7 @@
             // txtServerUAddress
             // 
             this.txtServerUAddress.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtServerUAddress.Location = new System.Drawing.Point(242, 71);
+            this.txtServerUAddress.Location = new System.Drawing.Point(375, 77);
             this.txtServerUAddress.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtServerUAddress.MaxLength = 1;
             this.txtServerUAddress.Name = "txtServerUAddress";
@@ -931,7 +933,7 @@
             // 
             this.label42.AutoSize = true;
             this.label42.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label42.Location = new System.Drawing.Point(34, 109);
+            this.label42.Location = new System.Drawing.Point(38, 123);
             this.label42.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label42.Name = "label42";
             this.label42.Size = new System.Drawing.Size(183, 25);
@@ -942,7 +944,7 @@
             // 
             this.label44.AutoSize = true;
             this.label44.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label44.Location = new System.Drawing.Point(33, 74);
+            this.label44.Location = new System.Drawing.Point(36, 83);
             this.label44.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label44.Name = "label44";
             this.label44.Size = new System.Drawing.Size(185, 25);
@@ -952,7 +954,7 @@
             // txtDLMSVersion
             // 
             this.txtDLMSVersion.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtDLMSVersion.Location = new System.Drawing.Point(242, 143);
+            this.txtDLMSVersion.Location = new System.Drawing.Point(383, 161);
             this.txtDLMSVersion.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtDLMSVersion.MaxLength = 1;
             this.txtDLMSVersion.Name = "txtDLMSVersion";
@@ -962,7 +964,7 @@
             // txtMaxPDUSize
             // 
             this.txtMaxPDUSize.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtMaxPDUSize.Location = new System.Drawing.Point(242, 297);
+            this.txtMaxPDUSize.Location = new System.Drawing.Point(383, 348);
             this.txtMaxPDUSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtMaxPDUSize.MaxLength = 4;
             this.txtMaxPDUSize.Name = "txtMaxPDUSize";
@@ -972,7 +974,7 @@
             // txtPassword
             // 
             this.txtPassword.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtPassword.Location = new System.Drawing.Point(242, 258);
+            this.txtPassword.Location = new System.Drawing.Point(383, 297);
             this.txtPassword.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtPassword.MaxLength = 8;
             this.txtPassword.Name = "txtPassword";
@@ -983,7 +985,7 @@
             // 
             this.label33.AutoSize = true;
             this.label33.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label33.Location = new System.Drawing.Point(38, 302);
+            this.label33.Location = new System.Drawing.Point(39, 354);
             this.label33.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(170, 25);
@@ -994,7 +996,7 @@
             // 
             this.label34.AutoSize = true;
             this.label34.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label34.Location = new System.Drawing.Point(38, 263);
+            this.label34.Location = new System.Drawing.Point(43, 303);
             this.label34.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label34.Name = "label34";
             this.label34.Size = new System.Drawing.Size(87, 25);
@@ -1010,7 +1012,7 @@
             "No - Security",
             "Low - Level",
             "High - Level"});
-            this.cmbAuthenticationLevel.Location = new System.Drawing.Point(242, 220);
+            this.cmbAuthenticationLevel.Location = new System.Drawing.Point(383, 245);
             this.cmbAuthenticationLevel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbAuthenticationLevel.Name = "cmbAuthenticationLevel";
             this.cmbAuthenticationLevel.Size = new System.Drawing.Size(310, 33);
@@ -1021,7 +1023,7 @@
             // 
             this.label35.AutoSize = true;
             this.label35.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label35.Location = new System.Drawing.Point(36, 225);
+            this.label35.Location = new System.Drawing.Point(38, 253);
             this.label35.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label35.Name = "label35";
             this.label35.Size = new System.Drawing.Size(171, 25);
@@ -1037,7 +1039,7 @@
             "Short Name without ciphering",
             "Logical Name without ciphering",
             "Logical Name with ciphering"});
-            this.cmbApplicationContext.Location = new System.Drawing.Point(242, 182);
+            this.cmbApplicationContext.Location = new System.Drawing.Point(383, 202);
             this.cmbApplicationContext.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbApplicationContext.Name = "cmbApplicationContext";
             this.cmbApplicationContext.Size = new System.Drawing.Size(310, 33);
@@ -1048,7 +1050,7 @@
             // 
             this.label40.AutoSize = true;
             this.label40.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label40.Location = new System.Drawing.Point(36, 186);
+            this.label40.Location = new System.Drawing.Point(38, 205);
             this.label40.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label40.Name = "label40";
             this.label40.Size = new System.Drawing.Size(168, 25);
@@ -1059,7 +1061,7 @@
             // 
             this.label41.AutoSize = true;
             this.label41.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label41.Location = new System.Drawing.Point(36, 148);
+            this.label41.Location = new System.Drawing.Point(38, 167);
             this.label41.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label41.Name = "label41";
             this.label41.Size = new System.Drawing.Size(122, 25);
@@ -1074,7 +1076,7 @@
             this.tabconformanceBlock.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabconformanceBlock.Name = "tabconformanceBlock";
             this.tabconformanceBlock.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabconformanceBlock.Size = new System.Drawing.Size(670, 691);
+            this.tabconformanceBlock.Size = new System.Drawing.Size(776, 691);
             this.tabconformanceBlock.TabIndex = 3;
             this.tabconformanceBlock.Text = "Conformance Block";
             this.tabconformanceBlock.UseVisualStyleBackColor = true;
@@ -1084,7 +1086,7 @@
             this.chlSelectAll.AutoSize = true;
             this.chlSelectAll.Enabled = false;
             this.chlSelectAll.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chlSelectAll.Location = new System.Drawing.Point(340, 472);
+            this.chlSelectAll.Location = new System.Drawing.Point(340, 636);
             this.chlSelectAll.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chlSelectAll.Name = "chlSelectAll";
             this.chlSelectAll.Size = new System.Drawing.Size(125, 29);
@@ -1126,7 +1128,7 @@
             this.grpConformanceBlock.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grpConformanceBlock.Name = "grpConformanceBlock";
             this.grpConformanceBlock.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grpConformanceBlock.Size = new System.Drawing.Size(585, 454);
+            this.grpConformanceBlock.Size = new System.Drawing.Size(734, 617);
             this.grpConformanceBlock.TabIndex = 14;
             this.grpConformanceBlock.TabStop = false;
             this.grpConformanceBlock.Text = "Praposed Conformance Blick Settings";
@@ -1134,7 +1136,7 @@
             // chkAction
             // 
             this.chkAction.AutoSize = true;
-            this.chkAction.Location = new System.Drawing.Point(330, 414);
+            this.chkAction.Location = new System.Drawing.Point(482, 555);
             this.chkAction.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkAction.Name = "chkAction";
             this.chkAction.Size = new System.Drawing.Size(80, 24);
@@ -1145,7 +1147,7 @@
             // chkEventNotification
             // 
             this.chkEventNotification.AutoSize = true;
-            this.chkEventNotification.Location = new System.Drawing.Point(330, 378);
+            this.chkEventNotification.Location = new System.Drawing.Point(482, 510);
             this.chkEventNotification.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkEventNotification.Name = "chkEventNotification";
             this.chkEventNotification.Size = new System.Drawing.Size(159, 24);
@@ -1156,7 +1158,7 @@
             // chkSelectiveAccess
             // 
             this.chkSelectiveAccess.AutoSize = true;
-            this.chkSelectiveAccess.Location = new System.Drawing.Point(330, 343);
+            this.chkSelectiveAccess.Location = new System.Drawing.Point(482, 467);
             this.chkSelectiveAccess.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkSelectiveAccess.Name = "chkSelectiveAccess";
             this.chkSelectiveAccess.Size = new System.Drawing.Size(155, 24);
@@ -1167,7 +1169,7 @@
             // chkSet
             // 
             this.chkSet.AutoSize = true;
-            this.chkSet.Location = new System.Drawing.Point(330, 312);
+            this.chkSet.Location = new System.Drawing.Point(482, 424);
             this.chkSet.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkSet.Name = "chkSet";
             this.chkSet.Size = new System.Drawing.Size(60, 24);
@@ -1178,7 +1180,7 @@
             // chkGet
             // 
             this.chkGet.AutoSize = true;
-            this.chkGet.Location = new System.Drawing.Point(330, 278);
+            this.chkGet.Location = new System.Drawing.Point(482, 383);
             this.chkGet.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkGet.Name = "chkGet";
             this.chkGet.Size = new System.Drawing.Size(62, 24);
@@ -1189,7 +1191,7 @@
             // chkParameterizedAccess
             // 
             this.chkParameterizedAccess.AutoSize = true;
-            this.chkParameterizedAccess.Location = new System.Drawing.Point(330, 243);
+            this.chkParameterizedAccess.Location = new System.Drawing.Point(482, 332);
             this.chkParameterizedAccess.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkParameterizedAccess.Name = "chkParameterizedAccess";
             this.chkParameterizedAccess.Size = new System.Drawing.Size(194, 24);
@@ -1201,7 +1203,7 @@
             // 
             this.Resered7.AutoSize = true;
             this.Resered7.Enabled = false;
-            this.Resered7.Location = new System.Drawing.Point(330, 208);
+            this.Resered7.Location = new System.Drawing.Point(482, 283);
             this.Resered7.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Resered7.Name = "Resered7";
             this.Resered7.Size = new System.Drawing.Size(103, 24);
@@ -1213,7 +1215,7 @@
             // 
             this.Resered6.AutoSize = true;
             this.Resered6.Enabled = false;
-            this.Resered6.Location = new System.Drawing.Point(330, 172);
+            this.Resered6.Location = new System.Drawing.Point(482, 237);
             this.Resered6.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Resered6.Name = "Resered6";
             this.Resered6.Size = new System.Drawing.Size(103, 24);
@@ -1224,7 +1226,7 @@
             // chkInformationReport
             // 
             this.chkInformationReport.AutoSize = true;
-            this.chkInformationReport.Location = new System.Drawing.Point(330, 143);
+            this.chkInformationReport.Location = new System.Drawing.Point(482, 188);
             this.chkInformationReport.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkInformationReport.Name = "chkInformationReport";
             this.chkInformationReport.Size = new System.Drawing.Size(162, 24);
@@ -1235,7 +1237,7 @@
             // chkMultiReference
             // 
             this.chkMultiReference.AutoSize = true;
-            this.chkMultiReference.Location = new System.Drawing.Point(330, 108);
+            this.chkMultiReference.Location = new System.Drawing.Point(482, 143);
             this.chkMultiReference.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkMultiReference.Name = "chkMultiReference";
             this.chkMultiReference.Size = new System.Drawing.Size(168, 24);
@@ -1246,7 +1248,7 @@
             // chkBlockTransferwithAction
             // 
             this.chkBlockTransferwithAction.AutoSize = true;
-            this.chkBlockTransferwithAction.Location = new System.Drawing.Point(330, 78);
+            this.chkBlockTransferwithAction.Location = new System.Drawing.Point(482, 97);
             this.chkBlockTransferwithAction.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkBlockTransferwithAction.Name = "chkBlockTransferwithAction";
             this.chkBlockTransferwithAction.Size = new System.Drawing.Size(222, 24);
@@ -1257,7 +1259,7 @@
             // chkBlockTransferwithWrite
             // 
             this.chkBlockTransferwithWrite.AutoSize = true;
-            this.chkBlockTransferwithWrite.Location = new System.Drawing.Point(330, 48);
+            this.chkBlockTransferwithWrite.Location = new System.Drawing.Point(482, 48);
             this.chkBlockTransferwithWrite.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkBlockTransferwithWrite.Name = "chkBlockTransferwithWrite";
             this.chkBlockTransferwithWrite.Size = new System.Drawing.Size(202, 24);
@@ -1269,7 +1271,7 @@
             // 
             this.Resered5.AutoSize = true;
             this.Resered5.Enabled = false;
-            this.Resered5.Location = new System.Drawing.Point(50, 283);
+            this.Resered5.Location = new System.Drawing.Point(50, 383);
             this.Resered5.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Resered5.Name = "Resered5";
             this.Resered5.Size = new System.Drawing.Size(103, 24);
@@ -1281,7 +1283,7 @@
             // 
             this.Resered4.AutoSize = true;
             this.Resered4.Enabled = false;
-            this.Resered4.Location = new System.Drawing.Point(50, 249);
+            this.Resered4.Location = new System.Drawing.Point(50, 332);
             this.Resered4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Resered4.Name = "Resered4";
             this.Resered4.Size = new System.Drawing.Size(103, 24);
@@ -1292,7 +1294,7 @@
             // chkUwrite
             // 
             this.chkUwrite.AutoSize = true;
-            this.chkUwrite.Location = new System.Drawing.Point(50, 214);
+            this.chkUwrite.Location = new System.Drawing.Point(50, 283);
             this.chkUwrite.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkUwrite.Name = "chkUwrite";
             this.chkUwrite.Size = new System.Drawing.Size(167, 24);
@@ -1303,7 +1305,7 @@
             // chkWrite
             // 
             this.chkWrite.AutoSize = true;
-            this.chkWrite.Location = new System.Drawing.Point(50, 178);
+            this.chkWrite.Location = new System.Drawing.Point(50, 237);
             this.chkWrite.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkWrite.Name = "chkWrite";
             this.chkWrite.Size = new System.Drawing.Size(72, 24);
@@ -1314,7 +1316,7 @@
             // chkBlockTransferwithGetRead
             // 
             this.chkBlockTransferwithGetRead.AutoSize = true;
-            this.chkBlockTransferwithGetRead.Location = new System.Drawing.Point(50, 414);
+            this.chkBlockTransferwithGetRead.Location = new System.Drawing.Point(50, 555);
             this.chkBlockTransferwithGetRead.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkBlockTransferwithGetRead.Name = "chkBlockTransferwithGetRead";
             this.chkBlockTransferwithGetRead.Size = new System.Drawing.Size(204, 24);
@@ -1325,7 +1327,7 @@
             // chkread
             // 
             this.chkread.AutoSize = true;
-            this.chkread.Location = new System.Drawing.Point(50, 143);
+            this.chkread.Location = new System.Drawing.Point(50, 188);
             this.chkread.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkread.Name = "chkread";
             this.chkread.Size = new System.Drawing.Size(74, 24);
@@ -1336,7 +1338,7 @@
             // chkAttributewithGet
             // 
             this.chkAttributewithGet.AutoSize = true;
-            this.chkAttributewithGet.Location = new System.Drawing.Point(50, 383);
+            this.chkAttributewithGet.Location = new System.Drawing.Point(50, 510);
             this.chkAttributewithGet.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkAttributewithGet.Name = "chkAttributewithGet";
             this.chkAttributewithGet.Size = new System.Drawing.Size(182, 24);
@@ -1348,7 +1350,7 @@
             // 
             this.Resered3.AutoSize = true;
             this.Resered3.Enabled = false;
-            this.Resered3.Location = new System.Drawing.Point(50, 108);
+            this.Resered3.Location = new System.Drawing.Point(50, 143);
             this.Resered3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Resered3.Name = "Resered3";
             this.Resered3.Size = new System.Drawing.Size(103, 24);
@@ -1359,7 +1361,7 @@
             // chkPriority
             // 
             this.chkPriority.AutoSize = true;
-            this.chkPriority.Location = new System.Drawing.Point(50, 348);
+            this.chkPriority.Location = new System.Drawing.Point(50, 467);
             this.chkPriority.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkPriority.Name = "chkPriority";
             this.chkPriority.Size = new System.Drawing.Size(196, 24);
@@ -1371,7 +1373,7 @@
             // 
             this.Resered2.AutoSize = true;
             this.Resered2.Enabled = false;
-            this.Resered2.Location = new System.Drawing.Point(50, 78);
+            this.Resered2.Location = new System.Drawing.Point(50, 97);
             this.Resered2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Resered2.Name = "Resered2";
             this.Resered2.Size = new System.Drawing.Size(103, 24);
@@ -1382,7 +1384,7 @@
             // chkAttributeWithSet
             // 
             this.chkAttributeWithSet.AutoSize = true;
-            this.chkAttributeWithSet.Location = new System.Drawing.Point(50, 312);
+            this.chkAttributeWithSet.Location = new System.Drawing.Point(50, 424);
             this.chkAttributeWithSet.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkAttributeWithSet.Name = "chkAttributeWithSet";
             this.chkAttributeWithSet.Size = new System.Drawing.Size(180, 24);
@@ -1407,12 +1409,15 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(686, 803);
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(818, 803);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.panelUserInfo);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximizeBox = false;

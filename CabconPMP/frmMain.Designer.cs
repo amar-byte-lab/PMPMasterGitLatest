@@ -113,7 +113,7 @@
             this.addProceduresToolStripMenuItem,
             this.meterTypeToolStripMenuItem});
             this.calibrationToolStripMenuItem.Name = "calibrationToolStripMenuItem";
-            this.calibrationToolStripMenuItem.Size = new System.Drawing.Size(113, 29);
+            this.calibrationToolStripMenuItem.Size = new System.Drawing.Size(113, 32);
             this.calibrationToolStripMenuItem.Text = "Calibration";
             this.calibrationToolStripMenuItem.Click += new System.EventHandler(this.calibrationToolStripMenuItem_Click);
             // 
@@ -155,7 +155,7 @@
             this.tsm_changePassword,
             this.tsm_ServerSettings});
             this.ts_configuration.Name = "ts_configuration";
-            this.ts_configuration.Size = new System.Drawing.Size(92, 29);
+            this.ts_configuration.Size = new System.Drawing.Size(92, 32);
             this.ts_configuration.Text = "Settings";
             // 
             // tsm_Association
@@ -193,7 +193,7 @@
             // verificationToolStripMenuItem
             // 
             this.verificationToolStripMenuItem.Name = "verificationToolStripMenuItem";
-            this.verificationToolStripMenuItem.Size = new System.Drawing.Size(115, 29);
+            this.verificationToolStripMenuItem.Size = new System.Drawing.Size(115, 32);
             this.verificationToolStripMenuItem.Text = "Verification";
             // 
             // ts_report
@@ -207,7 +207,7 @@
             this.backupDataReportToolStripMenuItem,
             this.tsm_rejectlist});
             this.ts_report.Name = "ts_report";
-            this.ts_report.Size = new System.Drawing.Size(89, 29);
+            this.ts_report.Size = new System.Drawing.Size(89, 32);
             this.ts_report.Text = "Reports";
             // 
             // tsm_executionReports
@@ -271,7 +271,7 @@
             this.aboutToolStripMenuItem,
             this.contentsToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(65, 29);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(65, 32);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // aboutToolStripMenuItem
@@ -293,7 +293,7 @@
             // 
             this.exitToolStripMenuItem.BackColor = System.Drawing.Color.Transparent;
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(55, 29);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(55, 32);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 

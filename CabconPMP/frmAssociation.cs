@@ -721,5 +721,10 @@ namespace CabconPMP
                 _updatingSelectAll = false;
             }));
         }
+
+        private void tabSerialPort_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
